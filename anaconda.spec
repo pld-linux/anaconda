@@ -11,7 +11,6 @@ BuildRequires:	X11-devel
 BuildRequires:	beecrypt-devel
 BuildRequires:	bogl-bterm >= 0:0.1.9-17
 BuildRequires:	bogl-devel >= 0:0.1.9-17
-BuildRequires:	booty
 BuildRequires:	bzip2-devel
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	elfutils-devel
@@ -25,6 +24,7 @@ BuildRequires:	newt-devel
 BuildRequires:	pciutils-devel
 BuildRequires:	popt-static
 BuildRequires:	pump-devel >= 0.8.20
+BuildRequires:	python-booty
 BuildRequires:	python-devel
 BuildRequires:	python-libxml2
 BuildRequires:	python-rhpl
@@ -35,9 +35,9 @@ BuildRequires:	slang-static
 BuildRequires:	zlib-devel
 BuildRequires:	zlib-static
 Requires:	anaconda-help
-Requires:	booty
 Requires:	kudzu
 Requires:	parted >= 1.6.3-7
+Requires:	python-booty
 Requires:	python-libxml2
 Requires:	python-parted
 Requires:	python-rhpl > 0.63
@@ -104,7 +104,10 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log: anaconda.spec,v $
-Revision 1.1.2.6  2005-04-23 22:51:30  patrys
+Revision 1.1.2.7  2005-04-23 23:35:46  patrys
+- fixed deps
+
+Revision 1.1.2.6  2005/04/23 22:51:30  patrys
 - fixed deps
 
 Revision 1.1.2.5  2005/04/23 21:35:57  patrys
