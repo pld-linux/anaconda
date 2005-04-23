@@ -53,7 +53,7 @@ system.  These files are of little use on an already installed system.
 Summary:	Graphical system installer portions needed only for fresh installs.
 Group:		Applications/System
 AutoReqProv:	false
-Requires:	libxml2-python
+Requires:	python-libxml2
 Requires:	python
 Requires:	python-rpm >= 4.2-0.61
 
@@ -88,22 +88,25 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/kickstart-docs.txt
 %doc docs/mediacheck.txt
 %doc docs/anaconda-release-notes.txt
-%attr(755,root,root) /usr/bin/mini-wm
-%attr(755,root,root) /usr/sbin/anaconda
-%dir %{_datadir}/anaconda
+%attr(755,root,root) %{_bindir}/mini-wm
+%attr(755,root,root) %{_sbindir}/anaconda
+%{_datadir}/anaconda
 %attr(644,root,root) %{_datadir}/locale/*/*/*
-%dir %{_libdir}/anaconda
+%{_libdir}/anaconda
 
 %files runtime
-%defattr(644,root,root,755)
-%dir %{_libdir}/anaconda-runtime
+%defattr(-,root,root,755)
+%{_libdir}/anaconda-runtime
 
 %changelog
 * %{date} PLD Team <feedback@pld-linux.org>
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log: anaconda.spec,v $
-Revision 1.1.2.3  2005-04-23 17:59:29  patrys
+Revision 1.1.2.4  2005-04-23 18:14:22  patrys
+- working version codenamed "hangover"
+
+Revision 1.1.2.3  2005/04/23 17:59:29  patrys
 - more fixes, builds now
 
 Revision 1.1.2.2  2005/04/23 17:20:19  patrys
