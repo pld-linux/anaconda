@@ -16,6 +16,7 @@ BuildRequires:	bzip2-devel
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	elfutils-devel
 BuildRequires:	gettext >= 0.11
+BuildRequires:	glibc-static
 BuildRequires:	gtk+2-devel
 BuildRequires:	intltool >= 0.31.2-3
 BuildRequires:	kudzu-devel >= 1.1.52
@@ -30,6 +31,7 @@ BuildRequires:	python-urlgrabber
 BuildRequires:	rhpl
 BuildRequires:	rpm-devel
 BuildRequires:	zlib-devel
+BuildRequires:	zlib-static
 Requires:	anaconda-help
 Requires:	booty
 Requires:	kudzu
@@ -97,7 +99,10 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log: anaconda.spec,v $
-Revision 1.1.2.1  2005-04-23 16:49:50  patrys
+Revision 1.1.2.2  2005-04-23 17:20:19  patrys
+- add static requirements for glibc and zlib
+
+Revision 1.1.2.1  2005/04/23 16:49:50  patrys
 - Initial PLD release
 - missing deps
 - something wrong with glibc dependency (ld is unable to find -lresolv)
