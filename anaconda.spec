@@ -19,16 +19,16 @@ BuildRequires:	gettext >= 0.11
 BuildRequires:	glibc-static
 BuildRequires:	gtk+2-devel
 BuildRequires:	intltool >= 0.31.2-3
-BuildRequires:	kudzu-devel >= 1.1.52
+BuildRequires:	kudzu-devel >= 1.1
 BuildRequires:	libselinux-devel >= 1.6
 BuildRequires:	newt-devel
 BuildRequires:	pciutils-devel
 BuildRequires:	pump-devel >= 0.8.20
 BuildRequires:	python-devel
 BuildRequires:	python-libxml2
+BuildRequires:	python-rhpl
 BuildRequires:	python-rpm >= 4.2-0.61
 BuildRequires:	python-urlgrabber
-BuildRequires:	rhpl
 BuildRequires:	rpm-devel
 BuildRequires:	slang-static
 BuildRequires:	zlib-devel
@@ -39,9 +39,9 @@ Requires:	kudzu
 Requires:	parted >= 1.6.3-7
 Requires:	pyparted
 Requires:	python-libxml2
+Requires:	python-rhpl > 0.63
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-urlgrabber
-Requires:	rhpl > 0.63
 Requires:	system-logos
 BuildRoot: %{tmpdir}/%{name}-%{version}
 
@@ -103,7 +103,10 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log: anaconda.spec,v $
-Revision 1.1.2.4  2005-04-23 18:14:22  patrys
+Revision 1.1.2.5  2005-04-23 21:35:57  patrys
+- fixed deps
+
+Revision 1.1.2.4  2005/04/23 18:14:22  patrys
 - working version codenamed "hangover"
 
 Revision 1.1.2.3  2005/04/23 17:59:29  patrys
