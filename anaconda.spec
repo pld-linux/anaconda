@@ -23,6 +23,7 @@ BuildRequires:	kudzu-devel >= 1.1
 BuildRequires:	libselinux-devel >= 1.6
 BuildRequires:	newt-devel
 BuildRequires:	pciutils-devel
+BuildRequires:	popt-static
 BuildRequires:	pump-devel >= 0.8.20
 BuildRequires:	python-devel
 BuildRequires:	python-libxml2
@@ -37,8 +38,8 @@ Requires:	anaconda-help
 Requires:	booty
 Requires:	kudzu
 Requires:	parted >= 1.6.3-7
-Requires:	pyparted
 Requires:	python-libxml2
+Requires:	python-parted
 Requires:	python-rhpl > 0.63
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-urlgrabber
@@ -103,7 +104,10 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log: anaconda.spec,v $
-Revision 1.1.2.5  2005-04-23 21:35:57  patrys
+Revision 1.1.2.6  2005-04-23 22:51:30  patrys
+- fixed deps
+
+Revision 1.1.2.5  2005/04/23 21:35:57  patrys
 - fixed deps
 
 Revision 1.1.2.4  2005/04/23 18:14:22  patrys
