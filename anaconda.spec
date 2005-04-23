@@ -30,6 +30,7 @@ BuildRequires:	python-rpm >= 4.2-0.61
 BuildRequires:	python-urlgrabber
 BuildRequires:	rhpl
 BuildRequires:	rpm-devel
+BuildRequires:	slang-static
 BuildRequires:	zlib-devel
 BuildRequires:	zlib-static
 Requires:	anaconda-help
@@ -66,6 +67,9 @@ sets, but are not meant for use on already installed systems.
 %setup -q
 
 %build
+mv Makefile Makefile.old
+sed 's/$(PYTHON) scripts/python scripts/' Makefile.old > Makefile
+rm Makefile.old
 make depend
 make RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
 
@@ -84,10 +88,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/kickstart-docs.txt
 %doc docs/mediacheck.txt
 %doc docs/anaconda-release-notes.txt
-%attr{755,root,root} /usr/bin/mini-wm
-%attr{755,root,root} /usr/sbin/anaconda
+%attr(755,root,root) /usr/bin/mini-wm
+%attr(755,root,root) /usr/sbin/anaconda
 %dir %{_datadir}/anaconda
-/locale/*/*/*
+%attr(644,root,root) %{_datadir}/locale/*/*/*
 %dir %{_libdir}/anaconda
 
 %files runtime
@@ -99,7 +103,10 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log: anaconda.spec,v $
-Revision 1.1.2.2  2005-04-23 17:20:19  patrys
+Revision 1.1.2.3  2005-04-23 17:59:29  patrys
+- more fixes, builds now
+
+Revision 1.1.2.2  2005/04/23 17:20:19  patrys
 - add static requirements for glibc and zlib
 
 Revision 1.1.2.1  2005/04/23 16:49:50  patrys
