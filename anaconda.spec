@@ -6,6 +6,10 @@ License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
 # Source0-md5:	13169f43223abc68649394b51009c89e
+Source1:	%{name}-mk-images
+Source2:	%{name}-upd-instroot
+Source3:	%{name}-mk-images.i386
+Patch0:		%{name}-pld.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
 BuildRequires:	X11-devel
 BuildRequires:	beecrypt-devel
@@ -21,6 +25,7 @@ BuildRequires:	intltool >= 0.31.2-3
 BuildRequires:	kudzu-devel >= 1.1
 BuildRequires:	libselinux-devel >= 1.6
 BuildRequires:	newt-devel
+BuildRequires:	newt-static
 BuildRequires:	pciutils-devel
 BuildRequires:	popt-static
 BuildRequires:	pump-devel >= 0.8.20
@@ -66,11 +71,15 @@ sets, but are not meant for use on already installed systems.
 %prep
 
 %setup -q
+%patch0 -p1
 
 %build
 mv Makefile Makefile.old
 sed 's/$(PYTHON) scripts/python scripts/' Makefile.old > Makefile
 rm Makefile.old
+cp %{SOURCE1} scripts/mk-images
+cp %{SOURCE2} scripts/upd-instroot
+cp %{SOURCE3} scripts/mk-images.i386
 make depend
 make RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
 
@@ -104,7 +113,11 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log: anaconda.spec,v $
-Revision 1.1.2.7  2005-04-23 23:35:46  patrys
+Revision 1.1.2.8  2005-04-28 22:37:21  patrys
+- no longer requires tzdata
+- more PLD-friendly
+
+Revision 1.1.2.7  2005/04/23 23:35:46  patrys
 - fixed deps
 
 Revision 1.1.2.6  2005/04/23 22:51:30  patrys
