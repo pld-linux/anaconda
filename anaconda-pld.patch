@@ -1,0 +1,12 @@
+diff -r -u anaconda-10.2.0.52-old/scripts/getkeymaps anaconda-10.2.0.52/scripts/getkeymaps
+--- anaconda-10.2.0.52-old/scripts/getkeymaps	2004-05-20 03:00:03.000000000 +0200
++++ anaconda-10.2.0.52/scripts/getkeymaps	2005-04-24 16:34:23.401958968 +0200
+@@ -37,7 +37,7 @@
+ 
+ for map in $MAPS ; do 
+  eval find /lib/kbd/keymaps/$PATTERN -name "$map.map*" | while read n; do
+-    /bin/loadkeys `basename $n .gz` >/dev/null
++    /usr/bin/loadkeys `basename $n .gz` >/dev/null
+     $READMAP $TMPDIR/`basename $n .map.gz`.map
+   done
+ done
