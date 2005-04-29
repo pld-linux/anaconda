@@ -19,7 +19,7 @@ BuildRequires:	bogl-devel >= 0:0.1.9-17
 BuildRequires:	bzip2-devel
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	elfutils-devel
-BuildRequires:	gettext >= 0.11
+BuildRequires:	gettext-devel >= 0.11
 BuildRequires:	glibc-static
 BuildRequires:	gtk+2-devel
 BuildRequires:	intltool >= 0.31.2-3
@@ -86,6 +86,10 @@ systemach.
 %setup -q
 %patch0 -p1
 
+rm -f po/no.po
+mv -f po/{eu_ES,eu}.po
+mv -f po/{sr,sr@Latn}.po
+
 %build
 mv Makefile Makefile.old
 sed 's/$(PYTHON) scripts/python scripts/' Makefile.old > Makefile
@@ -103,12 +107,13 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%find_lang %{name}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc COPYING
 %doc docs/command-line.txt
 %doc docs/install-methods.txt
 %doc docs/kickstart-docs.txt
@@ -117,7 +122,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/mini-wm
 %attr(755,root,root) %{_sbindir}/anaconda
 %{_datadir}/anaconda
-%attr(644,root,root) %{_datadir}/locale/*/*/*
 %{_libdir}/anaconda
 
 %files runtime
@@ -129,7 +133,10 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log: anaconda.spec,v $
-Revision 1.3  2005-04-29 16:22:41  qboosh
+Revision 1.4  2005-04-29 16:38:04  qboosh
+- locales cleanup
+
+Revision 1.3  2005/04/29 16:22:41  qboosh
 - pl, some cleanups
 
 Revision 1.2  2005/04/28 22:45:31  patrys
