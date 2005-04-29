@@ -1,4 +1,5 @@
 Summary:	Graphical system installer
+Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	10.2.0.52
 Release:	0.1
@@ -49,27 +50,39 @@ Requires:	python-rhpl > 0.63
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-urlgrabber
 Requires:	system-logos
-BuildRoot: %{tmpdir}/%{name}-%{version}
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-The anaconda package contains the program which was used to install your 
-system.  These files are of little use on an already installed system.
+The anaconda package contains the program which can be used to install
+system. These files are of little use on an already installed system.
+
+%description -l pl
+Pakiet anaconda zawiera program, którego mo¿na u¿yæ do zainstalowania
+systemu. Pliki te maj± niewiele zastosowañ na ju¿ zainstalowanym
+systemie.
 
 %package runtime
-Summary:	Graphical system installer portions needed only for fresh installs.
+Summary:	Graphical system installer portions needed only for fresh installs
+Summary(pl):	Elementy graficznego instalatora systemu potrzebne tylko przy nowych instalacjach
 Group:		Applications/System
 AutoReqProv:	false
-Requires:	python-libxml2
 Requires:	python
+Requires:	python-libxml2
 Requires:	python-rpm >= 4.2-0.61
 
 %description runtime
-The anaconda-runtime package contains parts of the installation system which 
-are needed for installing new systems.  These files are used to build media 
-sets, but are not meant for use on already installed systems.
+The anaconda-runtime package contains parts of the installation system
+which are needed for installing new systems. These files are used to
+build media sets, but are not meant for use on already installed
+systems.
+
+%description runtime -l pl
+Pakiet anaconda-runtime zawiera elementy instalatora potrzebne tylko
+do instalowania nowych systemów. Pliki te s³u¿± do tworzenia zestawu
+no¶ników, nie s± przewidziane do u¿ywania na ju¿ zainstalowanych
+systemach.
 
 %prep
-
 %setup -q
 %patch0 -p1
 
@@ -80,12 +93,15 @@ rm Makefile.old
 cp %{SOURCE1} scripts/mk-images
 cp %{SOURCE2} scripts/upd-instroot
 cp %{SOURCE3} scripts/mk-images.i386
-make depend
-make RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
+%{__make} depend
+%{__make} \
+	RPM_OPT_FLAGS="%{rpmcflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make DESTDIR=$RPM_BUILD_ROOT install
+
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -113,7 +129,10 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log: anaconda.spec,v $
-Revision 1.2  2005-04-28 22:45:31  patrys
+Revision 1.3  2005-04-29 16:22:41  qboosh
+- pl, some cleanups
+
+Revision 1.2  2005/04/28 22:45:31  patrys
 - moved from DEVEL
 
 Revision 1.1.2.7  2005/04/23 23:35:46  patrys
