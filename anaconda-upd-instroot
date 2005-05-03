@@ -142,10 +142,11 @@ PACKAGES="acl anaconda anaconda-runtime ash attr
 	util-linux
 	xfsdump xfsprogs
 	zlib
-	X11 X11-tools"
+	X11 X11-tools
+	"
 
 if [ $ARCH = i686 -o $ARCH = x86_64 ]; then
-    PACKAGES="$PACKAGES pcmcia-cs kernel-utils"
+    PACKAGES="$PACKAGES pcmcia-cs"
 fi
 
 if [ $ARCH = ia64 ]; then
@@ -172,38 +173,30 @@ fi
 # 
 # Extra stuff we want for rescue mode should go in PACKAGESRESCUE
 #
-PACKAGESGR="anaconda X11-libs libpng X11-fonts-75dpi
-           X11-fonts-75dpi-ISO8859-2 gtk+2 libglade2
-           X11-fonts-75dpi-ISO8859-9  
-           X11-fonts-100dpi fonts-ISO8859-2 fonts-ISO8859-9
-           X11-xfs e2fsprogs coreutils glibc glibc-misc
-           popt specspo util-linux rpm rpm-libs
-           procps bash cpio gpm python-pygtk-libglade
-           X11 Xconfigurator python-pygtk gdk-pixbuf 
-           X11-fonts-KOI8-R X11-fonts-75dpi-KOI8-R pam 
-           reiserfs-utils atk pango freetype python-gnome-canvas 
-           libgnomecanvas libart_lgpl libgcc libacl libattr libstdc++ expat
-           anaconda-images anaconda-help X11-fonts-base
-           ttfonts-ko taipeifonts X11-fonts-75dpi-ISO8859-15 python-rhpl
-           system-config-keyboard Xft fontconfig gtk2-engines gnome-themes
-           ttfonts-ja ttfonts-zh_TW bitmap-fonts-cjk urw-fonts fonts-arabic
-           comps-extras X11-libs convertdb1 fonts-bengali
-           vnc-server libjpeg tcp_wrappers system-config-date
-           xfsprogs xfsdump dmapi attr acl policy policycoreutils
-           selinux-policy-targeted ttfonts-zh_CN redhat-artwork audit-libs
-           bogl-bterm
-           prelink redhat-logos fedora-logos
-           ttfonts-ta ttfonts-bn ttfonts-gu ttfonts-hi ttfonts-pa bogl-devel
-           fonts-japanese fonts-chinese fonts-korean fonts-indic 
-           fonts-gujarati fonts-hindi fonts-punjabi fonts-tamil"
-
+PACKAGESGR="acl anaconda anaconda-help anaconda-images attr audit-libs
+	bash bogl-bterm bogl-devel
+	comps-extras coreutils cpio
+	dmapi
+	e2fsprogs expat
+	fedora-logos fontconfig freetype
+	gdk-pixbuf glibc glibc-misc gnome-themes gpm gtk+2 gtk2-engines
+	libacl libattr libart_lgpl libgcc libglade2 libgnomecanvas libjpeg libpng libstdc++
+	pam policy policycoreutils popt prelink procps python-gnome-canvas python-pygtk python-pygtk-libglade python-rhpl
+	redhat-artwork reiserfsprogs rpm rpm-libs
+	selinux-policy-targeted specspo system-config-keyboard system-config-date
+	tcp_wrappers
+	util-linux
+	vnc-server
+	xfsprogs xfsdump
+	X11 X11-fonts-100dpi X11-fonts-100dpi-ISO8859-15 X11-fonts-100dpi-ISO8859-2 X11-fonts-100dpi-ISO8859-9 X11-fonts-75dpi X11-fonts-75dpi-ISO8859-15 X11-fonts-75dpi-ISO8859-2 X11-fonts-75dpi-ISO8859-9 X11-fonts-base X11-fonts-ISO8859-15 X11-fonts-ISO8859-2 X11-fonts-ISO8859-9 X11-fonts-KOI8-R X11-libs X11-xfs Xconfigurator
+	"
 #
 # stuff ONLY included for rescue mode
 #
 # these packages are combined with the PACKAGES and PACKAGESGR for big stage 2
 #
 PACKAGESRESCUE="bzip2 bzip2-libs dump
-                findutils ftp gzip iputils joe krb5-libs less man
+                findutils ftp gzip iputils joe krb5-libs less man man-config man-pages
                 modutils mtools mt-st mtr net-tools open 
                 openssh openssh-clients pciutils rsh traceroute tar"
 
