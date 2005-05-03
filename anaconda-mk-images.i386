@@ -1,0 +1,230 @@
+SYSLINUX=$IMGPATH/usr/bin/syslinux-nomtools
+
+if [ ! -f $SYSLINUX ]; then
+  echo "Warning: nomtools syslinux doesn't exist"
+  SYSLINUX=$IMGPATH/usr/bin/syslinux
+  if [ ! -f $SYSLINUX ]; then
+    echo "$SYSLINUX doesn't exist"
+    exit 1
+  fi
+fi
+
+prepareBootImage() {
+        dd if=/dev/zero bs=1k count=$BOOTDISKSIZE of=/$MBD_TMPIMAGE 2>/dev/null
+	mkdosfs -r 32 -C $MBD_TMPIMAGE $BOOTDISKSIZE >/dev/null
+	$SYSLINUX $MBD_TMPIMAGE
+	mount -o loop -t msdos $MBD_TMPIMAGE $MBD_BOOTTREE
+
+	prepareBootTree
+}
+
+# prepare a directory with the kernel, initrd, and various message files
+# used to populate a boot image
+prepareBootTree() {
+	(cd $BOOTDISKDIR; find . ! -name "*.msg" -maxdepth 1 ! -type d | cpio --quiet -p $MBD_BOOTTREE)
+	
+	cp $MBD_FSIMAGE $MBD_BOOTTREE/initrd.img
+	cp $KERNELROOT/boot/vmlinuz-* $MBD_BOOTTREE/vmlinuz
+
+	pngtopnm $BOOTDISKDIR/syslinux-splash.png | ppmtolss16 \#000000=0 \#cdcfd5=7 \#c90000=2 \#ffffff=15 \#5b6c93=9 > $BOOTDISKDIR/splash.lss
+	if [ $? != 0 ]; then
+	   echo $0: Failed to create splash.lss
+	   exit 1
+	fi	
+	cp $BOOTDISKDIR/splash.lss $MBD_BOOTTREE/splash.lss
+	rm -f $MBD_BOOTTREE/syslinux-splash.png
+	rm -f $MBD_BOOTTREE/memtest*
+	for file in $BOOTDISKDIR/*.msg; do
+	    filename=`basename $file`
+	    sed -e "s/@VERSION@/$VERSION/g" $file > $MBD_BOOTTREE/$filename
+	done
+    	if [ $? != 0 ]; then
+	   echo $0: Failed to copy messages from $BOOTDISKDIR to $MBD_BOOTTREE.
+	   umount $MBD_BOOTTREE
+	   rm -rf $MBD_BOOTTREE $MBD_TMPIMAGE
+	   exit 1
+	fi
+}
+
+mkdir -p $TOPDESTPATH/images
+cat > $TOPDESTPATH/images/README <<EOF
+This directory contains image files that can be used to create media
+capable of starting the $PRODUCT installation process.
+
+The boot.iso file is an ISO 9660 image of a bootable CD-ROM.  It is useful
+in cases where the CD-ROM installation method is not desired, but the
+CD-ROM's boot speed would be an advantage.
+
+To use this image file, burn the file onto CD-R (or CD-RW) media as you
+normally would.
+
+The diskboot.img file is a VFAT filesystem image that can be written to a
+USB pendrive or other bootable media larger than a floppy.  Note that
+booting via USB is dependent on your BIOS supporting this.  It should
+be written to the device using dd.
+EOF
+
+# LATEUSBMODS go in the second stage.  
+# FIXME: bleah, have to include sd_mod, sr_mod for usb-storage
+USBMODS="usbcore ohci-hcd uhci-hcd hid usb-storage sd_mod sr_mod"
+# usb-storage goes on both so we can reload it.  *sigh*
+LATEUSBMODS="usb-storage"
+IDEMODS="cdrom ide-cd"
+SCSIMODS="cdrom scsi_mod sd_mod sg sr_mod st"
+
+FSMODS="fat msdos vfat ext3 reiserfs jfs xfs"
+LVMMODS="dm-mod dm-zero dm-snapshot dm-mirror"
+RAIDMODS="md raid0 raid1 raid5 raid6"
+SECSTAGE="agpgart $RAIDMODS $LVMMODS $FSMODS $IDEMODS $SCSIMODS $LATEUSBMODS st parport_pc parport"
+
+BTERMMODULES="vga16fb vgastate"
+COMMONMODULES="fat vfat nfs sunrpc lockd floppy cramfs loop edd $USBMODS $BTERMMODULES"
+LOCALMODULES="$COMMONMODULES aic7xxx megaraid_mbox sym53c8xx $IDEMODS $SCSIMODS"
+NETWORKMODULES="$COMMONMODULES 3c59x 
+	       e100 tulip 8139too"
+#	       sis900 e100 hp100 natsemi pcnet32"
+
+PCMCIAMAINMODULES="$COMMONMODULES nfs $IDEMODS $SCSIMODS"
+
+# images we only want on the CD (usually for space reasons)
+ISOLINUXMODULES="usbcore ehci-hcd ieee1394 ohci1394 sbp2"
+
+# XXX hack hack
+PCMCIAMODULES_EXCLUDED="
+	apa1480_cb
+	iflash2+_mtd
+	iflash2_mtd
+	memory_cb
+	memory_cs
+	parport_cs
+	parport_pc
+	parport
+	serial_cs
+	serial_cb
+	sram_mtd
+"
+PCMCIAMODULES_EXCLUDED_SED="sed"
+for m in $PCMCIAMODULES_EXCLUDED
+do
+   PCMCIAMODULES_EXCLUDED_SED="$PCMCIAMODULES_EXCLUDED_SED -e 's/$m//g'"
+done
+BOOTPCMCIAMODULES=`echo $PCMCIAMODULES | eval "$PCMCIAMODULES_EXCLUDED_SED"`
+
+# need to make sure the base modules are included
+BOOTPCMCIAMODULES="$BOOTPCMCIAMODULES yenta_socket i82365 tcic pcmcia_core pcmcia"
+
+makeBootImages() {
+ if [ "$KERNELARCH" = "i386" ]; then
+    echo "Building $KERNELARCH $TOPDESTPATH/images/pxeboot/initrd.img"
+    makeinitrd --initrdto $TOPDESTPATH/images/pxeboot/initrd.img \
+	--pcmcia --nobogl \
+	--initrdsize 4750 \
+	--loaderbin loader \
+	--modules "$COMMONMODULES"
+
+    echo "Building $KERNELARCH bootdisk.img"
+    makebootdisk --kernelto $TOPDESTPATH/images/pxeboot/vmlinuz  \
+	--bootdisksize 1440 \
+	--imagename $BOOTDIR/bootdisk.img \
+	--initrd $TOPDESTPATH/images/pxeboot/initrd.img
+    [ $? = 0 ] || exit 1
+
+    rm -f $TOPDESTPATH/images/pxeboot/initrd.img
+
+  fi
+
+  # FIXME: this is so that we can switch back and forth.  if we want both
+  # on the CD, then more needs to be done, esp for things like isolinux.cfg
+  # Right now, last one wins
+  if [ "$KERNELARCH" = "i686" -o "$KERNELARCH" = "i586" -o "$KERNELARCH" = "athlon" ]; then
+    echo "Building $KERNELARCH initrd-everything.img"
+    makeinitrd --initrdto $TOPDESTPATH/images/pxeboot/initrd-everything.img \
+	--pcmcia \
+	--initrdsize 10000 \
+	--loaderbin loader \
+	--modules "$LOCALMODULES $NETWORKMODULES $PCMCIAMAINMODULES $BOOTPCMCIAMODULES $PCMCIAMODULES $ISOLINUXMODULES =scsi =net"
+    [ $? = 0 ] || exit 1
+
+    if [ -f $IMGPATH/usr/lib/syslinux/isolinux.bin ]; then
+	echo "Building isolinux directory"
+	MBD_BOOTTREE=$TOPDESTPATH/isolinux
+	MBD_FSIMAGE=$TOPDESTPATH/images/pxeboot/initrd-everything.img
+	mkdir $MBD_BOOTTREE 2>/dev/null
+	cp $IMGPATH/usr/lib/syslinux/isolinux.bin $MBD_BOOTTREE/isolinux.bin
+
+	prepareBootTree
+
+	# isolinux needs the config file to be isolinux.cfg
+	mv $MBD_BOOTTREE/syslinux.cfg $MBD_BOOTTREE/isolinux.cfg
+
+	# copy in memtest if present
+	if [ -f $IMGPATH/usr/lib/anaconda-runtime/boot/memtest* ]; then
+           cp $IMGPATH/usr/lib/anaconda-runtime/boot/memtest* $MBD_BOOTTREE/memtest
+           echo -e "label memtest86\n  kernel memtest\n  append -\n" >> $MBD_BOOTTREE/isolinux.cfg
+	fi
+
+    else
+	echo "No isolinux binaries.  Skipping isolinux creation"
+    fi
+
+    # clean up time -- being very explicit about what's linked
+    if [ -f $TOPDESTPATH/isolinux/vmlinuz -a -f $TOPDESTPATH/isolinux/initrd.img ] ;then
+	echo "Cleaning up images"
+	# links for the pxeboot bits
+	rm -f $TOPDESTPATH/images/pxeboot/*
+	ln $TOPDESTPATH/isolinux/vmlinuz $TOPDESTPATH/images/pxeboot/vmlinuz
+	ln $TOPDESTPATH/isolinux/initrd.img $TOPDESTPATH/images/pxeboot/initrd.img
+
+	# links for the autoboot bits
+	if [ -f $TOPDESTPATH/dosutils/loadlin.exe ]; then
+		rm -f $TOPDESTPATH/dosutils/autoboot/*
+		mkdir -p $TOPDESTPATH/dosutils/autoboot/
+		ln $TOPDESTPATH/isolinux/vmlinuz $TOPDESTPATH/dosutils/autoboot/vmlinuz
+		ln $TOPDESTPATH/isolinux/initrd.img $TOPDESTPATH/dosutils/autoboot/initrd.img
+	fi
+    fi
+
+    # now make a boot iso
+    mkdir -p $TOPDESTPATH/images/isopath
+    cp -rl $TOPDESTPATH/isolinux $TOPDESTPATH/images/isopath
+    mkisofs -quiet -o $TOPDESTPATH/images/boot.iso -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -R -J -V "$PRODUCT" -T $TOPDESTPATH/images/isopath
+    rm -rf $TOPDESTPATH/images/isopath
+    
+    # now make a boot pendrive image
+    mkdir -p $TOPDESTPATH/images/fobpath
+    dd if=/dev/zero of=$TOPDESTPATH/images/diskboot.img bs=1M count=8 2>/dev/null
+    mkdosfs $TOPDESTPATH/images/diskboot.img
+    $SYSLINUX $TOPDESTPATH/images/diskboot.img
+    mount -o loop $TOPDESTPATH/images/diskboot.img $TOPDESTPATH/images/fobpath
+    cp -r $TOPDESTPATH/isolinux/* $TOPDESTPATH/images/fobpath/
+    grep -v local $TOPDESTPATH/images/fobpath/isolinux.cfg > $TOPDESTPATH/images/fobpath/syslinux.cfg
+    rm -f $TOPDESTPATH/images/fobpath/isolinux.cfg
+    umount -f $TOPDESTPATH/images/fobpath
+    rmdir $TOPDESTPATH/images/fobpath
+    
+    cat > $TOPDESTPATH/images/pxeboot/README <<EOF
+The files in this directory are useful for booting a machine via PXE.  
+
+The following files are available:
+vmlinuz - the BOOT kernel used for the installer
+initrd.img - an initrd with support for all install methods and
+    drivers supported for installation of $PRODUCT
+EOF
+  fi
+}
+
+makeSecondStage() {
+    echo "Building main moduleball"
+    makemainmodules "=scsi =net $SECSTAGE"
+    [ $? = 0 ] || exit 1
+
+    echo "Building netstg.img"
+    makeinstimage "netstg" "=scsi $SECSTAGE"
+    [ $? = 0 ] || exit 1
+    echo "Building hdstg.img"
+    makeinstimage "hdstg" "=net $SECSTAGE"
+    [ $? = 0 ] || exit 1
+    echo "Building stage2.img"
+    makemainimage "stage2" "cramfs"
+    [ $? = 0 ] || exit 1
+}
