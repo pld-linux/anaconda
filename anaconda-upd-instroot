@@ -125,7 +125,7 @@ mkdir -p $DESTGR
 
 PACKAGES="acl anaconda anaconda-runtime ash attr
 	bash beecrypt bogl bogl-bterm busybox-anaconda bzip2 bzip2-libs
-	device-mapper dmapi dosfstools
+	device-mapper dlm dmapi dosfstools
 	e2fsprogs elfutils-libelf expat
 	fedora-logos
 	glib2 glibc glibc-misc
