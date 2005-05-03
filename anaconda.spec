@@ -10,6 +10,7 @@ Source0:	%{name}-%{version}.tar.bz2
 Source1:	%{name}-mk-images
 Source2:	%{name}-upd-instroot
 Source3:	%{name}-mk-images.i386
+Source4:	%{name}-scrubtree
 Patch0:		%{name}-pld.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
 BuildRequires:	X11-devel
@@ -97,6 +98,7 @@ rm Makefile.old
 cp %{SOURCE1} scripts/mk-images
 cp %{SOURCE2} scripts/upd-instroot
 cp %{SOURCE3} scripts/mk-images.i386
+cp %{SOURCE4} scripts/scrubtree
 %{__make} depend
 %{__make} \
 	RPM_OPT_FLAGS="%{rpmcflags}"
@@ -133,7 +135,10 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log: anaconda.spec,v $
-Revision 1.4  2005-04-29 16:38:04  qboosh
+Revision 1.5  2005-05-03 18:03:18  patrys
+- updated
+
+Revision 1.4  2005/04/29 16:38:04  qboosh
 - locales cleanup
 
 Revision 1.3  2005/04/29 16:22:41  qboosh
