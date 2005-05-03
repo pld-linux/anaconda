@@ -474,7 +474,7 @@ EOF
     chmod 600 $MBD_DIR/etc/ssh/sshd_config
 
     # copy in the binaries
-    cp -f $IMGPATH/login $MBD_DIR/sbin/login
+    cp -f $IMGPATH/bin/login $MBD_DIR/sbin/login
     cp -f $IMGPATH/usr/sbin/sshd $MBD_DIR/sbin/sshd
     cp -f $IMGPATH/usr/sbin/xinetd $MBD_DIR/sbin/xinetd
     cp -f $IMGPATH/usr/sbin/in.telnetd $MBD_DIR/sbin/in.telnetd
