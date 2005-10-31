@@ -17,6 +17,7 @@ BuildRequires:	X11-devel
 BuildRequires:	beecrypt-devel
 BuildRequires:	bogl-bterm >= 0:0.1.9-17
 BuildRequires:	bogl-devel >= 0:0.1.9-17
+BuildRequires:	bogl-static >= 0:0.1.9-17
 BuildRequires:	bzip2-devel
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	elfutils-devel
@@ -38,6 +39,7 @@ BuildRequires:	python-rhpl
 BuildRequires:	python-rpm >= 4.2-0.61
 BuildRequires:	python-urlgrabber
 BuildRequires:	rpm-devel
+BuildRequires:	sed >= 4.0
 BuildRequires:	slang-static
 BuildRequires:	zlib-devel
 BuildRequires:	zlib-static
@@ -91,14 +93,20 @@ rm -f po/no.po
 mv -f po/{eu_ES,eu}.po
 mv -f po/{sr,sr@Latn}.po
 
-%build
-mv Makefile Makefile.old
-sed 's/$(PYTHON) scripts/python scripts/' Makefile.old > Makefile
-rm Makefile.old
+sed -i -e 's/$(PYTHON) scripts/python scripts/' Makefile
 cp %{SOURCE1} scripts/mk-images
 cp %{SOURCE2} scripts/upd-instroot
 cp %{SOURCE3} scripts/mk-images.i386
 cp %{SOURCE4} scripts/scrubtree
+
+%build
+# locale check
+if [ "$(locale -a | grep -c en_US.utf8)" = 0 ]; then
+	echo >&2 "en_US.utf8 locale not available. build will fail!"
+	echo >&2 "Install glibc-localedb-all or compile it!"
+	exit 1
+fi
+
 %{__make} depend
 %{__make} \
 	RPM_OPT_FLAGS="%{rpmcflags}"
@@ -135,7 +143,11 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log: anaconda.spec,v $
-Revision 1.5  2005-05-03 18:03:18  patrys
+Revision 1.6  2005-10-31 19:29:58  glen
+- BR bogl-static
+- utf-8 locale check for build
+
+Revision 1.5  2005/05/03 18:03:18  patrys
 - updated
 
 Revision 1.4  2005/04/29 16:38:04  qboosh
