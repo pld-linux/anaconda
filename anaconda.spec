@@ -51,6 +51,7 @@ Requires:	python-booty
 Requires:	python-libxml2
 Requires:	python-parted
 Requires:	python-rhpl > 0.63
+Requires:	python-rhpxl
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-urlgrabber
 Requires:	system-logos
@@ -144,7 +145,10 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log: anaconda.spec,v $
-Revision 1.7  2005-11-06 15:53:49  patrys
+Revision 1.8  2005-11-06 16:54:15  patrys
+- added R: python-rhpxl
+
+Revision 1.7  2005/11/06 15:53:49  patrys
 - up to 10.89.6
 
 Revision 1.6  2005/10/31 19:29:58  glen
