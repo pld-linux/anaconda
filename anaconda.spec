@@ -1,12 +1,12 @@
 Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
-Version:	10.2.0.52
+Version:	10.89.6
 Release:	0.1
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
-# Source0-md5:	13169f43223abc68649394b51009c89e
+# Source0-md5:	a4fad16ee61ffb268e0bfd6dc76ade12
 Source1:	%{name}-mk-images
 Source2:	%{name}-upd-instroot
 Source3:	%{name}-mk-images.i386
@@ -22,6 +22,7 @@ BuildRequires:	bzip2-devel
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	elfutils-devel
 BuildRequires:	gettext-devel >= 0.11
+BuildRequires:	glibc-localedb-all
 BuildRequires:	glibc-static
 BuildRequires:	gtk+2-devel
 BuildRequires:	intltool >= 0.31.2-3
@@ -143,7 +144,10 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log: anaconda.spec,v $
-Revision 1.6  2005-10-31 19:29:58  glen
+Revision 1.7  2005-11-06 15:53:49  patrys
+- up to 10.89.6
+
+Revision 1.6  2005/10/31 19:29:58  glen
 - BR bogl-static
 - utf-8 locale check for build
 
