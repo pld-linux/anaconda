@@ -40,6 +40,7 @@ BuildRequires:	python-rhpl
 BuildRequires:	python-rpm >= 4.2-0.61
 BuildRequires:	python-urlgrabber
 BuildRequires:	rpm-devel
+BuildRequires:	rpm-pythonprov
 BuildRequires:	sed >= 4.0
 BuildRequires:	slang-static
 BuildRequires:	zlib-devel
@@ -145,7 +146,10 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log: anaconda.spec,v $
-Revision 1.8  2005-11-06 16:54:15  patrys
+Revision 1.9  2005-11-19 15:07:27  spider
+- missing br
+
+Revision 1.8  2005/11/06 16:54:15  patrys
 - added R: python-rhpxl
 
 Revision 1.7  2005/11/06 15:53:49  patrys
