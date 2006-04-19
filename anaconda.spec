@@ -138,58 +138,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/anaconda
 
 %files runtime
-%defattr(-,root,root,755)
+%defattr(644,root,root,755)
 %{_libdir}/anaconda-runtime
-
-%changelog
-* %{date} PLD Team <feedback@pld-linux.org>
-All persons listed below can be reached at <cvs_login>@pld-linux.org
-
-$Log: anaconda.spec,v $
-Revision 1.9  2005-11-19 15:07:27  spider
-- missing br
-
-Revision 1.8  2005/11/06 16:54:15  patrys
-- added R: python-rhpxl
-
-Revision 1.7  2005/11/06 15:53:49  patrys
-- up to 10.89.6
-
-Revision 1.6  2005/10/31 19:29:58  glen
-- BR bogl-static
-- utf-8 locale check for build
-
-Revision 1.5  2005/05/03 18:03:18  patrys
-- updated
-
-Revision 1.4  2005/04/29 16:38:04  qboosh
-- locales cleanup
-
-Revision 1.3  2005/04/29 16:22:41  qboosh
-- pl, some cleanups
-
-Revision 1.2  2005/04/28 22:45:31  patrys
-- moved from DEVEL
-
-Revision 1.1.2.7  2005/04/23 23:35:46  patrys
-- fixed deps
-
-Revision 1.1.2.6  2005/04/23 22:51:30  patrys
-- fixed deps
-
-Revision 1.1.2.5  2005/04/23 21:35:57  patrys
-- fixed deps
-
-Revision 1.1.2.4  2005/04/23 18:14:22  patrys
-- working version codenamed "hangover"
-
-Revision 1.1.2.3  2005/04/23 17:59:29  patrys
-- more fixes, builds now
-
-Revision 1.1.2.2  2005/04/23 17:20:19  patrys
-- add static requirements for glibc and zlib
-
-Revision 1.1.2.1  2005/04/23 16:49:50  patrys
-- Initial PLD release
-- missing deps
-- something wrong with glibc dependency (ld is unable to find -lresolv)
