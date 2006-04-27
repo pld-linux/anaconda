@@ -51,7 +51,6 @@ Requires:	parted >= 1.6.3-7
 Requires:	python-booty
 Requires:	python-libxml2
 Requires:	python-parted
-Requires:	python-rhpl > 0.63
 Requires:	python-rhpxl
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-urlgrabber
