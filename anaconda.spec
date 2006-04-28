@@ -13,7 +13,7 @@ Source3:	%{name}-mk-images.i386
 Source4:	%{name}-scrubtree
 Patch0:		%{name}-pld.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
-#BuildRequires:	X11-devel
+BuildRequires:	X11-devel
 BuildRequires:	beecrypt-devel
 BuildRequires:	bogl-bterm >= 0:0.1.9-17
 BuildRequires:	bogl-devel >= 0:0.1.9-17
@@ -33,9 +33,10 @@ BuildRequires:	newt-static
 BuildRequires:	pciutils-devel
 BuildRequires:	popt-static
 BuildRequires:	pump-devel >= 0.8.20
-#BuildRequires:	python-booty
+BuildRequires:	python-booty
 BuildRequires:	python-devel
 BuildRequires:	python-libxml2
+BuildRequires:	python-rhpl
 BuildRequires:	python-rpm >= 4.2-0.61
 BuildRequires:	python-urlgrabber
 BuildRequires:	rpm-devel
