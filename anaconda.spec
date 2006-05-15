@@ -2,7 +2,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	10.89.6
-Release:	0.4
+Release:	0.8
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -72,6 +72,7 @@ Summary:	Graphical system installer portions needed only for fresh installs
 Summary(pl):	Elementy graficznego instalatora systemu potrzebne tylko przy nowych instalacjach
 Group:		Applications/System
 AutoReqProv:	false
+Requires:	gawk
 Requires:	python
 Requires:	python-libxml2
 Requires:	python-rpm >= 4.2-0.61
@@ -97,10 +98,6 @@ mv -f po/{eu_ES,eu}.po
 mv -f po/{sr,sr@Latn}.po
 
 sed -i -e 's/$(PYTHON) scripts/python scripts/' Makefile
-cp %{SOURCE1} scripts/mk-images
-cp %{SOURCE2} scripts/upd-instroot
-cp %{SOURCE3} scripts/mk-images.i386
-cp %{SOURCE4} scripts/scrubtree
 
 %build
 # locale check
@@ -119,6 +116,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+cp %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images
+cp %{SOURCE2} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/upd-instroot
+cp %{SOURCE3} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images.i386
+cp %{SOURCE4} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/scrubtree
 
 %find_lang %{name}
 
