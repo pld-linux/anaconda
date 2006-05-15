@@ -2,7 +2,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	10.89.6
-Release:	0.8
+Release:	0.9
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -72,6 +72,7 @@ Summary:	Graphical system installer portions needed only for fresh installs
 Summary(pl):	Elementy graficznego instalatora systemu potrzebne tylko przy nowych instalacjach
 Group:		Applications/System
 AutoReqProv:	false
+Requires:	X11
 Requires:	gawk
 Requires:	python
 Requires:	python-libxml2
