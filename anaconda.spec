@@ -2,7 +2,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	10.89.6
-Release:	0.1
+Release:	0.4
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -55,7 +55,7 @@ Requires:	python-rhpl > 0.63
 Requires:	python-rhpxl
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-urlgrabber
-Requires:	system-logos
+#Requires:	system-logos
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -139,4 +139,50 @@ rm -rf $RPM_BUILD_ROOT
 
 %files runtime
 %defattr(644,root,root,755)
-%{_libdir}/anaconda-runtime
+%dir %{_libdir}/anaconda-runtime
+%dir %attr(755,root,root) %{_libdir}/anaconda-runtime/boot
+%attr(755,root,root) %{_libdir}/anaconda-runtime/boot/syslinux.cfg
+%{_libdir}/anaconda-runtime/boot/boot.msg
+%{_libdir}/anaconda-runtime/boot/general.msg
+%{_libdir}/anaconda-runtime/boot/options.msg
+%{_libdir}/anaconda-runtime/boot/param.msg
+%{_libdir}/anaconda-runtime/boot/rescue.msg
+%{_libdir}/anaconda-runtime/boot/snake.msg
+%attr(755,root,root) %{_libdir}/anaconda-runtime/buildinstall
+%attr(755,root,root) %{_libdir}/anaconda-runtime/checkisomd5
+%attr(755,root,root) %{_libdir}/anaconda-runtime/filtermoddeps
+%attr(755,root,root) %{_libdir}/anaconda-runtime/fixmtime.py
+%attr(755,root,root) %{_libdir}/anaconda-runtime/genhdlist
+%attr(755,root,root) %{_libdir}/anaconda-runtime/getkeymaps
+%attr(755,root,root) %{_libdir}/anaconda-runtime/implantisomd5
+%attr(755,root,root) %{_libdir}/anaconda-runtime/libunicode-lite.so.1
+%dir %attr(755,root,root) %{_libdir}/anaconda-runtime/loader
+%attr(755,root,root) %{_libdir}/anaconda-runtime/loader/init
+%attr(755,root,root) %{_libdir}/anaconda-runtime/loader/loader
+%{_libdir}/anaconda-runtime/loader/font.bgf.gz
+%{_libdir}/anaconda-runtime/loader/loader.tr
+%{_libdir}/anaconda-runtime/loader/module-info
+%{_libdir}/anaconda-runtime/loader/unicode-linedraw-chars.txt
+%attr(755,root,root) %{_libdir}/anaconda-runtime/makestamp.py
+%attr(755,root,root) %{_libdir}/anaconda-runtime/mapshdr
+%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images
+%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.i386
+%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.ia64
+%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.ppc
+%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.s390
+%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.x86_64
+%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.i386
+%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.x86_64
+%attr(755,root,root) %{_libdir}/anaconda-runtime/moddeps
+%attr(755,root,root) %{_libdir}/anaconda-runtime/modlist
+%attr(755,root,root) %{_libdir}/anaconda-runtime/pkgorder
+%attr(755,root,root) %{_libdir}/anaconda-runtime/pyisomd5sum.so
+%attr(755,root,root) %{_libdir}/anaconda-runtime/pythondeps
+%attr(755,root,root) %{_libdir}/anaconda-runtime/readmap
+%attr(755,root,root) %{_libdir}/anaconda-runtime/scrubtree
+%{_libdir}/anaconda-runtime/screenfont-i386.gz
+%attr(755,root,root) %{_libdir}/anaconda-runtime/splittree.py
+%attr(755,root,root) %{_libdir}/anaconda-runtime/trimmodalias
+%attr(755,root,root) %{_libdir}/anaconda-runtime/trimpciids
+%attr(755,root,root) %{_libdir}/anaconda-runtime/upd-instroot
+%attr(755,root,root) %{_libdir}/anaconda-runtime/yumcache
