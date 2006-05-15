@@ -881,7 +881,7 @@ for p in $DEST $DESTGR; do
 done
 
 # Remove locales unused during the install
-cat $DESTGR/usr/lib/anaconda/lang-table* | awk '
+cat $DESTGR/usr/lib/anaconda/lang-table* | gawk '
 { gsub("-", "", $4);
   print $4;
   print gensub(/\..*$/,"","",$4);
