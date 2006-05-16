@@ -7,12 +7,14 @@
 :%s#rhpxl#python-rhpxl#
 :%s#rpm-python#python-rpm#
 :%s#gtk2-devel#gtk+2-devel#
+:%s#pykickstart#python-kickstart#
+:%s#squashfs-tools#squashfs#
 %endif
 Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.2
+Release:	0.4
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -22,6 +24,7 @@ Source2:	%{name}-upd-instroot
 Source3:	%{name}-mk-images.i386
 Source4:	%{name}-scrubtree
 Patch0:		%{name}-pld.patch
+Patch1:		%{name}-BUS_XEN.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
 BuildRequires:	X11-devel
 BuildRequires:	beecrypt-devel
@@ -47,10 +50,10 @@ BuildRequires:	newt-devel
 BuildRequires:	newt-static
 BuildRequires:	pango-devel
 BuildRequires:	pciutils-devel
-#BuildRequires:	pirut
+BuildRequires:	pirut
 BuildRequires:	popt-static
 BuildRequires:	pump-devel >= 0.8.20
-#BuildRequires:	pykickstart
+BuildRequires:	python-kickstart
 BuildRequires:	python-booty
 BuildRequires:	python-devel
 BuildRequires:	python-libxml2
@@ -68,8 +71,8 @@ Requires:	anaconda-help
 Requires:	device-mapper >= 1.01.05
 Requires:	kudzu > 1.2.0
 Requires:	parted >= 1.6.3-7
-#Requires:	pirut
-#Requires:	pykickstart
+Requires:	pirut
+Requires:	python-kickstart
 Requires:	python-booty
 Requires:	python-libxml2
 Requires:	python-parted
@@ -77,7 +80,7 @@ Requires:	python-rhpl >= 0.170
 Requires:	python-rhpxl
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-urlgrabber
-Requires:	system-logos
+#Requires:	system-logos
 Requires:	yum >= 2.5.1-3
 %ifnarch s390 s390x
 Requires:	python-pyblock >= 0.7-1
@@ -85,7 +88,6 @@ Requires:	python-pyblock >= 0.7-1
 %ifnarch s390 s390x ppc64
 Requires:	python-rhpxl
 %endif
-#Requires:	system-logos
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -110,7 +112,7 @@ Requires:	gawk
 Requires:	python
 Requires:	python-libxml2
 Requires:	python-rpm >= 4.2-0.61
-Requires:	squashfs-tools
+Requires:	squashfs
 Requires:	yum >= 2.4.0
 
 %description runtime
@@ -128,10 +130,10 @@ systemach.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 rm -f po/no.po
 mv -f po/{eu_ES,eu}.po
-mv -f po/{sr,sr@Latn}.po
 
 sed -i -e 's/$(PYTHON) scripts/python scripts/' Makefile
 
