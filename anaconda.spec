@@ -4,12 +4,15 @@
 :%s#pyparted#python-parted#
 :%s#booty#python-booty#
 :%s#rhpl#python-rhpl#
+:%s#rhpxl#python-rhpxl#
+:%s#rpm-python#python-rpm#
+:%s#gtk2-devel#gtk+2-devel#
 %endif
 Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.1
+Release:	0.2
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -42,9 +45,12 @@ BuildRequires:	libsepol-devel
 BuildRequires:	libsepol-static
 BuildRequires:	newt-devel
 BuildRequires:	newt-static
+BuildRequires:	pango-devel
 BuildRequires:	pciutils-devel
+#BuildRequires:	pirut
 BuildRequires:	popt-static
 BuildRequires:	pump-devel >= 0.8.20
+#BuildRequires:	pykickstart
 BuildRequires:	python-booty
 BuildRequires:	python-devel
 BuildRequires:	python-libxml2
@@ -55,18 +61,30 @@ BuildRequires:	rpm-devel
 BuildRequires:	rpm-pythonprov
 BuildRequires:	sed >= 4.0
 BuildRequires:	slang-static
+BuildRequires:	yum
 BuildRequires:	zlib-devel
 BuildRequires:	zlib-static
 Requires:	anaconda-help
+Requires:	device-mapper >= 1.01.05
 Requires:	kudzu > 1.2.0
 Requires:	parted >= 1.6.3-7
+#Requires:	pirut
+#Requires:	pykickstart
 Requires:	python-booty
 Requires:	python-libxml2
 Requires:	python-parted
-Requires:	python-rhpl > 0.170
+Requires:	python-rhpl >= 0.170
 Requires:	python-rhpxl
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-urlgrabber
+Requires:	system-logos
+Requires:	yum >= 2.5.1-3
+%ifnarch s390 s390x
+Requires:	python-pyblock >= 0.7-1
+%endif
+%ifnarch s390 s390x ppc64
+Requires:	python-rhpxl
+%endif
 #Requires:	system-logos
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -84,11 +102,16 @@ Summary:	Graphical system installer portions needed only for fresh installs
 Summary(pl):	Elementy graficznego instalatora systemu potrzebne tylko przy nowych instalacjach
 Group:		Applications/System
 AutoReqProv:	false
+Requires:	%{name} = %{version}-%{release}
+Requires:	/usr/bin/strip
 Requires:	X11
+Requires:	createrepo >= 0.4.3-3.1
 Requires:	gawk
 Requires:	python
 Requires:	python-libxml2
 Requires:	python-rpm >= 4.2-0.61
+Requires:	squashfs-tools
+Requires:	yum >= 2.4.0
 
 %description runtime
 The anaconda-runtime package contains parts of the installation system
