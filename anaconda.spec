@@ -1,12 +1,12 @@
 Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
-Version:	10.89.6
-Release:	0.9
+Version:	11.0.5
+Release:	0.1
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
-# Source0-md5:	a4fad16ee61ffb268e0bfd6dc76ade12
+# Source0-md5:	f814e7d0011dd44c3c3cf12b6ddb5b40
 Source1:	%{name}-mk-images
 Source2:	%{name}-upd-instroot
 Source3:	%{name}-mk-images.i386
@@ -19,6 +19,8 @@ BuildRequires:	bogl-bterm >= 0:0.1.9-17
 BuildRequires:	bogl-devel >= 0:0.1.9-17
 BuildRequires:	bogl-static >= 0:0.1.9-17
 BuildRequires:	bzip2-devel
+BuildRequires:	device-mapper-devel >= 1.01.05
+BuildRequires:	device-mapper-static >= 1.01.05
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	elfutils-devel
 BuildRequires:	gettext-devel >= 0.11
@@ -28,6 +30,9 @@ BuildRequires:	gtk+2-devel
 BuildRequires:	intltool >= 0.31.2-3
 BuildRequires:	kudzu-devel >= 1.1
 BuildRequires:	libselinux-devel >= 1.6
+BuildRequires:	libselinux-static
+BuildRequires:	libsepol-devel
+BuildRequires:	libsepol-static
 BuildRequires:	newt-devel
 BuildRequires:	newt-static
 BuildRequires:	pciutils-devel
@@ -118,10 +123,10 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-cp %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images
-cp %{SOURCE2} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/upd-instroot
-cp %{SOURCE3} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images.i386
-cp %{SOURCE4} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/scrubtree
+#cp %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images
+#cp %{SOURCE2} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/upd-instroot
+#cp %{SOURCE3} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images.i386
+#cp %{SOURCE4} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/scrubtree
 
 %find_lang %{name}
 
@@ -150,19 +155,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/anaconda-runtime/boot/options.msg
 %{_libdir}/anaconda-runtime/boot/param.msg
 %{_libdir}/anaconda-runtime/boot/rescue.msg
-%{_libdir}/anaconda-runtime/boot/snake.msg
 %attr(755,root,root) %{_libdir}/anaconda-runtime/buildinstall
 %attr(755,root,root) %{_libdir}/anaconda-runtime/checkisomd5
 %attr(755,root,root) %{_libdir}/anaconda-runtime/filtermoddeps
 %attr(755,root,root) %{_libdir}/anaconda-runtime/fixmtime.py
-%attr(755,root,root) %{_libdir}/anaconda-runtime/genhdlist
 %attr(755,root,root) %{_libdir}/anaconda-runtime/getkeymaps
 %attr(755,root,root) %{_libdir}/anaconda-runtime/implantisomd5
+%{_libdir}/anaconda-runtime/keymaps-override-i386
 %attr(755,root,root) %{_libdir}/anaconda-runtime/libunicode-lite.so.1
 %dir %attr(755,root,root) %{_libdir}/anaconda-runtime/loader
 %attr(755,root,root) %{_libdir}/anaconda-runtime/loader/init
 %attr(755,root,root) %{_libdir}/anaconda-runtime/loader/loader
-%{_libdir}/anaconda-runtime/loader/font.bgf.gz
 %{_libdir}/anaconda-runtime/loader/loader.tr
 %{_libdir}/anaconda-runtime/loader/module-info
 %{_libdir}/anaconda-runtime/loader/unicode-linedraw-chars.txt
@@ -175,11 +178,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.s390
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.x86_64
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.i386
+%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.ppc
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.x86_64
 %attr(755,root,root) %{_libdir}/anaconda-runtime/moddeps
 %attr(755,root,root) %{_libdir}/anaconda-runtime/modlist
 %attr(755,root,root) %{_libdir}/anaconda-runtime/pkgorder
 %attr(755,root,root) %{_libdir}/anaconda-runtime/pyisomd5sum.so
+%attr(755,root,root) %{_libdir}/anaconda-runtime/pyrc.py
 %attr(755,root,root) %{_libdir}/anaconda-runtime/pythondeps
 %attr(755,root,root) %{_libdir}/anaconda-runtime/readmap
 %attr(755,root,root) %{_libdir}/anaconda-runtime/scrubtree
