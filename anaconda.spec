@@ -1,3 +1,10 @@
+%if 0
+# FC to PLD deps replace rules, extracted from cvs logs
+:%s#libxml2-python#python-libxml2#
+:%s#pyparted#python-parted#
+:%s#booty#python-booty#
+:%s#rhpl#python-rhpl#
+%endif
 Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
@@ -28,7 +35,7 @@ BuildRequires:	glibc-localedb-all
 BuildRequires:	glibc-static
 BuildRequires:	gtk+2-devel
 BuildRequires:	intltool >= 0.31.2-3
-BuildRequires:	kudzu-devel >= 1.1
+BuildRequires:	kudzu-devel >= 1.2.0
 BuildRequires:	libselinux-devel >= 1.6
 BuildRequires:	libselinux-static
 BuildRequires:	libsepol-devel
@@ -51,12 +58,12 @@ BuildRequires:	slang-static
 BuildRequires:	zlib-devel
 BuildRequires:	zlib-static
 Requires:	anaconda-help
-Requires:	kudzu
+Requires:	kudzu > 1.2.0
 Requires:	parted >= 1.6.3-7
 Requires:	python-booty
 Requires:	python-libxml2
 Requires:	python-parted
-Requires:	python-rhpl > 0.63
+Requires:	python-rhpl > 0.170
 Requires:	python-rhpxl
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-urlgrabber
