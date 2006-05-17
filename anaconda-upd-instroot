@@ -113,8 +113,8 @@ PACKAGES="glibc glibc-common setup openssl python newt slang libselinux
 	 libsepol libtermcap zlib ash e2fsprogs util-linux raidtools popt
 	 procps rpm rpm-libs XFree86 Xconfigurator anaconda tzdata
 	 anaconda-runtime kudzu hwdata bzip2 beecrypt mdadm libsemanage
-	 bzip2-libs dosfstools pciutils reiserfs-utils parted sed
-	 busybox-anaconda rpm-python booty hdparm lvm2 beecrypt device-mapper
+	 bzip2-libs dosfstools pciutils reiserfsprogs parted sed
+	 busybox-anaconda rpm-python booty hdparm lvm2 beecrypt device-mapper dlm
 	 rhpl pyxf86config libxml2 libxml2-python glib2 sqlite neon
 	 elfutils-libelf krb5-libs convertdb1 jfsutils
  	 xfsprogs xfsdump dmapi libacl libattr attr acl python-urlgrabber
@@ -124,7 +124,7 @@ PACKAGES="glibc glibc-common setup openssl python newt slang libselinux
 	 db4"
 
 if [ $ARCH = i386 -o $ARCH = x86_64 ]; then
-    PACKAGES="$PACKAGES pcmciautils kernel-utils"
+    PACKAGES="$PACKAGES pcmciautils pcmcia-cs"
 fi
 
 if [ $ARCH = ia64 ]; then
@@ -164,7 +164,7 @@ PACKAGESGR="anaconda XFree86-libs libpng XFree86-75dpi-fonts
            procps bash cpio gpm pygtk2-libglade
            XFree86 Xconfigurator pygtk2 gdk-pixbuf 
            XFree86-KOI8-R XFree86-KOI8-R-75dpi-fonts pam libpixman
-           reiserfs-utils atk pango freetype gnome-python2-canvas cairo
+           reiserfsprogs atk pango freetype gnome-python2-canvas cairo
            libgnomecanvas libart_lgpl libgcc libacl libattr libstdc++ expat
            anaconda-images anaconda-help XFree86-base-fonts
            ttfonts-ko taipeifonts XFree86-ISO8859-15-75dpi-fonts rhpl
@@ -195,7 +195,7 @@ PACKAGESGR="anaconda XFree86-libs libpng XFree86-75dpi-fonts
 # these packages are combined with the PACKAGES and PACKAGESGR for big stage 2
 #
 PACKAGESRESCUE="bzip2 bzip2-libs dump
-                findutils ftp gzip iputils joe krb5-libs less man
+                findutils ftp gzip iputils joe krb5-libs less man man-config man-pages
                 modutils mtools mt-st mtr net-tools open 
                 openssh openssh-clients pciutils rsh traceroute tar rsync"
 
@@ -976,7 +976,7 @@ for p in $DEST $DESTGR; do
 done
 
 # Remove locales unused during the install
-cat $DESTGR/usr/lib/anaconda/lang-table* | awk '
+cat $DESTGR/usr/lib/anaconda/lang-table* | gawk '
 { gsub("-", "", $4);
   print $4;
   print gensub(/\..*$/,"","",$4);
@@ -1201,7 +1201,7 @@ for p in $DEST $DESTGR; do
 	fi    
 
 	# copy bootloader files for i386/x86_64
-	if [ $ARCH = i386 -o $ARCH = x86_64 ]; then
+	if [ $ARCH = i386 -o $ARCH = i686 -o $ARCH = x86_64 ]; then
 	    if [ $p = $DESTGR ]; then
 		mkdir -p $p/usr/lib/anaconda-runtime/boot
 		cp -af $p/boot/memtest* $p/usr/lib/anaconda-runtime/boot
