@@ -1099,8 +1099,6 @@ cp -r $DESTGR/etc/selinux/* $DEST/etc/selinux/
 
 echo "Getting pango modules"
 if [ -n "$NEEDGR" ]; then
-    # sick sick sick hack for pango-querymodules being -32 or -64
-    mv $DESTGR/usr/bin/pango-querymodules* $DESTGR/usr/bin/pango-querymodules
     if [ -x /usr/bin/runroot -a -n "$COMPONENT" ]; then
     	runroot $COMPONENT --onlyone --arch $ARCH "LD_LIBRARY_PATH=/usr/X11R6/$LIBDIR:$LD_LIBRARY_PATH /usr/sbin/chroot $DESTGR /usr/bin/pango-querymodules 2> $DESTGR/etc/pango/pango.modules"
     else
@@ -1114,7 +1112,8 @@ ModuleFiles=/etc/pango/pango.modules
 EOF
 fi
 
-host=`rpm --nodigest --nosignature -qp --qf "%{POSTIN}\n" $PACKAGEDIR/gtk2*.$ARCH.rpm |grep update-gdk-pixbuf |awk {'print $2;'}`
+host=`rpm -E %{_host}`
+
 
 case "$host" in
   *linux) canonhost="$host-gnu"
@@ -1131,7 +1130,6 @@ mkdir -p $DESTGR/etc/gtk-2.0/$HOSTTRIPLET
 
 echo "Getting gtk2 input method modules"
 if [ -n "$NEEDGR" ]; then
-    mv $DESTGR/usr/bin/gtk-query-immodules-2.0* $DESTGR/usr/bin/gtk-query-immodules-2.0
     if [ -x /usr/bin/runroot -a -n "$COMPONENT" ]; then
 	runroot $COMPONENT --onlyone --arch $ARCH "LD_LIBRARY_PATH=/usr/X11R6/$LIBDIR:$LD_LIBRARY_PATH /usr/sbin/chroot $DESTGR /usr/bin/gtk-query-immodules-2.0 2> $DESTGR/etc/gtk-2.0/$HOSTTRIPLET/gtk.immodules"
     else
@@ -1142,7 +1140,6 @@ fi
 
 echo "Getting gtk2 gdk-pixbuf loaders"
 if [ -n "$NEEDGR" ]; then
-    mv $DESTGR/usr/bin/gdk-pixbuf-query-loaders* $DESTGR/usr/bin/gdk-pixbuf-query-loaders
     if [ -x /usr/bin/runroot -a -n "$COMPONENT" ]; then
 	runroot $COMPONENT --onlyone --arch $ARCH "LD_LIBRARY_PATH=/usr/X11R6/$LIBDIR:$LD_LIBRARY_PATH /usr/sbin/chroot $DESTGR /usr/bin/gdk-pixbuf-query-loaders 2> $DESTGR/etc/gtk-2.0/$HOSTTRIPLET/gdk-pixbuf.loaders"
     else
@@ -1155,6 +1152,7 @@ rm -f $KEEPFILE $KEEPFILEGR $KEEPFILERESCUE
 
 for p in $DEST $DESTGR; do
 	echo "Scrubbing trees..." "$p"
+	install -d $p/usr/bin
 	cp $p/usr/lib/anaconda/raidstart-stub $p/usr/bin/raidstart
 	cp $p/usr/lib/anaconda/raidstop-stub $p/usr/bin/raidstop
 	cp $p/usr/lib/anaconda/losetup-stub $p/usr/bin/losetup
