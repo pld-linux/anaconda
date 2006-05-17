@@ -111,17 +111,17 @@ mkdir -p $DESTGR
 
 PACKAGES="glibc glibc-common setup openssl python newt slang libselinux
 	 libsepol libtermcap zlib ash e2fsprogs util-linux raidtools popt
-	 procps rpm rpm-libs XFree86 Xconfigurator anaconda tzdata
+	 procps rpm rpm-lib XFree86 Xconfigurator anaconda tzdata
 	 anaconda-runtime kudzu hwdata bzip2 beecrypt mdadm libsemanage
 	 bzip2-libs dosfstools pciutils reiserfsprogs parted sed
-	 busybox-anaconda rpm-python booty hdparm lvm2 beecrypt device-mapper dlm
-	 rhpl pyxf86config libxml2 libxml2-python glib2 sqlite neon
+	 busybox-anaconda python-rpm python-booty hdparm lvm2 beecrypt device-mapper dlm
+	 python-rhpl pyxf86config libxml2 python-libxml2 glib2 sqlite neon
 	 elfutils-libelf krb5-libs convertdb1 jfsutils
  	 xfsprogs xfsdump dmapi libacl libattr attr acl python-urlgrabber
-         policy policycoreutils pyparted xorg-x11 selinux-policy-targeted
+         policy policycoreutils pyparted X11 X11-tools selinux-policy-targeted
 	 libstdc++ expat libgcc readline ncurses yum python-sqlite
 	 python-elementtree pykickstart e2fsprogs-libs iscsi-initiator-utils
-	 db4"
+	 db4 bash glibc-misc python-libs python-parted python-xf86config"
 
 if [ $ARCH = i386 -o $ARCH = x86_64 ]; then
     PACKAGES="$PACKAGES pcmciautils pcmcia-cs"
