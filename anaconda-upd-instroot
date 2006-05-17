@@ -1084,7 +1084,7 @@ fi
 
 echo "Running mkfontdir..."
 if [ -n "$NEEDGR" ]; then
-    mkfontdir $DESTGR/usr/share/X11/fonts/*
+    /usr/X11R6/bin/mkfontdir $DESTGR/usr/share/fonts/*
 fi
 
 echo "Creating SELinux policy..."
