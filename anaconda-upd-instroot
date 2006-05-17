@@ -428,7 +428,7 @@ usr/$LIBDIR/python?.?/site-packages/*sqlite*
 usr/$LIBDIR/python?.?/site-packages/rhpl
 usr/$LIBDIR/python?.?/site-packages/cElementTree.so
 usr/$LIBDIR/python?.?/site-packages/block
-usr/lib/locale/*
+usr/share/locale/*
 usr/lib/python?.?/site-packages/elementtree/*
 usr/lib/python?.?/site-packages/rpmUtils/*
 usr/lib/python?.?/site-packages/urlgrabber/*
@@ -994,7 +994,7 @@ cat $DESTGR/usr/lib/anaconda/lang-table* | gawk '
   print $2;
 }
 ' | LC_ALL=C sort -u > $DESTGR/locales
-for p in lib share; do (
+for p in share; do (
 cd $DESTGR/usr/$p/locale && {
 ls | grep -v locale.alias | LC_ALL=C sort > $DESTGR/locales.list
 LC_ALL=C comm -13 $DESTGR/locales $DESTGR/locales.list | xargs rm -rf
@@ -1004,18 +1004,18 @@ rm -f $DESTGR/locales $DESTGR/locales.list
 
 # now, create a locale archive and nuke the locale dirs since 
 # that ends up taking less space
-for p in $DEST $DESTGR; do
-    echo "Building locale archive"
-    if [ -x /usr/bin/runroot -a -n "$COMPONENT" ]; then
-    	runroot $COMPONENT --onlyone --arch $ARCH "/usr/sbin/chroot $p /usr/sbin/build-locale-archive"
-    else
-	/usr/sbin/chroot $p /usr/sbin/build-locale-archive
-    fi
-    mv $p/usr/lib/locale/locale-archive $p/usr/lib/locale-archive
-    rm -rf $p/usr/lib/locale/*
-    rm -f $p/usr/sbin/build-locale-archive
-    mv $p/usr/lib/locale-archive $p/usr/lib/locale/locale-archive 
-done
+#for p in $DEST $DESTGR; do
+#    echo "Building locale archive"
+#    if [ -x /usr/bin/runroot -a -n "$COMPONENT" ]; then
+#    	runroot $COMPONENT --onlyone --arch $ARCH "/usr/sbin/chroot $p /usr/sbin/build-locale-archive"
+#    else
+#	/usr/sbin/chroot $p /usr/sbin/build-locale-archive
+#    fi
+#    mv $p/usr/lib/locale/locale-archive $p/usr/lib/locale-archive
+#    rm -rf $p/usr/lib/locale/*
+#    rm -f $p/usr/sbin/build-locale-archive
+#    mv $p/usr/lib/locale-archive $p/usr/lib/locale/locale-archive 
+#done
 
 # Remove unneeded XFree86 modules
 rm -rf $DESTGR/usr/X11R6/$LIBDIR/modules/dri
