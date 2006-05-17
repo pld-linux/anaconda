@@ -25,7 +25,6 @@ if [ ! -d $1 ]; then
 		echo "ARCH must be set" >&2
 		exit 1
 	fi
-	LATEST="latest --arch $ARCH"
 fi
 
 PACKAGEDIR=$1
@@ -45,16 +44,6 @@ NEEDGR=yes
 prunePackageList() {
 	PACKAGEPATH=$1
 	PACKAGES="$2"
-
-	if [ -n "$LATEST" ]; then
-	    $LATEST $PACKAGEPATH $PACKAGES
-	    if [ $? != 0 ]; then
-		$LATEST $PACKAGEPATH $PACKAGES >&2
-		kill -9 $$
-	    fi
-		
-	    return
-	fi
 
 	PATTERN=""
 	PACKAGEFILES=""
@@ -80,7 +69,7 @@ expandPackageSet() {
     [ -d $PKGDEST ] || die "ERROR: directory missing: $PKGDEST"
     for n in $RPMS; do 
 	[ -n "$DEBUG" ] && echo -ne "\rExpanding packages..." $(basename $n)
-	if [ "$(rpm --nosignature --nodigest -qp --qf '%{NAME}' $n)" = "glibc-misc" ] ; then
+	if [ "$(rpm --nosignature --nodigest -qp --qf '%{NAME}' $n)" = "tzdata" ] ; then
 	    TZDATA=$n
 	fi 
 	rpm2cpio $n | (cd $PKGDEST; cpio -E $KEEPFILES --quiet -iumd)
@@ -120,33 +109,22 @@ rm -rf $DEST $DESTGR
 mkdir -p $DEST
 mkdir -p $DESTGR
 
-# glibc-misc for timezone data (was tzdata)
-# libtermcap
+PACKAGES="glibc glibc-common setup openssl python newt slang libselinux
+	 libsepol libtermcap zlib ash e2fsprogs util-linux raidtools popt
+	 procps rpm rpm-libs XFree86 Xconfigurator anaconda tzdata
+	 anaconda-runtime kudzu hwdata bzip2 beecrypt mdadm libsemanage
+	 bzip2-libs dosfstools pciutils reiserfs-utils parted sed
+	 busybox-anaconda rpm-python booty hdparm lvm2 beecrypt device-mapper
+	 rhpl pyxf86config libxml2 libxml2-python glib2 sqlite neon
+	 elfutils-libelf krb5-libs convertdb1 jfsutils
+ 	 xfsprogs xfsdump dmapi libacl libattr attr acl python-urlgrabber
+         policy policycoreutils pyparted xorg-x11 selinux-policy-targeted
+	 libstdc++ expat libgcc readline ncurses yum python-sqlite
+	 python-elementtree pykickstart e2fsprogs-libs iscsi-initiator-utils
+	 db4"
 
-PACKAGES="acl anaconda anaconda-runtime ash attr
-	bash beecrypt bogl bogl-bterm busybox-anaconda bzip2 bzip2-libs
-	device-mapper dlm dmapi dosfstools
-	e2fsprogs elfutils-libelf expat
-	fedora-logos
-	glib2 glibc glibc-misc
-	hdparm hwdata
-	jfsutils
-	kudzu
-	libgcc libselinux libsepol libstdc++ libxml2 lvm2
-	mdadm
-	ncurses neon newt
-	openssl
-	parted pciutils policy policycoreutils popt procps python python-booty python-libs python-libxml2 python-parted python-rhpl python-rpm python-urlgrabber python-xf86config
-	readline reiserfsprogs rpm rpm-lib
-	sed setup slang sqlite
-	util-linux
-	xfsdump xfsprogs
-	zlib
-	X11 X11-tools
-	"
-
-if [ $ARCH = i686 -o $ARCH = x86_64 ]; then
-    PACKAGES="$PACKAGES pcmcia-cs"
+if [ $ARCH = i386 -o $ARCH = x86_64 ]; then
+    PACKAGES="$PACKAGES pcmciautils kernel-utils"
 fi
 
 if [ $ARCH = ia64 ]; then
@@ -161,8 +139,12 @@ if [ $ARCH = s390 -o $ARCH = s390x ]; then
               XFree86-libs strace xorg-x11-xauth xorg-x11-libs"
 fi
 
+if [ $ARCH != s390 -a $ARCH != s390x ]; then
+    PACKAGES="$PACKAGES python-pyblock"
+fi
+
 if [ $ARCH = ppc -o $ARCH = ppc64 ]; then
-    PACKAGES="$PACKAGES kernel-pcmcia-cs pdisk yaboot hfsutils"
+    PACKAGES="$PACKAGES pcmciautils pdisk yaboot hfsutils"
 fi
 
 # xpm is missing
@@ -173,41 +155,63 @@ fi
 # 
 # Extra stuff we want for rescue mode should go in PACKAGESRESCUE
 #
-PACKAGESGR="acl anaconda anaconda-help anaconda-images attr audit-libs
-	bash bogl-bterm bogl-devel
-	comps-extras coreutils cpio
-	dmapi
-	e2fsprogs expat
-	fedora-logos fontconfig freetype
-	gdk-pixbuf glibc glibc-misc gnome-themes gpm gtk+2 gtk2-engines
-	libacl libattr libart_lgpl libgcc libglade2 libgnomecanvas libjpeg libpng libstdc++
-	pam policy policycoreutils popt prelink procps python-gnome-canvas python-pygtk python-pygtk-libglade python-rhpl
-	redhat-artwork reiserfsprogs rpm rpm-libs
-	selinux-policy-targeted specspo system-config-keyboard system-config-date
-	tcp_wrappers
-	util-linux
-	vnc-server
-	xfsprogs xfsdump
-	X11 X11-fonts-100dpi X11-fonts-100dpi-ISO8859-15 X11-fonts-100dpi-ISO8859-2 X11-fonts-100dpi-ISO8859-9 X11-fonts-75dpi X11-fonts-75dpi-ISO8859-15 X11-fonts-75dpi-ISO8859-2 X11-fonts-75dpi-ISO8859-9 X11-fonts-base X11-fonts-ISO8859-15 X11-fonts-ISO8859-2 X11-fonts-ISO8859-9 X11-fonts-KOI8-R X11-libs X11-xfs Xconfigurator
-	"
+PACKAGESGR="anaconda XFree86-libs libpng XFree86-75dpi-fonts
+           XFree86-ISO8859-2-75dpi-fonts gtk2 libglade2
+           XFree86-ISO8859-9-75dpi-fonts  
+           XFree86-100dpi-fonts fonts-ISO8859-2 fonts-ISO8859-9
+           XFree86-xfs e2fsprogs coreutils glibc glibc-common
+           popt specspo util-linux rpm rpm-libs tzdata
+           procps bash cpio gpm pygtk2-libglade
+           XFree86 Xconfigurator pygtk2 gdk-pixbuf 
+           XFree86-KOI8-R XFree86-KOI8-R-75dpi-fonts pam libpixman
+           reiserfs-utils atk pango freetype gnome-python2-canvas cairo
+           libgnomecanvas libart_lgpl libgcc libacl libattr libstdc++ expat
+           anaconda-images anaconda-help XFree86-base-fonts
+           ttfonts-ko taipeifonts XFree86-ISO8859-15-75dpi-fonts rhpl
+           system-config-keyboard Xft fontconfig gtk2-engines gnome-themes
+           gtkhtml2 gnome-python2-gtkhtml2 gail
+           ttfonts-ja ttfonts-zh_TW bitmap-fonts-cjk urw-fonts fonts-arabic
+           comps-extras XFree86-libs-data convertdb1 fonts-bengali
+           vnc-server libjpeg tcp_wrappers system-config-date
+           xfsprogs xfsdump dmapi attr acl policy policycoreutils
+           selinux-policy-targeted ttfonts-zh_CN redhat-artwork audit-libs
+           xorg-x11-libs xorg-x11-ISO8859-2-75dpi-fonts
+           xorg-x11-ISO8859-9-75dpi-fonts xorg-x11-100dpi-fonts
+           xorg-x11-xfs xorg-x11 xorg-x11-KOI8-R xorg-x11-KOI8-R-75dpi-fonts
+           xorg-x11-base-fonts xorg-x11-ISO8859-15-75dpi-fonts
+           fonts-xorg-ISO8859-2-75dpi fonts-xorg-ISO8859-15-75dpi
+           fonts-xorg-ISO8859-9-75dpi fonts-xorg-100dpi
+           fonts-xorg-KOI8-R fonts-xorg-KOI8-R-75dpi fonts-xorg-base
+           xorg-x11-base xorg-x11-ISO8859-15-75dpi system-logos
+           xorg-x11-libs-data xorg-x11-xfs prelink redhat-logos fedora-logos
+           ttfonts-ta ttfonts-bn ttfonts-gu ttfonts-hi ttfonts-pa
+           fonts-japanese fonts-chinese fonts-korean fonts-indic 
+           fonts-gujarati fonts-hindi fonts-punjabi fonts-tamil synaptics
+           firstboot rhpxl pycairo pirut bitstream-vera-fonts"
+
 #
 # stuff ONLY included for rescue mode
 #
 # these packages are combined with the PACKAGES and PACKAGESGR for big stage 2
 #
 PACKAGESRESCUE="bzip2 bzip2-libs dump
-                findutils ftp gzip iputils joe krb5-libs less man man-config man-pages
+                findutils ftp gzip iputils joe krb5-libs less man
                 modutils mtools mt-st mtr net-tools open 
-                openssh openssh-clients pciutils rsh traceroute tar"
+                openssh openssh-clients pciutils rsh traceroute tar rsync"
 
-if [ $ARCH = i386 ]; then
-    PACKAGESRESCUE="$PACKAGESRESCUE"
+if [ $ARCH = i386 -o $ARCH = x86_64 ]; then
+    PACKAGESRESCUE="$PACKAGESRESCUE gpart grub"
 fi
 
 # turn off options we dont want, ie. set package list to something harmless
 if [ -z "$NEEDGR" ]; then
     PACKAGESGR="bash"
     PACKAGESRESCUE="bash"
+fi
+
+# dmraid stuff
+if [ $ARCH != s390 -a $ARCH != s390x ]; then
+    PACKAGESRESCUE="$PACKAGESRESCUE device-mapper dmraid"
 fi
 
 #
@@ -217,7 +221,7 @@ if [ $ARCH = sparc ]; then
     PACKAGESGR="$PACKAGESGR tilo silo"
 fi
 
-if [ $ARCH = i686 -o $ARCH = x86_64 ]; then
+if [ $ARCH = i386 -o $ARCH = x86_64 ]; then
     PACKAGESGR="$PACKAGESGR syslinux memtest86+" 
 fi
 
@@ -232,6 +236,23 @@ fi
 if [ $ARCH = ppc ]; then
     PACKAGESGR="$PACKAGESGR fbset yaboot ppc64-utils"
 fi
+
+# dogtail stuff...
+PACKAGESGR="$PACKAGESGR gail at-spi libbonobo ORBit2"
+
+# dmraid stuff
+if [ $ARCH != s390 -a $ARCH != s390x ]; then
+    PACKAGESGR="$PACKAGESGR python-pyblock"
+fi
+
+# modular xorg...
+XORGLIBS="libICE libSM libX11 libXcursor libXext libXfixes libXft libXi libxkbfile libXmu libXpm libXrandr libXrender libXt libXxf86misc libXaw liblbxutil libXfont libfontenc libXau libXdmcp libXfont libXinerama"
+XORGDRIVERS="xorg-x11-drv-acecad xorg-x11-drv-aiptek xorg-x11-drv-apm xorg-x11-drv-ark xorg-x11-drv-ati xorg-x11-drv-calcomp xorg-x11-drv-chips xorg-x11-drv-cirrus xorg-x11-drv-citron xorg-x11-drv-cyrix xorg-x11-drv-digitaledge xorg-x11-drv-dmc xorg-x11-drv-dummy xorg-x11-drv-dynapro xorg-x11-drv-elo2300 xorg-x11-drv-elographics xorg-x11-drv-evdev xorg-x11-drv-fbdev xorg-x11-drv-fpit xorg-x11-drv-glint xorg-x11-drv-hyperpen xorg-x11-drv-i128 xorg-x11-drv-i740 xorg-x11-drv-i810 xorg-x11-drv-jamstudio xorg-x11-drv-joystick xorg-x11-drv-keyboard xorg-x11-drv-magellan xorg-x11-drv-magictouch xorg-x11-drv-mga xorg-x11-drv-microtouch xorg-x11-drv-mouse xorg-x11-drv-mutouch xorg-x11-drv-neomagic xorg-x11-drv-nsc xorg-x11-drv-nv xorg-x11-drv-palmax xorg-x11-drv-penmount xorg-x11-drv-rendition xorg-x11-drv-s3 xorg-x11-drv-s3virge xorg-x11-drv-savage xorg-x11-drv-siliconmotion xorg-x11-drv-sis xorg-x11-drv-sisusb xorg-x11-drv-spaceorb xorg-x11-drv-summa xorg-x11-drv-tdfx xorg-x11-drv-tek4957 xorg-x11-drv-trident xorg-x11-drv-tseng xorg-x11-drv-v4l xorg-x11-drv-vesa xorg-x11-drv-vga xorg-x11-drv-via xorg-x11-drv-vmware xorg-x11-drv-void xorg-x11-drv-voodoo"
+XORGFONTS="xorg-x11-fonts-75dpi xorg-x11-fonts-base xorg-x11-fonts-cyrillic xorg-x11-fonts-ISO8859-15-75dpi xorg-x11-fonts-ISO8859-1-75dpi xorg-x11-fonts-ISO8859-2-75dpi xorg-x11-fonts-ISO8859-9-75dpi xorg-x11-fonts-misc xorg-x11-fonts-ethiopic"
+XORG="$XORGLIBS $XORGDRIVERS $XORGFONTS xorg-x11-server-Xorg xorg-x11-xauth xorg-x11-font-utils xorg-x11-xkb-utils xorg-x11-xkbdata xorg-x11-server-utils"
+
+PACKAGESGR="$PACKAGESGR $XORG"
+
 
 #
 # KEEPFILE is all files to keep from the packages in PACKAGES
@@ -252,11 +273,16 @@ bin/mkfs*
 bin/sed
 etc/group
 etc/passwd
+etc/iscsid.conf
+etc/pcmcia/*
 etc/protocols
 etc/services
 etc/selinux/targeted/booleans
 etc/selinux/targeted/policy/policy.*
-etc/selinux/targeted/contexts/files/file_contexts
+etc/selinux/targeted/contexts/files/*
+etc/selinux/targeted/contexts/*
+etc/selinux/targeted/*
+usr/share/selinux/targeted/*
 etc/security/selinux/policy.*
 etc/security/selinux/file_contexts
 $LIBDIR/libc[-.]*
@@ -267,9 +293,11 @@ $LIBDIR/ld*.so*
 $LIBDIR/libblkid*
 $LIBDIR/libcom_err*
 $LIBDIR/libcrypt*
+$LIBDIR/libdb-*
 $LIBDIR/libdevmapper*
 $LIBDIR/libdl*
 $LIBDIR/libe2p*
+$LIBDIR/libexpat*
 $LIBDIR/libext2fs*
 $LIBDIR/liblvm-10.so*
 $LIBDIR/libgcc_s*
@@ -278,6 +306,7 @@ $LIBDIR/libnss_dns*
 $LIBDIR/libnss_files*
 $LIBDIR/libresolv*
 $LIBDIR/libselinux*
+$LIBDIR/libsemanage*
 $LIBDIR/libsepol*
 $LIBDIR/libss*
 $LIBDIR/libtermcap*
@@ -316,8 +345,10 @@ sbin/mkreiserfs
 sbin/mkraid
 sbin/mkswap
 sbin/parted
+sbin/pcmcia-socket-startup
 sbin/pdisk
 sbin/probe
+sbin/reiserfstune
 sbin/resize2fs
 sbin/sfdisk
 sbin/tune2fs
@@ -327,7 +358,8 @@ sbin/xfs_repair
 usr/sbin/xfs_db
 usr/sbin/xfs_check
 usr/sbin/xfs_copy
-usr/X11R6/share/Xconfigurator/MonitorsDB
+sbin/iscsid
+sbin/iscsiadm
 usr/bin/python
 usr/bin/python?.?
 usr/bin/hmount
@@ -339,7 +371,6 @@ usr/lib/anaconda-runtime/*
 usr/lib/anaconda/*
 usr/lib/anaconda/installclasses/*
 usr/lib/anaconda/textw/*
-usr/$LIBDIR/bogl/font.bgf.gz
 usr/lib/booty/*
 usr/kerberos/$LIBDIR/libkrb5.so*
 usr/kerberos/$LIBDIR/libkrb5support.so*
@@ -354,7 +385,6 @@ usr/$LIBDIR/libgssapi_krb5.so*
 usr/$LIBDIR/gconv/ISO8859-1.so
 usr/$LIBDIR/gconv/gconv-modules
 usr/$LIBDIR/libbeecrypt*
-usr/$LIBDIR/libexpat*
 usr/$LIBDIR/libglib*
 usr/$LIBDIR/libgmodule*
 usr/$LIBDIR/libgobject*
@@ -378,18 +408,27 @@ usr/$LIBDIR/libslang*
 usr/$LIBDIR/libstdc++.so.6*
 usr/$LIBDIR/libxml2.so*
 usr/$LIBDIR/libz.*
-usr/$LIBDIR/libbogl.so*
 usr/$LIBDIR/libreadline*
 usr/$LIBDIR/python?.?/*
+usr/$LIBDIR/python?.?/email/*
 usr/$LIBDIR/python?.?/site-packages/libxml2*
 usr/$LIBDIR/python?.?/site-packages/*kudzu*
 usr/$LIBDIR/python?.?/site-packages/rpmmodule.so
 usr/$LIBDIR/python?.?/site-packages/partedmodule.so
 usr/$LIBDIR/python?.?/site-packages/ixf86configmodule.so
 usr/$LIBDIR/python?.?/site-packages/xf86config.py
+usr/$LIBDIR/python?.?/site-packages/*sqlite*
 usr/$LIBDIR/python?.?/site-packages/rhpl
-usr/share/locale/*
+usr/$LIBDIR/python?.?/site-packages/cElementTree.so
+usr/$LIBDIR/python?.?/site-packages/block
+usr/lib/locale/*
+usr/lib/python?.?/site-packages/elementtree/*
+usr/lib/python?.?/site-packages/rpmUtils/*
 usr/lib/python?.?/site-packages/urlgrabber/*
+usr/lib/python?.?/site-packages/yum/*
+usr/lib/python?.?/site-packages/repomd/*
+usr/lib/python?.?/site-packages/pirut/*
+usr/lib/python?.?/site-packages/pykickstart/*
 usr/lib/rpm/macros
 usr/lib/rpm/rpmpopt
 usr/lib/rpm/rpmrc
@@ -406,20 +445,22 @@ usr/sbin/mkofboot
 usr/sbin/ofpath
 usr/sbin/ybin
 usr/sbin/load_policy
+usr/sbin/semodule
+usr/sbin/genhomedircon
+usr/sbin/setfiles
 usr/sbin/lvm
 usr/sbin/build-locale-archive
-usr/share/anaconda/locale-list
 usr/share/anaconda/anaconda.conf
+usr/share/selinux/targeted/base.pp
 usr/share/terminfo/b/bterm
 usr/share/terminfo/l/linux
 usr/share/terminfo/v/vt100
 usr/share/terminfo/v/vt100-nav
-usr/share/hwdata/pcitable
 usr/share/hwdata/pci.ids
-usr/share/hwdata/Cards
+usr/share/hwdata/videoaliases
+usr/share/hwdata/videoaliases/*
+usr/share/hwdata/videodrivers
 usr/share/hwdata/MonitorsDB
-usr/share/rhpl/extramodes
-usr/share/rhpl/vesamodes
 EOF
 
 if [ $ARCH = s390 -o $ARCH = s390x ]; then
@@ -488,11 +529,11 @@ etc/security/pam_env.conf
 lib/security
 $LIBDIR/security/pam_*
 usr/$LIBDIR/libwrap.so*
-usr/X11R6/$LIBDIR/libXmuu.so*
-usr/X11R6/$LIBDIR/libX11.so*
-usr/X11R6/$LIBDIR/libXext.so*
-usr/X11R6/$LIBDIR/libXxf86misc.so*
-usr/X11R6/bin/xauth
+usr/$LIBDIR/libXmuu.so*
+usr/$LIBDIR/libX11.so*
+usr/$LIBDIR/libXext.so*
+usr/$LIBDIR/libXxf86misc.so*
+usr/bin/xauth
 EOF
 fi
       
@@ -552,6 +593,7 @@ sbin/debugfs
 sbin/e2fsck
 sbin/e2label
 sbin/reiserfsck
+sbin/reiserfstune
 sbin/fsck
 sbin/fsck.ext2
 sbin/fsck.ext3
@@ -560,39 +602,44 @@ sbin/fsck.reiserfs
 sbin/parted
 sbin/silo
 sbin/tune2fs
-usr/X11R6/bin/XFree86
-usr/X11R6/bin/Xorg
-usr/X11R6/bin/setxkbmap
-usr/X11R6/bin/xsetroot
-usr/X11R6/lib/X11/XKeysymDB
-usr/X11R6/lib/X11/fonts/misc/6x13*
-usr/X11R6/lib/X11/fonts/misc/fonts*
-usr/X11R6/lib/X11/fonts/misc/cursor*
-usr/X11R6/lib/X11/fonts/misc/olcursor*
-usr/X11R6/lib/X11/fonts/Type1/l047013t*
-usr/X11R6/lib/X11/fonts/Type1/*
-usr/X11R6/lib/X11/locale/*
-usr/X11R6/lib/X11/rgb*
-usr/X11R6/lib/X11/xkb/*
-usr/X11R6/lib/X11/xserver/SecurityPolicy
-usr/X11R6/$LIBDIR/libICE*
-usr/X11R6/$LIBDIR/libSM*
-usr/X11R6/$LIBDIR/libXaw.so*
-usr/X11R6/$LIBDIR/libX11*
-usr/X11R6/$LIBDIR/libXcursor*
-usr/X11R6/$LIBDIR/libXext*
-usr/X11R6/$LIBDIR/libXfixes*
-usr/X11R6/$LIBDIR/libXft*
-usr/X11R6/$LIBDIR/libXi*
-usr/X11R6/$LIBDIR/libxkbfile*
-usr/X11R6/$LIBDIR/libXmu*
-usr/X11R6/$LIBDIR/libXpm*
-usr/X11R6/$LIBDIR/libXrandr*
-usr/X11R6/$LIBDIR/libXrender*
-usr/X11R6/$LIBDIR/libXt*
-usr/X11R6/$LIBDIR/libXxf86misc*
-usr/X11R6/$LIBDIR/modules/*
-usr/X11R6/share/Xconfigurator/pixmaps/*
+usr/bin/Xorg
+usr/bin/setxkbmap
+usr/bin/xkbcomp
+usr/share/X11/XKeysymDB
+usr/share/X11/fonts/misc/6x13*
+usr/share/X11/fonts/misc/fonts*
+usr/share/X11/fonts/misc/cursor*
+usr/share/X11/fonts/misc/olcursor*
+usr/share/X11/fonts/Type1/l047013t*
+usr/share/X11/fonts/Type1/*
+usr/share/X11/fonts/TTF/GohaTibebZemen.ttf
+usr/share/X11/locale/*
+usr/share/X11/rgb*
+usr/share/X11/xkb/*
+usr/$LIBDIR/xserver/SecurityPolicy
+usr/$LIBDIR/libICE*
+usr/$LIBDIR/libSM*
+usr/$LIBDIR/libXaw.so*
+usr/$LIBDIR/libX11*
+usr/$LIBDIR/libXcursor*
+usr/$LIBDIR/libXext*
+usr/$LIBDIR/libXfixes*
+usr/$LIBDIR/libXft*
+usr/$LIBDIR/libXi*
+usr/$LIBDIR/libxkbfile*
+usr/$LIBDIR/libXmu*
+usr/$LIBDIR/libXpm*
+usr/$LIBDIR/libXrandr*
+usr/$LIBDIR/libXrender*
+usr/$LIBDIR/libXt*
+usr/$LIBDIR/libXxf86misc*
+usr/$LIBDIR/liblbxutil*
+usr/$LIBDIR/libXfont*
+usr/$LIBDIR/libfontenc*
+usr/$LIBDIR/libXau*
+usr/$LIBDIR/libXdmcp*
+usr/$LIBDIR/xorg/modules/*
+usr/$LIBDIR/xorg/modules/input/*
 usr/bin/chattr*
 usr/bin/fc-cache
 usr/bin/gtk-query*
@@ -612,13 +659,13 @@ usr/bin/Xvnc
 usr/bin/vncconfig
 usr/bin/vncpasswd
 usr/bin/reduce-font
-usr/bin/bdftobogl
 usr/lib/anaconda/iw
-usr/lib/bogl/font.bdf.gz
 usr/$LIBDIR/gconv/*
+usr/$LIBDIR/gdk-pixbuf/loaders/*xpm*
 usr/$LIBDIR/gdk-pixbuf/loaders/*png*
 usr/$LIBDIR/gdk-pixbuf/loaders/*la*
 usr/$LIBDIR/gtk-2.0/*/engines/libclearlooks.so
+usr/$LIBDIR/gtk-2.0/*/loaders/*xpm*
 usr/$LIBDIR/gtk-2.0/*/loaders/*png*
 usr/$LIBDIR/gtk-2.0/*/loaders/*la*
 usr/$LIBDIR/gtk-2.0/immodules/
@@ -627,9 +674,12 @@ usr/$LIBDIR/libXft*
 usr/$LIBDIR/libart*
 usr/$LIBDIR/libatk*
 usr/$LIBDIR/libaudio*
+usr/$LIBDIR/libpixman*
+usr/$LIBDIR/libcairo*
 usr/$LIBDIR/libesd*
 usr/$LIBDIR/libfontconfig*
 usr/$LIBDIR/libfreetype*
+usr/$LIBDIR/libgailutil*
 usr/$LIBDIR/libgdk*
 usr/$LIBDIR/libglade*
 usr/$LIBDIR/libgnomecanvas*
@@ -643,20 +693,30 @@ usr/$LIBDIR/libpng12.so*
 usr/$LIBDIR/libstdc++.so.*
 usr/$LIBDIR/libwrap*
 usr/$LIBDIR/pango/*
+usr/$LIBDIR/python?.?/site-packages/cairo/*
 usr/$LIBDIR/python?.?/site-packages/gtk*/gtk/*
+usr/$LIBDIR/python?.?/site-packages/gtk*/*
 usr/$LIBDIR/rpm/rpmpopt
 usr/lib/syslinux/*
 usr/lib/yaboot/*
+usr/lib/python?.?/site-packages/rhpxl/*
 usr/sbin/chroot
 usr/sbin/ddcprobe
 usr/sbin/fbset
 usr/sbin/prelink
 usr/sbin/smartctl
 usr/share/anaconda/*
+usr/share/firstboot/firstboot_module_window*
 usr/share/icons/default/*
 usr/share/icons/gnome/cursors/*
 usr/share/icons/gnome/*/stock/*
 usr/share/icons/gnome/index.theme
+usr/share/icons/Bluecurve/cursors/*
+usr/share/icons/Bluecurve/*/stock/*
+usr/share/icons/Bluecurve/index.theme
+usr/share/fonts/bitstream-vera/Vera.ttf
+usr/share/fonts/bitstream-vera/VeraBd.ttf
+usr/share/fonts/bitstream-vera/VeraMono.ttf
 usr/share/fonts/default/Type1/n019003l*
 usr/share/fonts/default/Type1/n019004l*
 usr/share/fonts/default/Type1/n019023l*
@@ -666,9 +726,8 @@ usr/share/fonts/default/Type1/n021004l*
 usr/share/fonts/default/Type1/n021023l*
 usr/share/fonts/default/Type1/n021024l*
 usr/share/fonts/korean/TrueType/dotum.ttf
-usr/share/fonts/japanese/TrueType/kochi-gothic-subst.ttf
-usr/share/fonts/chinese/TrueType/gbsn00lp.ttf
-usr/share/fonts/chinese/TrueType/bsmi00lp.ttf
+usr/share/fonts/japanese/TrueType/sazanami-gothic.ttf
+usr/share/fonts/chinese/TrueType/uming*.ttf
 usr/share/fonts/bengali/MuktiNarrow.ttf
 usr/share/fonts/arabic/KacstFarsi.ttf
 usr/share/fonts/arabic/KacstQura.ttf
@@ -685,7 +744,10 @@ usr/share/locale/*/LC_MESSAGES/system-config-keyboard.mo
 usr/share/locale/*/LC_MESSAGES/gtk20.mo
 usr/share/locale/*/LC_MESSAGES/libc.mo
 usr/share/locale/*/LC_MESSAGES/rhpl.mo
+usr/share/locale/*/LC_MESSAGES/rhpxl.mo
 usr/share/locale/*/LC_MESSAGES/parted.mo
+usr/share/locale/*/LC_MESSAGES/pirut.mo
+usr/share/pirut/*
 usr/share/pixmaps/comps/*.png
 usr/share/pixmaps/gnome-default-dlg.png
 usr/share/pixmaps/gnome-error.png
@@ -694,8 +756,9 @@ usr/share/pixmaps/gnome-question.png
 usr/share/pixmaps/gnome-warning.png
 usr/share/pixmaps/no.xpm
 usr/share/pixmaps/yes.xpm
-usr/share/ppc64-utils/zImage.lds
+usr/share/ppc64-utils/*
 usr/share/system-config-keyboard/*
+usr/share/system-config-date/*
 usr/share/terminfo/l/linux
 usr/share/terminfo/x/xterm
 usr/share/terminfo/v/vt100
@@ -703,6 +766,8 @@ usr/share/terminfo/v/vt100-nav
 usr/share/themes/Clearlooks/gtk-2.0/*
 usr/share/themes/Clearlooks/index.theme
 usr/share/vte/termcap/xterm
+usr/share/xorg/extramodes
+usr/share/xorg/vesamodes
 usr/share/zoneinfo/zone.tab
 EOF
 
@@ -723,21 +788,21 @@ usr/share/zoneinfo/Pacific
 usr/share/zoneinfo/US
 "
 
-# sparc needs 100dpi fonts as well, otherwise
-# things look ugly
-
-if [ $ARCH = sparc ]; then
-    cat >> $KEEPFILEGR <<-EOF
-usr/X11R6/lib/X11/fonts/100dpi/cour*
-usr/X11R6/lib/X11/fonts/100dpi/helv*
-usr/X11R6/lib/X11/fonts/100dpi/tim*
-usr/X11R6/lib/X11/fonts/100dpi/fonts*
-usr/share/fonts/ISO8859-2/100dpi/cour*
-usr/share/fonts/ISO8859-2/100dpi/helv*
-usr/share/fonts/ISO8859-2/100dpi/tim*
-usr/share/fonts/ISO8859-2/100dpi/fonts*
+# more dogtail stuff...
+cat >> $KEEPFILEGR <<EOF
+usr/$LIBDIR/gtk-2.0/modules/libatk-bridge.so
+usr/$LIBDIR/gtk-2.0/modules/libgail.so
+usr/libexec/bonobo-activation-server
+usr/libexec/at-spi-registryd
+usr/$LIBDIR/libORBit*
+usr/$LIBDIR/libbonobo*
+usr/$LIBDIR/libspi*
+usr/$LIBDIR/libcspi*
+usr/$LIBDIR/bonobo/servers/*
+usr/$LIBDIR/libXevie*
 EOF
-fi
+
+
 
 #
 # KEEPFILERESCUE is all files to keep from the packages in PACKAGESRESCUE
@@ -809,6 +874,7 @@ usr/bin/open
 usr/bin/rcp
 usr/bin/rlogin
 usr/bin/rsh
+usr/bin/rsync
 usr/bin/scp
 usr/bin/sftp
 usr/bin/shred
@@ -822,6 +888,27 @@ usr/kerberos/$LIBDIR/libcom_err*
 usr/sbin/mtr
 usr/sbin/traceroute
 EOF
+
+# dmraid stuff
+if [ $ARCH != s390 -a $ARCH != s390x ]; then
+    cat >> $KEEPFILERESCUE <<-EOF        
+sbin/dmraid.static
+sbin/dmsetup.static
+EOF
+fi
+
+if [ $ARCH = i386 -o $ARCH = x86_64 ]; then
+    cat >> $KEEPFILERESCUE <<-EOF
+boot/grub
+sbin/grub
+sbin/grub-install
+sbin/grub-md5-crypt
+sbin/grub-set-default
+usr/bin/gpart
+usr/bin/mbchk
+usr/share/grub/*
+EOF
+fi
 
 echo "Assembling package list..."
 RPMS=$(prunePackageList $PACKAGEDIR "$PACKAGES")
@@ -869,6 +956,14 @@ if [ $ARCH = s390 -o $ARCH = s390x ]; then
 	mv $i/bin/sed $i/bin/sed_save
 	mv $i/bin/sort $i/bin/sort_save
     done
+else
+    for i in $DEST $DESTGR; do
+	# there's never a case with only one of these...
+	if [ -f $i/sbin/dmraid.static ]; then
+	    mv $i/sbin/dmraid.static $i/sbin/dmraid
+	    mv $i/sbin/dmsetup.static $i/sbin/dmsetup
+	fi
+    done
 fi
 
 # change mtimes to 0 (to match what happens on the cramfs)
@@ -881,7 +976,7 @@ for p in $DEST $DESTGR; do
 done
 
 # Remove locales unused during the install
-cat $DESTGR/usr/lib/anaconda/lang-table* | gawk '
+cat $DESTGR/usr/lib/anaconda/lang-table* | awk '
 { gsub("-", "", $4);
   print $4;
   print gensub(/\..*$/,"","",$4);
@@ -889,17 +984,10 @@ cat $DESTGR/usr/lib/anaconda/lang-table* | gawk '
   if (split ($4, a, ".") > 1) {
     print gensub(/\..*$/,tolower("." a[2]),"",$4);
   };
-  gsub("-", "", $7);
-  print $7;
-  print gensub(/\..*$/,"","",$7);
-  print gensub(/_.*$/,"","",$7);
-  if (split ($7, a, ".") > 1) {
-    print gensub(/\..*$/,tolower("." a[2]),"",$7);
-  };
+  print $2;
 }
 ' | LC_ALL=C sort -u > $DESTGR/locales
-# lib not used below
-for p in share; do (
+for p in lib share; do (
 cd $DESTGR/usr/$p/locale && {
 ls | grep -v locale.alias | LC_ALL=C sort > $DESTGR/locales.list
 LC_ALL=C comm -13 $DESTGR/locales $DESTGR/locales.list | xargs rm -rf
@@ -909,18 +997,18 @@ rm -f $DESTGR/locales $DESTGR/locales.list
 
 # now, create a locale archive and nuke the locale dirs since 
 # that ends up taking less space
-#for p in $DEST $DESTGR; do
-#    echo "Building locale archive"
-#    if [ -x /usr/bin/runroot -a -n "$COMPONENT" ]; then
-#    	runroot $COMPONENT --onlyone --arch $ARCH "/usr/sbin/chroot $p /usr/sbin/build-locale-archive"
-#    else
-#	/usr/sbin/chroot $p /usr/sbin/build-locale-archive
-#    fi
-#    mv $p/usr/lib/locale/locale-archive $p/usr/lib/locale-archive
-#    rm -rf $p/usr/lib/locale/*
-#    rm -f $p/usr/sbin/build-locale-archive
-#    mv $p/usr/lib/locale-archive $p/usr/lib/locale/locale-archive 
-#done
+for p in $DEST $DESTGR; do
+    echo "Building locale archive"
+    if [ -x /usr/bin/runroot -a -n "$COMPONENT" ]; then
+    	runroot $COMPONENT --onlyone --arch $ARCH "/usr/sbin/chroot $p /usr/sbin/build-locale-archive"
+    else
+	/usr/sbin/chroot $p /usr/sbin/build-locale-archive
+    fi
+    mv $p/usr/lib/locale/locale-archive $p/usr/lib/locale-archive
+    rm -rf $p/usr/lib/locale/*
+    rm -f $p/usr/sbin/build-locale-archive
+    mv $p/usr/lib/locale-archive $p/usr/lib/locale/locale-archive 
+done
 
 # Remove unneeded XFree86 modules
 rm -rf $DESTGR/usr/X11R6/$LIBDIR/modules/dri
@@ -936,9 +1024,25 @@ rm -f $DESTGR/usr/X11R6/$LIBDIR/modules/extensions/lib{GLcore,glx,pex5}*
 
 # fixup joe links
 ln -fs jpicorc $DESTGR/etc/joe/picorc
+ln -fs jpicorc $DESTGR/etc/joe/jnanorc
+ln -fs jpicorc $DESTGR/etc/joe/nanorc
 ln -fs jmacsrc $DESTGR/etc/joe/emacsrc
 ln -fs jmacs $DESTGR/usr/bin/emacs
 ln -fs jpico $DESTGR/usr/bin/pico
+ln -fs jpico $DESTGR/usr/bin/nano
+
+# create selinux config
+if [ -e $DEST/etc/selinux/targeted ]; then
+  cat > $DEST/etc/selinux/config <<EOF
+SELINUX=permissive
+SELINUXTYPE=targeted
+EOF
+  cp $DEST/etc/selinux/config $DESTGR/etc/selinux/config
+fi
+
+cat > $DEST/etc/shells <<EOF
+/bin/sh
+EOF
 
 echo "Creating nsswitch.conf"
 cat > $DEST/etc/nsswitch.conf <<EOF
@@ -960,6 +1064,7 @@ automount:  files
 aliases:    files
 EOF
 
+cp $DEST/etc/shells $DESTGR/etc/shells
 cp $DEST/etc/nsswitch.conf $DESTGR/etc/nsswitch.conf
 
 # fixup man.config to point into /mnt/sysimage for rescue
@@ -970,21 +1075,20 @@ if [ -n "$NEEDGR" ]; then
     rm -f $DESTGR/etc/man.config-old
 fi
 
-echo "Creating bogl font..."
-OLDLANG=$LANG
-export LANG=en_US.UTF-8
-zcat $DESTGR/usr/lib/bogl/font.bdf.gz > $DESTGR/usr/lib/bogl/font.bdf
-(cat $DESTGR/usr/lib/anaconda-runtime/loader/unicode-linedraw-chars.txt ; for i in $(find $DESTGR/usr/share/locale -name '*.mo'); do msgunfmt $i 2>/dev/null | msgconv -t utf-8 -o - - ; done) | $DESTGR/usr/bin/reduce-font $DESTGR/usr/lib/bogl/font.bdf > $DESTGR/usr/lib/anaconda-runtime/loader/font-reduced.bdf
-$DESTGR/usr/bin/bdftobogl -b $DESTGR/usr/lib/anaconda-runtime/loader/font-reduced.bdf > $DESTGR/usr/lib/anaconda-runtime/loader/font.bgf
-rm -f $DESTGR/usr/lib/anaconda-runtime/loader/font-reduced.bdf $DESTGR/usr/lib/bogl/font.bdf $DESTGR/usr/bin/reduce-font $DESTGR/usr/bin/bdftobogl $DESTGR/usr/lib/bogl/font.bdf.gz
-gzip -9 -f $DESTGR/usr/lib/anaconda-runtime/loader/font.bgf
-export LANG=$OLDLANG
-
 echo "Running mkfontdir..."
 if [ -n "$NEEDGR" ]; then
-    /usr/X11R6/bin/mkfontdir $DESTGR/usr/X11R6/lib/X11/fonts/* 
-    rm -f $DESTGR/usr/X11R6/bin/mkfontdir
+    mkfontdir $DESTGR/usr/share/X11/fonts/*
 fi
+
+echo "Creating SELinux policy..."
+if [ -x $DESTGR/usr/sbin/semodule -a -x /usr/bin/runroot -a -n "$COMPONENT" ]; then
+    runroot $COMPONENT --onlyone --arch $ARCH "/usr/sbin/chroot $DESTGR /usr/sbin/semodule -b /usr/share/selinux/targeted/base.pp -n -s targeted"
+else
+    /usr/sbin/chroot $DESTGR /usr/sbin/semodule -b /usr/share/selinux/targeted/base.pp -n -s targeted
+fi
+rm -rf $DEST/etc/selinux
+mkdir $DEST/etc/selinux
+cp -r $DESTGR/etc/selinux/* $DEST/etc/selinux/
 
 echo "Getting pango modules"
 if [ -n "$NEEDGR" ]; then
@@ -1097,7 +1201,7 @@ for p in $DEST $DESTGR; do
 	fi    
 
 	# copy bootloader files for i386/x86_64
-	if [ $ARCH = i386 -o $ARCH = i686 -o $ARCH = x86_64 ]; then
+	if [ $ARCH = i386 -o $ARCH = x86_64 ]; then
 	    if [ $p = $DESTGR ]; then
 		mkdir -p $p/usr/lib/anaconda-runtime/boot
 		cp -af $p/boot/memtest* $p/usr/lib/anaconda-runtime/boot
@@ -1113,12 +1217,12 @@ for p in $DEST $DESTGR; do
 	done
 
 	# nuke some python stuff we don't need
-        for d in idle distutils email bsddb lib-old hotshot doctest.py pydoc.py site-packages/japanese site-packages/japanese.pth ; do
+        for d in idle distutils bsddb lib-old hotshot doctest.py pydoc.py site-packages/japanese site-packages/japanese.pth ; do
 	    rm -rf $p/$d
 	done
 
 	if [ "$ARCH" != "s390" -a "$ARCH" != "s390x" ]; then
-	   (cd $p/lib && rm -f libnss_files.so.1 libnss_dns.so.1)
+	   (cd $p/lib* && rm -f libnss_files.so.1 libnss_dns.so.1)
 	fi
 
 	if [ -d $DEST/usr/share/zoneinfo ]; then
@@ -1157,6 +1261,7 @@ fi
 echo "Creating debug dir"
 for p in $DEST $DESTGR ; do
     mkdir -p $p/usr/lib/debug
+    mkdir -p $p/usr/src/debug
 done
 
 if [ $ARCH = "alpha" ]; then
@@ -1216,13 +1321,13 @@ else
 fi
 
 # some python stuff we don't need for stage2
-rm -f $DESTGR/usr/$LIBDIR/python?.?/site-packages/distutils/
-rm -f $DESTGR/usr/$LIBDIR/python?.?/site-packages/lib-dynload/japanese
-rm -f $DESTGR/usr/$LIBDIR/python?.?/site-packages/encodings/
-rm -f $DESTGR/usr/$LIBDIR/python?.?/site-packages/compiler/
-rm -f $DESTGR/usr/$LIBDIR/python?.?/site-packages/email/
-rm -f $DESTGR/usr/$LIBDIR/python?.?/site-packages/curses/
-rm -f $DESTGR/usr/$LIBDIR/python?.?/site-packages/pydoc.py
+rm -rf $DESTGR/usr/$LIBDIR/python?.?/site-packages/distutils/
+rm -rf $DESTGR/usr/$LIBDIR/python?.?/site-packages/lib-dynload/japanese
+rm -rf $DESTGR/usr/$LIBDIR/python?.?/site-packages/encodings/
+rm -rf $DESTGR/usr/$LIBDIR/python?.?/site-packages/compiler/
+rm -rf $DESTGR/usr/$LIBDIR/python?.?/site-packages/email/test/
+rm -rf $DESTGR/usr/$LIBDIR/python?.?/site-packages/curses/
+rm -rf $DESTGR/usr/$LIBDIR/python?.?/site-packages/pydoc.py
 
 # clean up tzdata
 rm -rf $TZDIR
@@ -1230,16 +1335,3 @@ rm -rf $TZDIR
 # this is only for the minimal second stage
 echo "Cleaning ramdisk install images..."
 rm -rf $DEST/usr/lib/anaconda-runtime
-
-if [ "$ARCH" != "s390" -a "$ARCH" != "s390x" ]; then
-   if [ $NEEDGR ]; then
-       # Xserver needs a place to put the compiled xkb maps.
-       rm -rf $DESTGR/usr/X11R6/lib/X11/xkb/compiled
-       ln -s /tmp $DESTGR/usr/X11R6/lib/X11/xkb/compiled
-   fi
-
-   if [ -n "$NEEDGR" ]; then
-    cd $ORIGDIR
-    $DESTGR/usr/lib/anaconda-runtime/checkcards.py $DESTGR/usr/share/hwdata/pcitable $DESTGR/usr/share/hwdata/Cards
-   fi
-fi
