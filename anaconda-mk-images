@@ -88,6 +88,11 @@ INITRDMODS="$USBMODS $FIREWIREMODS $IDEMODS $SCSIMODS $FSMODS $LVMMODS $RAIDMODS
 	LIBDIR=lib
     fi
 
+	FONTARCH=${BASEARCH}
+	if [ $FONTARCH = i686 ]; then
+		FONTARCH=i386
+	fi
+
     rm -rf $IMAGEPATH
     rm -rf $FULLMODPATH
     rm -rf $FINALFULLMODPATH
@@ -103,7 +108,7 @@ INITRDMODS="$USBMODS $FIREWIREMODS $IDEMODS $SCSIMODS $FSMODS $LVMMODS $RAIDMODS
     TRIMPCIIDS=$IMGPATH/usr/lib/anaconda-runtime/trimpciids
     GETKEYMAPS=$IMGPATH/usr/lib/anaconda-runtime/getkeymaps
     KEYMAPS=/tmp/keymaps-$BUILDARCH.$$
-    SCREENFONT=$IMGPATH/usr/lib/anaconda-runtime/screenfont-${BASEARCH}.gz
+    SCREENFONT=$IMGPATH/usr/lib/anaconda-runtime/screenfont-${FONTARCH}.gz
     GETMODDEPS=$IMGPATH/usr/lib/anaconda-runtime/moddeps
     MODLIST=$IMGPATH/usr/lib/anaconda-runtime/modlist
     MODINFO=$IMGPATH/usr/lib/anaconda-runtime/loader/module-info
@@ -443,7 +448,7 @@ EOF
     cp -f $IMGPATH/bin/busybox $MBD_DIR/sbin/busybox
     
     # make some symlinks
-    ln -sf bash $MBD_DIR/sbin/sh
+    ln -sf bash $MBD_DIR/bin/sh
     (cd $MBD_DIR/sbin;
     	set $(./busybox 2>&1| awk '/^\t([[:alnum:]_\[]+,)+/' | sed 's/,//g' | sed 's/ +//');
     	while [ -n "$1" ]; do
@@ -758,6 +763,8 @@ doPostImages() {
 if [ ${BUILDARCH} = s390x ]; then
     # FIXME: this is a bad hack for s390, but better than copying for now
     source $TOPDIR/mk-images.s390
+elif [ ${BUILDARCH} = i686 ]; then
+	source $TOPDIR/mk-images.i386
 else
     source $TOPDIR/mk-images.${BUILDARCH}
 fi
@@ -766,8 +773,8 @@ fi
 kerneltags="kernel"
 if [ "$BUILDARCH" = "ppc" -o "$BUILDARCH" = "ppc64" ]; then
     arches="ppc64pseries ppc64 ppc64iseries ppc"
-elif [ "$BUILDARCH" = "i386" ]; then
-    arches="i586"
+elif [ "$BUILDARCH" = "i686" ]; then
+    arches="i386 i586 i686"
     kerneltags="kernel kernel-xenU"
 elif [ "$BUILDARCH" = "x86_64" ]; then
     arches="x86_64"
