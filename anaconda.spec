@@ -28,9 +28,6 @@ Patch1:		%{name}-BUS_XEN.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
 BuildRequires:	X11-devel
 BuildRequires:	beecrypt-devel
-BuildRequires:	bogl-bterm >= 0:0.1.9-17
-BuildRequires:	bogl-devel >= 0:0.1.9-17
-BuildRequires:	bogl-static >= 0:0.1.9-17
 BuildRequires:	bzip2-devel
 BuildRequires:	device-mapper-devel >= 1.01.05
 BuildRequires:	device-mapper-static >= 1.01.05
@@ -53,9 +50,9 @@ BuildRequires:	pciutils-devel
 BuildRequires:	pirut
 BuildRequires:	popt-static
 BuildRequires:	pump-devel >= 0.8.20
-BuildRequires:	python-kickstart
 BuildRequires:	python-booty
 BuildRequires:	python-devel
+BuildRequires:	python-kickstart
 BuildRequires:	python-libxml2
 BuildRequires:	python-rhpl
 BuildRequires:	python-rpm >= 4.2-0.61
@@ -72,8 +69,8 @@ Requires:	device-mapper >= 1.01.05
 Requires:	kudzu > 1.2.0
 Requires:	parted >= 1.6.3-7
 Requires:	pirut
-Requires:	python-kickstart
 Requires:	python-booty
+Requires:	python-kickstart
 Requires:	python-libxml2
 Requires:	python-parted
 Requires:	python-rhpl >= 0.170
@@ -109,6 +106,7 @@ Requires:	/usr/bin/strip
 Requires:	X11
 Requires:	createrepo >= 0.4.3-3.1
 Requires:	gawk
+Requires:	glibc >= 6:2.3.6-5.1
 Requires:	python
 Requires:	python-libxml2
 Requires:	python-rpm >= 4.2-0.61
