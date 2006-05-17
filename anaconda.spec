@@ -14,7 +14,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.4
+Release:	0.12
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -25,6 +25,9 @@ Source3:	%{name}-mk-images.i386
 Source4:	%{name}-scrubtree
 Patch0:		%{name}-pld.patch
 Patch1:		%{name}-BUS_XEN.patch
+Patch2:		%{name}-vserver-proc.patch
+Patch3:		%{name}-pkgorder.patch
+Patch4:		%{name}-errorhandling.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
 BuildRequires:	X11-devel
 BuildRequires:	beecrypt-devel
@@ -104,9 +107,11 @@ AutoReqProv:	false
 Requires:	%{name} = %{version}-%{release}
 Requires:	/usr/bin/strip
 Requires:	X11
-Requires:	createrepo >= 0.4.3-3.1
+Requires:	createrepo >= 0.4.3
 Requires:	gawk
 Requires:	glibc >= 6:2.3.6-5.1
+Requires:	kbd
+Requires:	policycoreutils >= 1.30
 Requires:	python
 Requires:	python-libxml2
 Requires:	python-rpm >= 4.2-0.61
@@ -129,6 +134,9 @@ systemach.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 rm -f po/no.po
 mv -f po/{eu_ES,eu}.po
@@ -153,10 +161,10 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-#cp %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images
-#cp %{SOURCE2} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/upd-instroot
-#cp %{SOURCE3} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images.i386
-#cp %{SOURCE4} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/scrubtree
+cp %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images
+cp %{SOURCE2} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/upd-instroot
+cp %{SOURCE3} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images.i386
+cp %{SOURCE4} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/scrubtree
 
 %find_lang %{name}
 
