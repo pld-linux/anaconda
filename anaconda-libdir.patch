@@ -11,3 +11,46 @@
  ANACONDADATADIR = /usr/share/anaconda
  PYTHON = python2.4
  PYTHONINCLUDE = /usr/include/$(PYTHON)
+--- ./anaconda	2006-03-06 21:45:27.000000000 +0200
++++ /usr/sbin/anaconda	2006-05-18 23:34:39.000000000 +0300
+@@ -275,12 +275,7 @@
+ 
+ # handle updates of just a single file in a python package
+ def setupPythonUpdates():
+-    import glob
+-
+-    # get the python version.  first of /usr/lib/python*, strip off the
+-    # first 15 chars
+-    pyvers = glob.glob("/usr/lib/python*")
+-    pyver = pyvers[0][15:]
++    pyver = sys.version[:3]
+     
+     try:
+ 	os.mkdir("/tmp/updates")
+@@ -289,12 +284,7 @@
+ 
+     for pypkg in ("rhpl", "yum", "rpmUtils", "urlgrabber", "repomd",
+ 		  "pykickstart", "rhpxl"):
+-	# get the libdir.  *sigh*
+-	if os.access("/usr/lib64/python%s/site-packages/%s" %(pyver, pypkg),
+-		     os.X_OK):
+-	    libdir = "lib64"
+-	else:
+-	    libdir = "lib"
++	libdir = sys.lib
+ 	
+ 	if os.access("/mnt/source/RHupdates/%s" %(pypkg,), os.X_OK):
+ 	    try:
+@@ -330,9 +320,9 @@
+     sys.path.append('textw')
+     sys.path.append('iw')
+ else:
+-    sys.path.append('/usr/lib/anaconda')
+-    sys.path.append('/usr/lib/anaconda/textw')
+-    sys.path.append('/usr/lib/anaconda/iw')
++    sys.path.append('/usr/%s/anaconda' % sys.lib)
++    sys.path.append('/usr/%s/anaconda/textw' % sys.lib)
++    sys.path.append('/usr/%s/anaconda/iw' % sys.lib)
+ 
+ if (os.path.exists('booty')):
+     sys.path.append('booty')
