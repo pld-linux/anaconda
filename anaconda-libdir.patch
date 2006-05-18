@@ -11,8 +11,8 @@
  ANACONDADATADIR = /usr/share/anaconda
  PYTHON = python2.4
  PYTHONINCLUDE = /usr/include/$(PYTHON)
---- ./anaconda	2006-03-06 21:45:27.000000000 +0200
-+++ /usr/sbin/anaconda	2006-05-18 23:34:39.000000000 +0300
+--- ./anaconda~	2006-05-18 23:34:39.000000000 +0300
++++ ./anaconda	2006-05-18 23:48:57.000000000 +0300
 @@ -275,12 +275,7 @@
  
  # handle updates of just a single file in a python package
@@ -41,7 +41,7 @@
  	
  	if os.access("/mnt/source/RHupdates/%s" %(pypkg,), os.X_OK):
  	    try:
-@@ -330,9 +320,9 @@
+@@ -330,15 +320,15 @@
      sys.path.append('textw')
      sys.path.append('iw')
  else:
@@ -54,3 +54,10 @@
  
  if (os.path.exists('booty')):
      sys.path.append('booty')
+     sys.path.append('booty/edd')
+ else:
+-    sys.path.append('/usr/lib/booty')
++    sys.path.append('/usr/%s/booty' % sys.lib)
+ 
+ sys.path.append('/usr/share/system-config-keyboard')
+ sys.path.append('/usr/share/system-config-date')
