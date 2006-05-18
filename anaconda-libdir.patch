@@ -1,0 +1,13 @@
+--- anaconda-11.0.5/Makefile.inc~	2005-06-13 22:09:23.000000000 +0300
++++ anaconda-11.0.5/Makefile.inc	2006-05-18 22:34:08.000000000 +0300
+@@ -1,8 +1,8 @@
+ #
+ # define destination locations
+ #
+-PYTHONLIBDIR = /usr/lib/anaconda
+-RUNTIMEDIR = /usr/lib/anaconda-runtime
++PYTHONLIBDIR = /usr/$(LIBDIR)/anaconda
++RUNTIMEDIR = /usr/$(LIBDIR)/anaconda-runtime
+ ANACONDADATADIR = /usr/share/anaconda
+ PYTHON = python2.4
+ PYTHONINCLUDE = /usr/include/$(PYTHON)
