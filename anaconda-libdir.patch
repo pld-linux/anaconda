@@ -11,8 +11,8 @@
  ANACONDADATADIR = /usr/share/anaconda
  PYTHON = python2.4
  PYTHONINCLUDE = /usr/include/$(PYTHON)
---- ./anaconda~	2006-05-18 23:34:39.000000000 +0300
-+++ ./anaconda	2006-05-18 23:48:57.000000000 +0300
+--- ./anaconda	2006-05-18 23:48:57.000000000 +0300
++++ anaconda-11.0.5/anaconda	2006-05-19 00:34:17.000000000 +0300
 @@ -275,12 +275,7 @@
  
  # handle updates of just a single file in a python package
@@ -61,3 +61,172 @@
  
  sys.path.append('/usr/share/system-config-keyboard')
  sys.path.append('/usr/share/system-config-date')
+@@ -1025,7 +1015,7 @@
+ 	    if shpid == 0:
+ 		for p in ('/mnt/source/RHupdates/pyrc.py', \
+ 			'/tmp/updates/pyrc.py', \
+-			'/usr/lib/anaconda-runtime/pyrc.py'):
++			('/usr/%s/anaconda-runtime/pyrc.py' % sys.lib)):
+ 		    if os.access(p, os.R_OK|os.X_OK):
+ 			os.environ['PYTHONSTARTUP'] = p
+ 			break
+--- anaconda-11.0.5/installclass.py~	2006-05-19 00:01:55.000000000 +0300
++++ anaconda-11.0.5/installclass.py	2006-05-19 00:01:56.000000000 +0300
+@@ -492,7 +492,7 @@
+     elif os.access("/tmp/product/installclasses", os.R_OK):
+         path = "/tmp/product/installclasses"
+     else:
+-	path = "/usr/lib/anaconda/installclasses"
++	path = "/usr/%s/anaconda/installclasses" % sys.lib
+ 
+     # append the location of installclasses to the python path so we
+     # can import them
+--- anaconda-11.0.5/language.py	2006-05-19 00:03:47.000000000 +0300
++++ anaconda-11.0.5/language.py	2006-05-19 00:10:52.000000000 +0300
+@@ -22,6 +22,7 @@
+ from rhpl.simpleconfig import SimpleConfigFile
+ 
+ import logging
++import sys
+ log = logging.getLogger("anaconda")
+ 
+ # Converts a single language into a "language search path". For example,
+@@ -58,7 +59,7 @@
+             self.current = "en_US.UTF-8"
+ 
+         # English name -> native name mapping
+-        search = ('lang-names', '/usr/lib/anaconda/lang-names')
++        search = ('lang-names', ('/usr/%s/anaconda/lang-names' % sys.lib))
+         for path in search:
+             if os.access(path, os.R_OK):
+                 f = open(path, 'r')
+@@ -73,7 +74,7 @@
+         # nick -> (name, short name, font, keyboard, timezone) mapping
+         search = ('lang-table', '/tmp/updates/lang-table',
+                   '/mnt/source/RHupdates/lang-table', '/etc/lang-table',
+-                  '/usr/lib/anaconda/lang-table')
++                  '/usr/%s/anaconda/lang-table' % sys.lib)
+         for path in search:
+             if os.access(path, os.R_OK):
+                 f = open(path, "r")
+--- anaconda-11.0.5/iw/release_notes_viewer_gui.py~	2006-01-25 21:51:18.000000000 +0200
++++ anaconda-11.0.5/iw/release_notes_viewer_gui.py	2006-05-19 00:29:16.000000000 +0300
+@@ -20,7 +20,7 @@
+ 
+ from rhpl.translate import _, N_
+ 
+-sys.path.append('/usr/lib/anaconda')
++sys.path.append('/usr/%s/anaconda' % sys.lib)
+ 
+ from gui import TextViewBrowser, addFrame
+ 
+--- anaconda-11.0.5/scripts/pkgorder~	2006-05-19 00:12:16.000000000 +0300
++++ anaconda-11.0.5/scripts/pkgorder	2006-05-19 00:29:50.000000000 +0300
+@@ -23,7 +23,7 @@
+ handler.setLevel(logging.ERROR)
+ logger.addHandler(handler)
+ 
+-sys.path.append("/usr/lib/anaconda")
++sys.path.append("/usr/%s/anaconda" % sys.lib)
+ 
+ from optparse import OptionParser
+ from repomd.packageSack import PackageSack
+--- anaconda-11.0.5/loader2/loader.c~	2006-03-06 21:45:27.000000000 +0200
++++ anaconda-11.0.5/loader2/loader.c	2006-05-19 00:31:17.000000000 +0300
+@@ -292,6 +292,8 @@
+             setenv("PYTHONSTARTUP", "/tmp/updates/pyrc.py", 1);
+         else if (!access("/usr/lib/anaconda-runtime/pyrc.py", R_OK|X_OK))
+             setenv("PYTHONSTARTUP", "/usr/lib/anaconda-runtime/pyrc.py", 1);
++        else if (!access("/usr/lib64/anaconda-runtime/pyrc.py", R_OK|X_OK))
++            setenv("PYTHONSTARTUP", "/usr/lib64/anaconda-runtime/pyrc.py", 1);
+         setenv("LD_LIBRARY_PATH", LIBPATH, 1);
+         setenv("LANG", "C", 1);
+         
+--- anaconda-11.0.5/gui.py~	2006-02-14 21:23:59.000000000 +0200
++++ anaconda-11.0.5/gui.py	2006-05-19 00:31:53.000000000 +0300
+@@ -1124,7 +1124,7 @@
+ 	    # HACK to make release notes to work in test mode
+ 	    # also HACK to make it work from RHupdates
+ 	    for dir in ("iw/", "/mnt/source/RHupdates/",
+-                        "/usr/lib/anaconda/iw/"):
++                        ("/usr/%s/anaconda/iw/" % sys.lib)):
+ 		path = dir + "release_notes_viewer_gui.py"
+ 		if os.access(path, os.X_OK):
+ 			break
+--- anaconda-11.0.5/command-stubs/loadkeys-stub~	2004-05-12 00:52:00.000000000 +0300
++++ anaconda-11.0.5/command-stubs/loadkeys-stub	2006-05-19 00:32:19.000000000 +0300
+@@ -7,7 +7,7 @@
+ if (os.path.exists('isys')):
+     sys.path.append('isys')
+ 
+-sys.path.append('/usr/lib/anaconda')
++sys.path.append('/usr/%s/anaconda' % sys.lib)
+ 
+ import isys
+ 
+--- anaconda-11.0.5/command-stubs/pump-stub~	2004-01-23 06:01:21.000000000 +0200
++++ anaconda-11.0.5/command-stubs/pump-stub	2006-05-19 00:32:33.000000000 +0300
+@@ -7,7 +7,7 @@
+ if (os.path.exists('isys')):
+     sys.path.append('isys')
+ 
+-sys.path.append('/usr/lib/anaconda')
++sys.path.append('/usr/%s/anaconda' % sys.lib)
+ 
+ import isys
+ from sys import argv
+--- anaconda-11.0.5/command-stubs/list-harddrives-stub~	2002-08-16 09:07:59.000000000 +0300
++++ anaconda-11.0.5/command-stubs/list-harddrives-stub	2006-05-19 00:32:59.000000000 +0300
+@@ -10,7 +10,7 @@
+ if (os.path.exists('isys')):
+     sys.path.append('isys')
+ 
+-sys.path.append('/usr/lib/anaconda')
++sys.path.append('/usr/%s/anaconda' % sys.lib)
+ 
+ import parted
+ import partedUtils
+--- anaconda-11.0.5/command-stubs/raidstart-stub~	2004-07-12 23:37:25.000000000 +0300
++++ anaconda-11.0.5/command-stubs/raidstart-stub	2006-05-19 00:33:13.000000000 +0300
+@@ -12,7 +12,7 @@
+     sys.path.append('gnome-map')
+     sys.path.append('isys')
+ 
+-sys.path.append('/usr/lib/anaconda')
++sys.path.append('/usr/%s/anaconda' % sys.lib)
+ 
+ import fsset
+ import raid
+--- anaconda-11.0.5/command-stubs/losetup-stub~	2001-02-20 21:48:12.000000000 +0200
++++ anaconda-11.0.5/command-stubs/losetup-stub	2006-05-19 00:33:27.000000000 +0300
+@@ -7,7 +7,7 @@
+ if (os.path.exists('isys')):
+     sys.path.append('isys')
+ 
+-sys.path.append('/usr/lib/anaconda')
++sys.path.append('/usr/%s/anaconda' % sys.lib)
+ 
+ import isys
+ from sys import argv
+--- anaconda-11.0.5/command-stubs/mknod-stub~	2004-12-20 23:20:08.000000000 +0200
++++ anaconda-11.0.5/command-stubs/mknod-stub	2006-05-19 00:33:39.000000000 +0300
+@@ -1,7 +1,7 @@
+ #!/usr/bin/python
+ 
+ import sys
+-sys.path.append('/usr/lib/anaconda')
++sys.path.append('/usr/%s/anaconda' % sys.lib)
+ import isys
+ import string
+ import stat
+--- anaconda-11.0.5/command-stubs/raidstop-stub~	2004-07-12 23:37:25.000000000 +0300
++++ anaconda-11.0.5/command-stubs/raidstop-stub	2006-05-19 00:33:50.000000000 +0300
+@@ -12,7 +12,7 @@
+     sys.path.append('gnome-map')
+     sys.path.append('isys')
+ 
+-sys.path.append('/usr/lib/anaconda')
++sys.path.append('/usr/%s/anaconda' % sys.lib)
+ 
+ import fsset
+ import raid
