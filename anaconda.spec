@@ -70,7 +70,6 @@ BuildRequires:	slang-static
 BuildRequires:	yum
 BuildRequires:	zlib-devel
 BuildRequires:	zlib-static
-Requires:	anaconda-help
 Requires:	device-mapper >= 1.01.05
 Requires:	kudzu > 1.2.0
 Requires:	parted >= 1.6.3-7
