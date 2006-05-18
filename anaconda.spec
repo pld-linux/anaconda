@@ -52,7 +52,8 @@ BuildRequires:	pango-devel
 BuildRequires:	pciutils-devel
 BuildRequires:	pirut
 BuildRequires:	popt-static
-BuildRequires:	pump-devel >= 0.8.20
+BuildRequires:	pump-devel >= 0.8.24-1
+BuildRequires:	pump-static >= 0.8.24-1
 BuildRequires:	python-booty
 BuildRequires:	python-devel
 BuildRequires:	python-kickstart
