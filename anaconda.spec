@@ -14,7 +14,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.14
+Release:	0.15
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -62,6 +62,7 @@ BuildRequires:	python-rpm >= 4.2-0.61
 BuildRequires:	python-urlgrabber
 BuildRequires:	rpm-devel
 BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 1.234
 BuildRequires:	sed >= 4.0
 BuildRequires:	slang-static
 BuildRequires:	yum
@@ -168,6 +169,7 @@ cp %{SOURCE3} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images.i386
 cp %{SOURCE4} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/scrubtree
 
 %find_lang %{name}
+%py_postclean %{_libdir}/anaconda
 
 %clean
 rm -rf $RPM_BUILD_ROOT
