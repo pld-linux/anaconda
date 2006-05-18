@@ -14,7 +14,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.15
+Release:	0.16
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -28,6 +28,7 @@ Patch1:		%{name}-BUS_XEN.patch
 Patch2:		%{name}-vserver-proc.patch
 Patch3:		%{name}-pkgorder.patch
 Patch4:		%{name}-errorhandling.patch
+Patch5:		%{name}-libdir.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
 BuildRequires:	X11-devel
 BuildRequires:	beecrypt-devel
@@ -140,6 +141,7 @@ systemach.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 rm -f po/no.po
 mv -f po/{eu_ES,eu}.po
@@ -203,7 +205,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/anaconda-runtime/fixmtime.py
 %attr(755,root,root) %{_libdir}/anaconda-runtime/getkeymaps
 %attr(755,root,root) %{_libdir}/anaconda-runtime/implantisomd5
-%{_libdir}/anaconda-runtime/keymaps-override-i386
+%{_libdir}/anaconda-runtime/keymaps-override-*
 %attr(755,root,root) %{_libdir}/anaconda-runtime/libunicode-lite.so.1
 %dir %attr(755,root,root) %{_libdir}/anaconda-runtime/loader
 %attr(755,root,root) %{_libdir}/anaconda-runtime/loader/init
@@ -230,7 +232,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/anaconda-runtime/pythondeps
 %attr(755,root,root) %{_libdir}/anaconda-runtime/readmap
 %attr(755,root,root) %{_libdir}/anaconda-runtime/scrubtree
-%{_libdir}/anaconda-runtime/screenfont-i386.gz
+%{_libdir}/anaconda-runtime/screenfont-*.gz
 %attr(755,root,root) %{_libdir}/anaconda-runtime/splittree.py
 %attr(755,root,root) %{_libdir}/anaconda-runtime/trimmodalias
 %attr(755,root,root) %{_libdir}/anaconda-runtime/trimpciids
