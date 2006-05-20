@@ -14,7 +14,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.19
+Release:	0.20
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -75,6 +75,7 @@ Requires:	kudzu > 1.2.0
 Requires:	parted >= 1.6.3-7
 Requires:	pirut
 Requires:	python-booty
+Requires:	python-devel-tools
 Requires:	python-kickstart
 Requires:	python-libxml2
 Requires:	python-parted
