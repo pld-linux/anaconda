@@ -1,0 +1,83 @@
+--- anaconda-11.0.5/docs/command-line.txt	2005-10-21 20:49:44.000000000 +0300
++++ anaconda-11.0.5-pldize/docs/command-line.txt	2006-05-24 01:30:47.245988579 +0300
+@@ -124,7 +124,7 @@
+ dhcpclass=<class> Sends a custom DHCP vendor class identifier. ISC's dhcpcd can
+                 inspect this value using "option vendor-class-identifier". 
+ 
+-upgradeany	Don't require an /etc/redhat-release that matches the 
++upgradeany	Don't require an /etc/pld-release that matches the 
+ 		expected syntax to upgrade.
+ 
+ lang=<lang>	Language to use for the installation.  This should be a
+--- anaconda-11.0.5/partedUtils.py	2006-02-06 23:06:46.000000000 +0200
++++ anaconda-11.0.5-pldize/partedUtils.py	2006-05-24 01:30:32.535660096 +0300
+@@ -472,8 +472,8 @@
+     return None
+ 
+ def getReleaseString(mountpoint):
+-    if os.access(mountpoint + "/etc/redhat-release", os.R_OK):
+-        f = open(mountpoint + "/etc/redhat-release", "r")
++    if os.access(mountpoint + "/etc/pld-release", os.R_OK):
++        f = open(mountpoint + "/etc/pld-release", "r")
+         try:
+             lines = f.readlines()
+         except IOError:
+@@ -491,6 +491,7 @@
+         # get the release name and version
+         # assumes that form is something
+         # like "Red Hat Linux release 6.2 (Zoot)"
++		# XXX FIXME parse /etc/pld-release !!!! XXX
+         if relstr.find("release") != -1:
+             try:
+                 idx = relstr.find("release")
+--- anaconda-11.0.5/scripts/pkgorder	2006-05-24 01:31:27.106878694 +0300
++++ anaconda-11.0.5-pldize/scripts/pkgorder	2006-05-24 01:27:40.261813387 +0300
+@@ -100,7 +100,7 @@
+ def createConfig(toppath):
+     yumconfstr = """
+ [main]
+-distroverpkg=redhat-release
++distroverpkg=issue
+ gpgcheck=0
+ reposdir=/dev/null
+ exclude=*debuginfo*
+--- anaconda-11.0.5/scripts/yumcache	2005-10-18 18:54:00.000000000 +0300
++++ anaconda-11.0.5-pldize/scripts/yumcache	2006-05-24 01:27:33.711667136 +0300
+@@ -19,7 +19,7 @@
+ 
+         self.yumconfstr = """
+ [main]
+-distroverpkg=redhat-release
++distroverpkg=issue
+ cachedir=%s
+ gpgcheck=0
+ 
+--- anaconda-11.0.5/yuminstall.py	2006-03-13 18:50:57.000000000 +0200
++++ anaconda-11.0.5-pldize/yuminstall.py	2006-05-24 01:28:45.453269005 +0300
+@@ -213,7 +213,7 @@
+ debuglevel=2
+ logfile=/tmp/yum.log
+ pkgpolicy=newest
+-distroverpkg=redhat-release
++distroverpkg=issue
+ tolerant=1
+ exactarch=1
+ retries=5
+@@ -227,7 +227,7 @@
+ baseurl=%s
+ enabled=1
+ gpgcheck=0
+-gpgkey=%s/RPM-GPG-KEY-fedora
++gpgkey=%s/RPM-GPG-KEY-PLD
+ """ % (self.root, self.methodstr, self.methodstr)
+ 
+     def write(self):
+@@ -938,7 +938,7 @@
+         # Figure out current version for upgrade nag and for determining weird
+         # upgrade cases
+         supportedUpgradeVersion = -1
+-        for pkgtup in self.ayum.rpmdb.whatProvides('redhat-release', None, None):
++        for pkgtup in self.ayum.rpmdb.whatProvides('issue', None, None):
+             n, a, e, v, r = pkgtup
+             if supportedUpgradeVersion <= 0:
+                 val = rpmUtils.miscutils.compareEVR((None, '3', '1'),
