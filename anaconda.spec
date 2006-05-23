@@ -14,7 +14,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.20
+Release:	0.24
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -29,6 +29,7 @@ Patch2:		%{name}-vserver-proc.patch
 Patch3:		%{name}-pkgorder.patch
 Patch4:		%{name}-errorhandling.patch
 Patch5:		%{name}-libdir.patch
+Patch6:		%{name}-pld-release.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
 BuildRequires:	X11-devel
 BuildRequires:	beecrypt-devel
@@ -55,7 +56,7 @@ BuildRequires:	pirut
 BuildRequires:	popt-static
 BuildRequires:	pump-devel >= 0.8.24-1
 BuildRequires:	pump-static >= 0.8.24-1
-BuildRequires:	python-booty
+BuildRequires:	python-booty >= 0.71
 BuildRequires:	python-devel
 BuildRequires:	python-kickstart
 BuildRequires:	python-libxml2
@@ -74,7 +75,7 @@ Requires:	device-mapper >= 1.01.05
 Requires:	kudzu > 1.2.0
 Requires:	parted >= 1.6.3-7
 Requires:	pirut
-Requires:	python-booty
+Requires:	python-booty >= 0.71
 Requires:	python-devel-tools
 Requires:	python-kickstart
 Requires:	python-libxml2
@@ -142,6 +143,7 @@ systemach.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 rm -f po/no.po
 mv -f po/{eu_ES,eu}.po
