@@ -1,0 +1,38 @@
+--- anaconda-11.0.5/iw/timezone_gui.py~	2006-02-16 17:09:07.000000000 +0200
++++ anaconda-11.0.5/iw/timezone_gui.py	2006-05-24 02:51:14.854100882 +0300
+@@ -41,7 +41,7 @@
+         gtk.glade.set_custom_handler(self.custom_widget_handler)
+ 
+         # Set the default now.  We'll fix it for real in getScreen.
+-        self.default = "America/New_York"
++        self.default = "Europe/Tallinn"
+ 
+         self.zonetab = zonetab.ZoneTab()
+ 
+@@ -98,7 +98,7 @@
+             asUTC = 0
+ 
+         if (string.find(self.default, "UTC") != -1):
+-            self.default = "America/New_York"
++            self.default = "Europe/Tallinn"
+ 
+         # Now fix the default we set when we made the timezone map widget.
+         self.tz.setCurrent(self.zonetab.findEntryByTZ(self.default))
+@@ -117,7 +117,7 @@
+     if curlat >= latmin and curlat <= latmax and curlong >= longmin and curlong <= longmax:
+         return True
+     elif user_data.currentEntry == None:
+-        if model.get_value(iter, 1) == "America/New_York":
++        if model.get_value(iter, 1) == "Europe/Tallinn":
+             return True
+         else:
+             return False
+@@ -144,7 +144,7 @@
+                               weight=pango.WEIGHT_BOLD)
+             self.markers[entry.tz] = marker
+ 
+-            if entry.tz == "America/New_York":
++            if entry.tz == "Europe/Tallinn":
+                 #In case the /etc/sysconfig/clock is messed up, use New York as default
+                 self.fallbackEntry = entry
+ 
