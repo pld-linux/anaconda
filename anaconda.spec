@@ -14,7 +14,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.24
+Release:	0.25
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -189,7 +189,19 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/mini-wm
 %attr(755,root,root) %{_sbindir}/anaconda
 %{_datadir}/anaconda
-%{_libdir}/anaconda
+%dir %{_libdir}/anaconda
+%{_libdir}/anaconda/*.py[co]
+%dir %{_libdir}/anaconda/installclasses
+%{_libdir}/anaconda/installclasses/*.py[co]
+%dir %{_libdir}/anaconda/iw
+%{_libdir}/anaconda/iw/*.py[co]
+%dir %{_libdir}/anaconda/textw
+%{_libdir}/anaconda/textw/*.py[co]
+%{_libdir}/anaconda/lang-names
+%{_libdir}/anaconda/lang-table
+%{_libdir}/anaconda/lang-table-kon
+%attr(755,root,root) %{_libdir}/anaconda/*-stub
+%attr(755,root,root) %{_libdir}/anaconda/*.so
 
 %files runtime
 %defattr(644,root,root,755)
