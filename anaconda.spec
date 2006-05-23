@@ -14,7 +14,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.25
+Release:	0.26
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -30,6 +30,7 @@ Patch3:		%{name}-pkgorder.patch
 Patch4:		%{name}-errorhandling.patch
 Patch5:		%{name}-libdir.patch
 Patch6:		%{name}-pld-release.patch
+Patch7:		%{name}-timezone.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
 BuildRequires:	X11-devel
 BuildRequires:	beecrypt-devel
@@ -144,6 +145,7 @@ systemach.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 rm -f po/no.po
 mv -f po/{eu_ES,eu}.po
