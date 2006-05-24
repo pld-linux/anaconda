@@ -1,5 +1,5 @@
---- anaconda-11.0.5/yuminstall.py	2006-05-24 03:11:56.912047364 +0300
-+++ anaconda-11.0.5/yuminstall.py	2006-05-24 18:09:49.619010315 +0300
+--- anaconda-11.0.5/yuminstall.py	2006-05-24 18:09:49.619010315 +0300
++++ anaconda-11.0.5/yuminstall.py	2006-05-25 00:11:54.385696897 +0300
 @@ -697,11 +697,11 @@
              return pkgs[0]
  
@@ -43,3 +43,12 @@
                                ('kernel-xen0', 'xen0'),
                                ('kernel-xenU', 'xenU') ]:
              tag = ktag.rsplit('-', 1)[1]
+@@ -1036,7 +1036,7 @@
+                 version = ( tsmbr.version + '-' + tsmbr.release + tag)
+                 kernelVersions.append((version, nick))
+ 
+-        for tsmbr in self.ayum.tsInfo.matchNaevr(name='kernel'):
++        for tsmbr in self.ayum.tsInfo.matchNaevr(name='kernel-grsecurity'):
+             version = ( tsmbr.version + '-' + tsmbr.release)
+             kernelVersions.append((version, 'up'))
+ 
