@@ -14,7 +14,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.34
+Release:	0.35
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -75,12 +75,14 @@ BuildRequires:	yum
 BuildRequires:	zlib-devel
 BuildRequires:	zlib-static
 Requires:	device-mapper >= 1.01.05
+Requires:	dosfstools
 Requires:	e2fsprogs
 Requires:	glibc-localedb-all
+Requires:	hfsutils
 Requires:	jfsutils
 Requires:	kudzu > 1.2.0
 Requires:	lvm2
-Requires:	parted >= 1.6.3-7
+Requires:	mdadm
 Requires:	pirut
 Requires:	python-booty >= 0.71
 Requires:	python-devel-tools
