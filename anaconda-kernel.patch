@@ -52,3 +52,23 @@
              version = ( tsmbr.version + '-' + tsmbr.release)
              kernelVersions.append((version, 'up'))
  
+--- anaconda-11.0.5/bootloader.py~	2006-01-31 18:34:46.000000000 +0200
++++ anaconda-11.0.5/bootloader.py	2006-05-25 00:14:22.269017091 +0300
+@@ -145,7 +145,7 @@
+         return
+ 
+     plainLabelUsed = 0
+-    defkern = "kernel"
++    defkern = "kernel-grsecurity"
+     for (version, nick) in backend.kernelVersionList():
+ 	if plainLabelUsed:
+             kernelList.append(("%s-%s" %(kernelLabel, nick),
+@@ -156,7 +156,7 @@
+             if nick in ("hypervisor", "guest"): # XXX: *sigh* inconsistent
+                 defkern = "kernel-xen-%s" %(nick,)
+             elif nick != "up":
+-                defkern = "kernel-%s" %(nick,)
++                defkern = "kernel-grsecurity-%s" %(nick,)
+ 	    plainLabelUsed = 1
+ 
+     f = open(instRoot + "/etc/sysconfig/kernel", "w+")
