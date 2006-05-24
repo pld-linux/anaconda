@@ -8,7 +8,7 @@
 -productVersion = "bluesky"
 -productPath = "anaconda"
 -bugUrl = "your distribution provided bug reporting tool."
-+productName = "PLD Linux"
++productName = "PLD Linux Distribution"
 +productVersion = "2.0 (Ac)"
 +productPath = "PLD"
 +bugUrl = "http://bugs.pld-linux.org/"
