@@ -9,8 +9,8 @@
      $READMAP $TMPDIR/`basename $n .map.gz`.map
    done
  done
---- anaconda-11.0.5/fsset.py~	2006-03-13 21:12:36.000000000 +0200
-+++ anaconda-11.0.5/fsset.py	2006-05-24 19:47:33.500294489 +0300
+--- anaconda-11.0.5/fsset.py~	2006-05-24 20:01:14.938740884 +0300
++++ anaconda-11.0.5/fsset.py	2006-05-24 20:01:18.218814554 +0300
 @@ -203,7 +203,7 @@
              w = None
          
@@ -20,3 +20,129 @@
  
          # entirely too much cutting and pasting from ext2FormatFileSystem
          fd = os.open("/dev/tty5", os.O_RDWR | os.O_CREAT | os.O_APPEND)
+@@ -406,7 +406,7 @@
+         os.write(p[1], "y\n")
+         os.close(p[1])
+ 
+-        rc = iutil.execWithRedirect("/usr/sbin/mkreiserfs",
++        rc = iutil.execWithRedirect("/sbin/mkreiserfs",
+                                     ["mkreiserfs", devicePath ],
+                                     stdin = p[0],
+                                     stdout = "/dev/tty5",
+@@ -451,7 +451,7 @@
+         if entry.bytesPerInode < 2048:
+             xfsBytesPerInode = entry.bytesPerInode
+ 
+-        rc = iutil.execWithRedirect("/usr/sbin/mkfs.xfs",
++        rc = iutil.execWithRedirect("/sbin/mkfs.xfs",
+                                     ["mkfs.xfs", "-f", "-l", "internal",
+                                      "-i", "size=" + str(xfsBytesPerInode),
+                                      devicePath ],
+@@ -500,7 +500,7 @@
+         except:
+             self.supported = 0
+ 
+-        if not os.access("/usr/sbin/mkfs.jfs", os.X_OK):
++        if not os.access("/sbin/mkfs.jfs", os.X_OK):
+             self.supported = 0
+             
+         self.name = "jfs"
+@@ -512,7 +512,7 @@
+         devicePath = entry.device.setupDevice(chroot)
+         label = labelFactory.createLabel(entry.mountpoint, self.maxLabelChars,
+                                          kslabel = entry.label)
+-	rc = iutil.execWithRedirect("/usr/sbin/jfs_tune",
++	rc = iutil.execWithRedirect("/sbin/jfs_tune",
+ 	                            ["jfs_tune", "-L", label, devicePath],
+                                     stdout = "/dev/tty5",
+                                     stderr = "/dev/tty5")
+@@ -523,7 +523,7 @@
+     def formatDevice(self, entry, progress, chroot='/'):
+         devicePath = entry.device.setupDevice(chroot)
+ 
+-        rc = iutil.execWithRedirect("/usr/sbin/mkfs.jfs",
++        rc = iutil.execWithRedirect("/sbin/mkfs.jfs",
+                                     ["mkfs.jfs", "-q",
+                                      devicePath ],
+                                     stdout = "/dev/tty5",
+@@ -549,7 +549,7 @@
+         label = labelFactory.createLabel(entry.mountpoint, self.maxLabelChars,
+                                          kslabel = entry.label)
+ 
+-        rc = iutil.execWithRedirect("/usr/sbin/e2label",
++        rc = iutil.execWithRedirect("/sbin/e2label",
+                                     ["e2label", devicePath, label],
+                                     stdout = "/dev/tty5",
+                                     stderr = "/dev/tty5")
+@@ -560,7 +560,7 @@
+     def formatDevice(self, entry, progress, chroot='/'):
+         devicePath = entry.device.setupDevice(chroot)
+         devArgs = self.getDeviceArgs(entry.device)
+-        args = [ "/usr/sbin/mke2fs", devicePath, "-i", str(entry.bytesPerInode) ]
++        args = [ "/sbin/mke2fs", devicePath, "-i", str(entry.bytesPerInode) ]
+ 
+         args.extend(devArgs)
+         args.extend(self.extraFormatArgs)
+@@ -586,7 +586,7 @@
+         if not isys.ext2HasJournal(devicePath, makeDevNode = 0):
+             return
+ 
+-        rc = iutil.execWithRedirect("/usr/sbin/tune2fs",
++        rc = iutil.execWithRedirect("/sbin/tune2fs",
+                                     ["tunefs", "-c0", "-i0", "-Odir_index",
+                                      devicePath],
+                                     stdout = "/dev/tty5",
+@@ -614,7 +614,7 @@
+             log.info("Skipping migration of %s, has a journal already.\n" % devicePath)
+             return
+ 
+-        rc = iutil.execWithRedirect("/usr/sbin/tune2fs",
++        rc = iutil.execWithRedirect("/sbin/tune2fs",
+                                     ["tune2fs", "-j", devicePath ],
+                                     stdout = "/dev/tty5",
+                                     stderr = "/dev/tty5")
+@@ -766,7 +766,7 @@
+     
+     def formatDevice(self, entry, progress, chroot='/'):
+         file = entry.device.setupDevice(chroot)
+-        rc = iutil.execWithRedirect ("/usr/sbin/mkswap",
++        rc = iutil.execWithRedirect ("/sbin/mkswap",
+                                      [ "mkswap", '-v1', file ],
+                                      stdout = "/dev/tty5",
+                                      stderr = "/dev/tty5",
+@@ -786,7 +786,7 @@
+         else:
+             swapLabel = "SWAP-%s" % (devName)
+         label = labelFactory.createLabel(swapLabel, self.maxLabelChars)
+-        rc = iutil.execWithRedirect ("/usr/sbin/mkswap",
++        rc = iutil.execWithRedirect ("/sbin/mkswap",
+                                      [ "mkswap", '-v1', "-L", label, file ],
+                                      stdout = "/dev/tty5",
+                                      stderr = "/dev/tty5",
+@@ -824,7 +824,7 @@
+         args = [ "mkdosfs", devicePath ]
+         args.extend(devArgs)
+         
+-        rc = iutil.execWithRedirect("/usr/sbin/mkdosfs", args,
++        rc = iutil.execWithRedirect("/sbin/mkdosfs", args,
+                                     stdout = "/dev/tty5",
+                                     stderr = "/dev/tty5")
+         if rc:
+@@ -965,7 +965,7 @@
+             isys.makeDevInode(disk[5:], disk)
+         
+         log.info("going to run %s" %(args,))
+-        rc = iutil.execWithRedirect("/usr/sbin/sfdisk", args,
++        rc = iutil.execWithRedirect("/sbin/sfdisk", args,
+                                     stdout = "/dev/tty5", stderr = "/dev/tty5")
+         if rc:
+             raise SystemError
+@@ -2069,7 +2069,7 @@
+                 PartitionDevice(device).setupDevice(chroot,
+                                                     devPrefix=devPrefix)
+ 
+-            args = ["/usr/sbin/mdadm", "--create", "/dev/%s" %(self.device,),
++            args = ["/sbin/mdadm", "--create", "/dev/%s" %(self.device,),
+                     "--run", "--chunk=%s" %(self.chunksize,),
+                     "--level=%s" %(self.level,),
+                     "--raid-devices=%s" %(self.numDisks,)]
