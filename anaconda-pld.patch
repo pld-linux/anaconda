@@ -146,3 +146,19 @@
                      "--run", "--chunk=%s" %(self.chunksize,),
                      "--level=%s" %(self.level,),
                      "--raid-devices=%s" %(self.numDisks,)]
+--- anaconda-11.0.5/syslogd.py~	2005-08-12 20:02:54.000000000 +0300
++++ anaconda-11.0.5/syslogd.py	2006-05-24 20:53:09.758604131 +0300
+@@ -77,10 +77,10 @@
+             if not path:
+                 if os.access ("./anaconda", os.X_OK):
+                     path = "./anaconda"
+-                elif os.access ("/usr/bin/anaconda.real", os.X_OK):
+-                    path = "/usr/bin/anaconda.real"
++                elif os.access ("/usr/sbin/anaconda.real", os.X_OK):
++                    path = "/usr/sbin/anaconda.real"
+                 else:
+-                    path = "/usr/bin/anaconda"
++                    path = "/usr/sbin/anaconda"
+                     
+             os.execv (path, ("syslogd", "--syslogd", root, log))
+ 
