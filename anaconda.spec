@@ -14,7 +14,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.35
+Release:	0.50
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -33,6 +33,8 @@ Patch6:		%{name}-pld-release.patch
 Patch7:		%{name}-timezone.patch
 Patch8:		%{name}-kernel.patch
 Patch9:		%{name}-optflags.patch
+Patch10:	%{name}-network.patch
+Patch11:	%{name}-branding.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
 BuildRequires:	X11-devel
 BuildRequires:	beecrypt-devel
@@ -78,13 +80,14 @@ Requires:	device-mapper >= 1.01.05
 Requires:	dosfstools
 Requires:	e2fsprogs
 Requires:	glibc-localedb-all
+Requires:	grubby
 Requires:	hfsutils
 Requires:	jfsutils
 Requires:	kudzu > 1.2.0
 Requires:	lvm2
 Requires:	mdadm
 Requires:	pirut
-Requires:	python-booty >= 0.71
+Requires:	python-booty >= 0.71-0.2
 Requires:	python-devel-tools
 Requires:	python-kickstart
 Requires:	python-libxml2
@@ -93,7 +96,7 @@ Requires:	python-rhpl >= 0.170
 Requires:	python-rhpxl >= 0.18
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-snack
-Requires:	python-urlgrabber
+Requires:	python-urlgrabber >= 2.9.8
 Requires:	reiserfsprogs
 #Requires:	system-logos
 Requires:	xfsprogs
@@ -158,6 +161,8 @@ systemach.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch10 -p1
+%patch11 -p1
 
 rm -f po/no.po
 mv -f po/{eu_ES,eu}.po
