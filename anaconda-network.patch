@@ -1,0 +1,12 @@
+--- anaconda-11.0.5/network.py~	2006-05-24 22:05:53.856227238 +0300
++++ anaconda-11.0.5/network.py	2006-05-24 22:05:55.836271436 +0300
+@@ -275,6 +275,9 @@
+         lines = lines[2:]
+         for line in lines:
+             dev = string.strip(line[0:6])
++            # skip sit* devices, they aren't real
++            if dev.startsWith("sit"):
++                break
+             if dev != "lo" and not self.netdevices.has_key(dev):
+ 		if self.firstnetdevice is None:
+ 		    self.firstnetdevice = dev
