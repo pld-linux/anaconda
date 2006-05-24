@@ -14,7 +14,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.33
+Release:	0.34
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -75,7 +75,9 @@ BuildRequires:	yum
 BuildRequires:	zlib-devel
 BuildRequires:	zlib-static
 Requires:	device-mapper >= 1.01.05
+Requires:	e2fsprogs
 Requires:	glibc-localedb-all
+Requires:	jfsutils
 Requires:	kudzu > 1.2.0
 Requires:	lvm2
 Requires:	parted >= 1.6.3-7
@@ -90,7 +92,9 @@ Requires:	python-rhpxl >= 0.18
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-snack
 Requires:	python-urlgrabber
+Requires:	reiserfsprogs
 #Requires:	system-logos
+Requires:	xfsprogs
 Requires:	yum >= 2.5.1-3
 %ifnarch s390 s390x
 Requires:	python-pyblock >= 0.7-1
@@ -166,10 +170,13 @@ if [ "$(locale -a | grep -c en_US.utf8)" = 0 ]; then
 	exit 1
 fi
 
-%{__make} depend
+%{__make} depend \
+	CC="%{__cc}"
+
 %{__make} \
 	CC="%{__cc}" \
-	RPM_OPT_FLAGS="%{rpmcflags}"
+	REALCC="%{__cc}" \
+	OPTFLAGS="%{rpmcflags}"
 
 ./py-compile isys/isys.py
 
