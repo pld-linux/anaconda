@@ -37,3 +37,14 @@
                  
              else:
                  os.makedirs("%s-disc%d/%s/RPMS" % (self.dist_dir, i, self.product_path))
+--- anaconda-11.0.5/fsset.py~	2006-05-24 22:08:46.490080945 +0300
++++ anaconda-11.0.5/fsset.py	2006-05-24 22:17:32.421824167 +0300
+@@ -1284,6 +1284,8 @@
+             isys.makeDevInode(root.device.getDevice(), dev)        
+         rdev = os.stat(dev).st_rdev
+         
++        if os.path.exists(instPath + "/dev/root"):
++            os.unlink(instPath + "/dev/root")
+         os.mknod("%s/dev/root" % (instPath,), stat.S_IFBLK | 0600, rdev)
+ 
+     # return the "boot" device
