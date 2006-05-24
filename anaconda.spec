@@ -14,7 +14,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.50
+Release:	0.51
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -97,6 +97,7 @@ Requires:	python-rhpxl >= 0.18
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-snack
 Requires:	python-urlgrabber >= 2.9.8
+Requires:	python-xf86config >= 0.3.24
 Requires:	reiserfsprogs
 #Requires:	system-logos
 Requires:	xfsprogs
