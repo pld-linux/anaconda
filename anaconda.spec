@@ -14,7 +14,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.52
+Release:	0.56
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -23,6 +23,7 @@ Source1:	%{name}-mk-images
 Source2:	%{name}-upd-instroot
 Source3:	%{name}-mk-images.i386
 Source4:	%{name}-scrubtree
+Source5:	anaconda-installclass-pld.py
 Patch0:		%{name}-pld.patch
 Patch1:		%{name}-BUS_XEN.patch
 Patch2:		%{name}-vserver-proc.patch
@@ -99,6 +100,7 @@ Requires:	python-snack
 Requires:	python-urlgrabber >= 2.9.8
 Requires:	reiserfsprogs
 #Requires:	system-logos
+Requires:	vnc-utils
 Requires:	xfsprogs
 Requires:	yum >= 2.5.1-3
 %ifnarch s390 s390x
@@ -166,6 +168,12 @@ systemach.
 
 rm -f po/no.po
 mv -f po/{eu_ES,eu}.po
+
+# we don't want this being visible, neither want we to kill it (the
+# other's aren't valid anyway (outdated probably).
+mv installclasses/fedora.py{,.orig}
+# we want this install class ;)
+cp %{SOURCE5} installclasses/pld.py
 
 sed -i -e 's/$(PYTHON) scripts/python scripts/' Makefile
 
