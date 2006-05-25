@@ -14,7 +14,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.56
+Release:	0.59
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -23,7 +23,7 @@ Source1:	%{name}-mk-images
 Source2:	%{name}-upd-instroot
 Source3:	%{name}-mk-images.i386
 Source4:	%{name}-scrubtree
-Source5:	anaconda-installclass-pld.py
+Source5:	%{name}-installclass-pld.py
 Patch0:		%{name}-pld.patch
 Patch1:		%{name}-BUS_XEN.patch
 Patch2:		%{name}-vserver-proc.patch
@@ -36,6 +36,7 @@ Patch8:		%{name}-kernel.patch
 Patch9:		%{name}-optflags.patch
 Patch10:	%{name}-network.patch
 Patch11:	%{name}-branding.patch
+Patch12:	%{name}-x11.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
 BuildRequires:	X11-devel
 BuildRequires:	beecrypt-devel
@@ -77,6 +78,9 @@ BuildRequires:	slang-static
 BuildRequires:	yum
 BuildRequires:	zlib-devel
 BuildRequires:	zlib-static
+Requires:	X11-OpenGL-core
+Requires:	X11-Xserver
+Requires:	X11-fonts
 Requires:	device-mapper >= 1.01.05
 Requires:	dosfstools
 Requires:	e2fsprogs
@@ -94,7 +98,7 @@ Requires:	python-kickstart
 Requires:	python-libxml2
 Requires:	python-parted
 Requires:	python-rhpl >= 0.176-1.1
-Requires:	python-rhpxl >= 0.18
+Requires:	python-rhpxl >= 0.18-0.6
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-snack
 Requires:	python-urlgrabber >= 2.9.8
@@ -165,6 +169,7 @@ systemach.
 %patch9 -p1
 %patch10 -p1
 %patch11 -p1
+%patch12 -p1
 
 rm -f po/no.po
 mv -f po/{eu_ES,eu}.po
