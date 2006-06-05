@@ -1,5 +1,6 @@
 # TODO
 # - split anaconda-gui and anaconda-tui
+# - kill /mnt/runtime symlink hacks (leave the host alone!)
 #
 %if 0
 # FC to PLD deps replace rules, extracted from cvs logs
@@ -17,7 +18,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.68
+Release:	0.72
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -84,6 +85,7 @@ BuildRequires:	slang-static
 BuildRequires:	yum
 BuildRequires:	zlib-devel
 BuildRequires:	zlib-static
+Requires:	/etc/pld-release
 Requires:	X11-OpenGL-core
 Requires:	X11-Xserver
 Requires:	X11-fonts
@@ -98,8 +100,9 @@ Requires:	kudzu > 1.2.0
 Requires:	lvm2
 Requires:	mdadm
 Requires:	pirut
-Requires:	python-booty >= 0.71-0.2
+Requires:	python-booty >= 0.71-0.6
 Requires:	python-devel-tools
+Requires:	python-gnome-canvas
 Requires:	python-kickstart
 Requires:	python-libxml2
 Requires:	python-parted
