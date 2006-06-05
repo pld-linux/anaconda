@@ -48,3 +48,15 @@
          os.mknod("%s/dev/root" % (instPath,), stat.S_IFBLK | 0600, rdev)
  
      # return the "boot" device
+--- anaconda-11.0.5/anaconda	2006-06-05 23:04:26.382957338 +0300
++++ anaconda-11.0.5/anaconda	2006-06-05 23:04:04.572468297 +0300
+@@ -952,7 +952,8 @@
+ 			      logfile = xlogfile,
+ 			      xStartedCB = doStartupX11Actions,
+ 			      xQuitCB = doShutdownX11Actions, useFB = useFBX)
+-    except RuntimeError:
++    except RuntimeError, msg:
++	log.warning("xserver.startX: %s", msg)
+ 	xsetup_failed = True
+ 
+     if xsetup_failed:
