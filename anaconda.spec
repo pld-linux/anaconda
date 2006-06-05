@@ -1,3 +1,6 @@
+# TODO
+# - split anaconda-gui and anaconda-tui
+#
 %if 0
 # FC to PLD deps replace rules, extracted from cvs logs
 :%s#libxml2-python#python-libxml2#
@@ -14,7 +17,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.60
+Release:	0.63
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -156,6 +159,14 @@ do instalowania nowych systemów. Pliki te s³u¿± do tworzenia zestawu
 no¶ników, nie s± przewidziane do u¿ywania na ju¿ zainstalowanych
 systemach.
 
+%package debug
+Summary:	Sourcecode for Anaconda
+AutoReqProv:	false
+Group:		Applications/System
+Requires:	%{name} = %{version}-%{release}
+
+%description debug
+
 %prep
 %setup -q
 %patch0 -p1
@@ -216,7 +227,7 @@ cp %{SOURCE3} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images.i386
 cp %{SOURCE4} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/scrubtree
 
 %find_lang %{name}
-%py_postclean %{_libdir}/anaconda
+%{!?debug:%py_postclean %{_libdir}/anaconda}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -240,6 +251,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/anaconda/lang-table-kon
 %attr(755,root,root) %{_libdir}/anaconda/*-stub
 %attr(755,root,root) %{_libdir}/anaconda/*.so
+
+%if %{!?debug:0}%{?debug:1}
+%files debug
+%defattr(644,root,root,755)
+%{_libdir}/anaconda/*.py
+%{_libdir}/anaconda/installclasses/*.py
+%{_libdir}/anaconda/iw/*.py
+%{_libdir}/anaconda/textw/*.py
+%endif
 
 %files runtime
 %defattr(644,root,root,755)
