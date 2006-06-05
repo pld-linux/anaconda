@@ -1,0 +1,11 @@
+--- anaconda-11.0.5/installclasses/custom.py~	2005-09-17 00:29:58.000000000 +0300
++++ anaconda-11.0.5/installclasses/custom.py	2006-06-04 04:20:48.641449016 +0300
+@@ -18,7 +18,7 @@
+     showMinimal = 1
+     hidden = 1
+ 
+-    def setInstallData(self, id):
++    def setInstallData(self, id, intf = None):
+ 	BaseInstallClass.setInstallData(self, id)
+         BaseInstallClass.setDefaultPartitioning(self, id.partitions,
+                                                 CLEARPART_TYPE_LINUX)
