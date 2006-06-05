@@ -17,7 +17,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.63
+Release:	0.67
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -27,6 +27,8 @@ Source2:	%{name}-upd-instroot
 Source3:	%{name}-mk-images.i386
 Source4:	%{name}-scrubtree
 Source5:	%{name}-installclass-pld.py
+Source6:	%{name}-splash.png
+# Source6-md5:	a01b982fb7926dd70804d61281282530
 Patch0:		%{name}-pld.patch
 Patch1:		%{name}-BUS_XEN.patch
 Patch2:		%{name}-vserver-proc.patch
@@ -107,6 +109,7 @@ Requires:	python-rpm >= 4.2-0.61
 Requires:	python-snack
 Requires:	python-urlgrabber >= 2.9.8
 Requires:	reiserfsprogs
+Requires:	system-config-keyboard
 #Requires:	system-logos
 Requires:	vnc-utils
 Requires:	xfsprogs
@@ -225,6 +228,7 @@ cp %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images
 cp %{SOURCE2} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/upd-instroot
 cp %{SOURCE3} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images.i386
 cp %{SOURCE4} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/scrubtree
+cp %{SOURCE6} $RPM_BUILD_ROOT%{_datadir}/anaconda/splash.png
 
 %find_lang %{name}
 %{!?debug:%py_postclean %{_libdir}/anaconda}
