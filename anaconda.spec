@@ -17,7 +17,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.67
+Release:	0.68
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -28,7 +28,7 @@ Source3:	%{name}-mk-images.i386
 Source4:	%{name}-scrubtree
 Source5:	%{name}-installclass-pld.py
 Source6:	%{name}-splash.png
-# Source6-md5:	a01b982fb7926dd70804d61281282530
+# Source6-md5:	6b38a868585adfd3a96a4ad16973c1f8
 Patch0:		%{name}-pld.patch
 Patch1:		%{name}-BUS_XEN.patch
 Patch2:		%{name}-vserver-proc.patch
