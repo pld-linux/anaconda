@@ -46,22 +46,16 @@ Patch13:	%{name}-installclasses.patch
 Patch14:	%{name}-release_notes_viewer_gui.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
 BuildRequires:	bzip2-devel
-BuildRequires:	device-mapper-devel >= 1.01.05
-BuildRequires:	device-mapper-static
+BuildRequires:	device-mapper-static >= 1.01.05
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	gettext-devel >= 0.11
 BuildRequires:	glibc-static
 BuildRequires:	gtk+2-devel
 BuildRequires:	kudzu-devel >= 1.2.0
-BuildRequires:	libselinux-devel >= 1.6
-BuildRequires:	libselinux-static
-BuildRequires:	libsepol-devel
+BuildRequires:	libselinux-static >= 1.6
 BuildRequires:	libsepol-static
-BuildRequires:	newt-devel
 BuildRequires:	newt-static
-BuildRequires:	popt-devel
 BuildRequires:	popt-static
-BuildRequires:	pump-devel
 BuildRequires:	pump-static >= 0.8.24-1
 BuildRequires:	python-devel
 BuildRequires:	python-rhpl
@@ -70,7 +64,6 @@ BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.234
 BuildRequires:	sed >= 4.0
 BuildRequires:	slang-static
-BuildRequires:	zlib-devel
 BuildRequires:	zlib-static
 Requires:	/etc/pld-release
 Requires:	device-mapper >= 1.01.05
