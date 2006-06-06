@@ -167,11 +167,16 @@ systemach.
 
 %package debug
 Summary:	Sourcecode for Anaconda
-AutoReqProv:	false
+Summary(pl):	Kod ¼ród³owy Anacondy
 Group:		Applications/System
+AutoReqProv:	false
 Requires:	%{name} = %{version}-%{release}
 
 %description debug
+Anaconda sourcecode for debugging purposes.
+
+%description debug -l pl
+Kod ¼ród³owy Anacondy do celów diagnostycznych.
 
 %prep
 %setup -q
