@@ -18,9 +18,35 @@ class InstallClass(BaseInstallClass):
     showMinimal = 1
 
     tasks = [
-        (N_("Office and Productivity"), ["kde_graphics", "kde_koffice", "kde_multimedia", "gnome_office"]),
-        (N_("Software Development"), ["devel", "devel_extras", "java", "kde_devel"]),
-        (N_("Web server"), ["apache1_base", "apache_base"])
+        (N_("GNOME Desktop"), [
+            "gnome",
+            "gnome_complete",
+            "gnome_games",
+            "gnome_themes",
+        ]),
+        (N_("KDE Desktop"), [
+            "kde_kdepim",
+            "kde_kdeedu",
+            "kde_multimedia",
+            "kde_koffice",
+            "kde_network",
+            "kde_graphics",
+            "kde_admin",
+            "kde_games",
+            "kde_look"
+        ]),
+        (N_("Basic IceWM"), [
+            "icewm",
+        ]),
+        (N_("WindowMaker"), [
+            "wmaker",
+        ]),
+        (N_("General Development Tools"), [
+            "devel"
+        ]),
+        (N_("Java Development Tools"), [
+            "java"
+        ]),
     ]
 
     def setInstallData(self, id, intf = None):
