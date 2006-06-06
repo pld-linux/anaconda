@@ -18,7 +18,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.72
+Release:	0.74
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -44,6 +44,7 @@ Patch10:	%{name}-network.patch
 Patch11:	%{name}-branding.patch
 Patch12:	%{name}-x11.patch
 Patch13:	%{name}-installclasses.patch
+Patch14:	%{name}-release_notes_viewer_gui.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
 BuildRequires:	X11-devel
 BuildRequires:	beecrypt-devel
@@ -194,6 +195,7 @@ Kod ¼ród³owy Anacondy do celów diagnostycznych.
 %patch11 -p1
 %patch12 -p1
 %patch13 -p1
+%patch14 -p1
 
 rm -f po/no.po
 mv -f po/{eu_ES,eu}.po
@@ -239,6 +241,10 @@ cp %{SOURCE4} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/scrubtree
 cp %{SOURCE6} $RPM_BUILD_ROOT%{_datadir}/anaconda/splash.png
 
 %find_lang %{name}
+
+# hack so py_postclean would preserve it
+install $RPM_BUILD_ROOT%{_libdir}/anaconda/iw/release_notes_viewer_gui{.py,}
+
 %{!?debug:%py_postclean %{_libdir}/anaconda}
 
 %clean
@@ -256,6 +262,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/anaconda/installclasses/*.py[co]
 %dir %{_libdir}/anaconda/iw
 %{_libdir}/anaconda/iw/*.py[co]
+%attr(755,root,root) %{_libdir}/anaconda/iw/release_notes_viewer_gui
 %dir %{_libdir}/anaconda/textw
 %{_libdir}/anaconda/textw/*.py[co]
 %{_libdir}/anaconda/lang-names

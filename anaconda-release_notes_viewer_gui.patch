@@ -1,0 +1,11 @@
+--- anaconda-11.0.5/gui.py~	2006-06-06 02:24:50.842147638 +0300
++++ anaconda-11.0.5/gui.py	2006-06-06 02:44:25.328401561 +0300
+@@ -1125,7 +1125,7 @@
+ 	    # also HACK to make it work from RHupdates
+ 	    for dir in ("iw/", "/mnt/source/RHupdates/",
+                         ("/usr/%s/anaconda/iw/" % sys.lib)):
+-		path = dir + "release_notes_viewer_gui.py"
++		path = dir + "release_notes_viewer_gui"
+ 		if os.access(path, os.X_OK):
+ 			break
+ 
