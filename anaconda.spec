@@ -1,5 +1,4 @@
 # TODO
-# - split anaconda-gui and anaconda-tui
 # - kill /mnt/runtime symlink hacks (leave the host alone!)
 #
 %if 0
@@ -18,7 +17,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.75
+Release:	0.78
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -74,9 +73,6 @@ BuildRequires:	slang-static
 BuildRequires:	zlib-devel
 BuildRequires:	zlib-static
 Requires:	/etc/pld-release
-Requires:	X11-OpenGL-core
-Requires:	X11-Xserver
-Requires:	X11-fonts
 Requires:	device-mapper >= 1.01.05
 Requires:	dosfstools
 Requires:	e2fsprogs
@@ -87,29 +83,20 @@ Requires:	jfsutils
 Requires:	kudzu > 1.2.0
 Requires:	lvm2
 Requires:	mdadm
-Requires:	pirut
 Requires:	python-booty >= 0.71-0.6
 Requires:	python-devel-tools
-Requires:	python-gnome-canvas
 Requires:	python-kickstart
 Requires:	python-libxml2
 Requires:	python-parted
 Requires:	python-rhpl >= 0.176-1.1
-Requires:	python-rhpxl >= 0.18-0.6
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-snack
 Requires:	python-urlgrabber >= 2.9.8
 Requires:	reiserfsprogs
-Requires:	system-config-keyboard
-#Requires:	system-logos
-Requires:	vnc-utils
 Requires:	xfsprogs
 Requires:	yum >= 2.5.1-3
 %ifnarch s390 s390x
 Requires:	python-pyblock >= 0.7-1
-%endif
-%ifnarch s390 s390x ppc64
-Requires:	python-rhpxl
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -121,6 +108,25 @@ system. These files are of little use on an already installed system.
 Pakiet anaconda zawiera program, którego mo¿na u¿yæ do zainstalowania
 systemu. Pliki te maj± niewiele zastosowañ na ju¿ zainstalowanym
 systemie.
+
+%package gui
+Summary:	Anaconda GTK+2 GUI
+Group:		Applications/System
+Requires:	%{name} = %{version}-%{release}
+Requires:	X11-OpenGL-core
+Requires:	X11-Xserver
+Requires:	X11-fonts
+Requires:	pirut
+Requires:	python-gnome-canvas
+Requires:	system-config-keyboard
+#Requires:	system-logos
+Requires:	vnc-utils
+%ifnarch s390 s390x ppc64
+Requires:	python-rhpxl >= 0.18-0.6
+%endif
+
+%description gui
+Anaconda GUI portion.
 
 %package runtime
 Summary:	Graphical system installer portions needed only for fresh installs
@@ -240,23 +246,29 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc docs/*
-%attr(755,root,root) %{_bindir}/mini-wm
 %attr(755,root,root) %{_sbindir}/anaconda
-%{_datadir}/anaconda
 %dir %{_libdir}/anaconda
 %{_libdir}/anaconda/*.py[co]
+%exclude %{_libdir}/anaconda/xsetup.py[co]
 %dir %{_libdir}/anaconda/installclasses
 %{_libdir}/anaconda/installclasses/*.py[co]
-%dir %{_libdir}/anaconda/iw
-%{_libdir}/anaconda/iw/*.py[co]
-%attr(755,root,root) %{_libdir}/anaconda/iw/release_notes_viewer_gui
 %dir %{_libdir}/anaconda/textw
 %{_libdir}/anaconda/textw/*.py[co]
 %{_libdir}/anaconda/lang-names
 %{_libdir}/anaconda/lang-table
 %{_libdir}/anaconda/lang-table-kon
-%attr(755,root,root) %{_libdir}/anaconda/*-stub
-%attr(755,root,root) %{_libdir}/anaconda/*.so
+%attr(755,root,root) %{_libdir}/anaconda/_isys.so
+
+%files gui
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/mini-wm
+%attr(755,root,root) %{_libdir}/anaconda/iw/release_notes_viewer_gui
+%attr(755,root,root) %{_libdir}/anaconda/xmouse.so
+%attr(755,root,root) %{_libdir}/anaconda/xutils.so
+%{_libdir}/anaconda/xsetup.py[co]
+%dir %{_libdir}/anaconda/iw
+%{_libdir}/anaconda/iw/*.py[co]
+%{_datadir}/anaconda
 
 %if %{!?debug:0}%{?debug:1}
 %files debug
@@ -269,6 +281,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files runtime
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/anaconda/*-stub
 %dir %{_libdir}/anaconda-runtime
 %dir %attr(755,root,root) %{_libdir}/anaconda-runtime/boot
 %attr(755,root,root) %{_libdir}/anaconda-runtime/boot/syslinux.cfg
