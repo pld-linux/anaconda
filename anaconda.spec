@@ -17,7 +17,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.78
+Release:	0.84
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -44,6 +44,7 @@ Patch11:	%{name}-branding.patch
 Patch12:	%{name}-x11.patch
 Patch13:	%{name}-installclasses.patch
 Patch14:	%{name}-release_notes_viewer_gui.patch
+Patch15:	%{name}-hosttree.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
 BuildRequires:	bzip2-devel
 BuildRequires:	device-mapper-static >= 1.01.05
@@ -73,7 +74,7 @@ Requires:	glibc-localedb-all
 Requires:	grubby
 Requires:	hfsutils
 Requires:	jfsutils
-Requires:	kudzu > 1.2.0
+Requires:	kudzu >= 1.2.34.3-1.1
 Requires:	lvm2
 Requires:	mdadm
 Requires:	python-booty >= 0.71-0.6
@@ -81,7 +82,7 @@ Requires:	python-devel-tools
 Requires:	python-kickstart
 Requires:	python-libxml2
 Requires:	python-parted
-Requires:	python-rhpl >= 0.176-1.1
+Requires:	python-rhpl >= 0.176-1.2
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-snack
 Requires:	python-urlgrabber >= 2.9.8
@@ -115,7 +116,7 @@ Requires:	system-config-keyboard
 #Requires:	system-logos
 Requires:	vnc-utils
 %ifnarch s390 s390x ppc64
-Requires:	python-rhpxl >= 0.18-0.6
+Requires:	python-rhpxl >= 0.18-0.9
 %endif
 
 %description gui
@@ -182,6 +183,7 @@ Kod ¼ród³owy Anacondy do celów diagnostycznych.
 %patch12 -p1
 %patch13 -p1
 %patch14 -p1
+%patch15 -p1
 
 rm -f po/no.po
 mv -f po/{eu_ES,eu}.po
