@@ -15,3 +15,14 @@
  
  if path is not None:
      f = open(path, "r")
+--- anaconda-11.0.5/iutil.py~	2006-06-06 20:14:33.538984888 +0300
++++ anaconda-11.0.5/iutil.py	2006-06-06 20:31:10.801311289 +0300
+@@ -656,7 +656,7 @@
+     rhpl.arch.canonArch = myarch            
+         
+     f = open("%s/etc/rpm/platform" %(root,), 'w+')
+-    f.write("%s-redhat-linux\n" %(myarch,))
++    f.write("%s-pld-linux\n" %(myarch,))
+     f.close()
+ 
+     # FIXME: writing /etc/rpm/macros feels wrong somehow
