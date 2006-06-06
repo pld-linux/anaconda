@@ -1,0 +1,59 @@
+--- anaconda-11.0.5/anaconda	2006-06-06 20:38:29.731167253 +0300
++++ anaconda-11.0.5-antihackery/anaconda	2006-06-06 20:26:53.335544911 +0300
+@@ -1029,28 +1029,11 @@
+ 	addpid(child)
+ 	os.kill(child, signal.SIGCONT)
+ 
+-
+-# setup links required for all install types
+-for i in ( "services", "protocol", "nsswitch.conf", "joe", "selinux"):
+-    try:
+-	os.symlink ("../mnt/runtime/etc/" + i, "/etc/" + i)
+-    except:
+-	pass
+-
+ #
+ # setup links required by graphical mode if installing and verify display mode
+ #
+ if (display_mode == 'g'):
+     stdoutLog.info (_("Starting graphical installation..."))
+-    if not flags.test and flags.setupFilesystems:
+-	for i in ( "imrc", "im_palette.pal", "gtk-2.0", "pango", "fonts",
+-		   "fb.modes"):
+-	    try:
+-		if os.path.exists("/mnt/runtime/etc/%s" %(i,)):
+-		    os.symlink ("../mnt/runtime/etc/" + i, "/etc/" + i)
+-	    except:
+-		pass
+-
+     try:
+         from gui import InstallInterface
+     except Exception, e:
+--- anaconda-11.0.5/yuminstall.py	2006-06-06 20:38:29.721167028 +0300
++++ anaconda-11.0.5-antihackery/yuminstall.py	2006-06-06 20:37:06.879307087 +0300
+@@ -879,25 +879,6 @@
+         self.initLog(id, instPath)
+ 
+         if flags.setupFilesystems:
+-            # setup /etc/rpm/platform for the post-install environment
+-            iutil.writeRpmPlatform(instPath)
+-            
+-            try:
+-                # FIXME: making the /var/lib/rpm symlink here is a hack to
+-                # workaround db->close() errors from rpm
+-                iutil.mkdirChain("/var/lib")
+-                for path in ("/var/tmp", "/var/lib/rpm"):
+-                    if os.path.exists(path) and not os.path.islink(path):
+-                        iutil.rmrf(path)
+-                    if not os.path.islink(path):
+-                        os.symlink("/mnt/sysimage/%s" %(path,), "%s" %(path,))
+-                    else:
+-                        log.warning("%s already exists as a symlink to %s" %(path, os.readlink(path),))
+-            except Exception, e:
+-                # how this could happen isn't entirely clear; log it in case
+-                # it does and causes problems later
+-                log.error("error creating symlink, continuing anyway: %s" %(e,))
+-
+             # SELinux hackery (#121369)
+             if flags.selinux:
+                 try:
