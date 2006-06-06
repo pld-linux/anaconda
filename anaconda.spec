@@ -18,7 +18,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.74
+Release:	0.75
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -46,18 +46,13 @@ Patch12:	%{name}-x11.patch
 Patch13:	%{name}-installclasses.patch
 Patch14:	%{name}-release_notes_viewer_gui.patch
 URL:		http://fedora.redhat.com/projects/anaconda-installer/
-BuildRequires:	X11-devel
-BuildRequires:	beecrypt-devel
 BuildRequires:	bzip2-devel
 BuildRequires:	device-mapper-devel >= 1.01.05
-BuildRequires:	device-mapper-static >= 1.01.05
+BuildRequires:	device-mapper-static
 BuildRequires:	e2fsprogs-devel
-BuildRequires:	elfutils-devel
 BuildRequires:	gettext-devel >= 0.11
-BuildRequires:	glibc-localedb-all
 BuildRequires:	glibc-static
 BuildRequires:	gtk+2-devel
-BuildRequires:	intltool >= 0.31.2-3
 BuildRequires:	kudzu-devel >= 1.2.0
 BuildRequires:	libselinux-devel >= 1.6
 BuildRequires:	libselinux-static
@@ -65,25 +60,17 @@ BuildRequires:	libsepol-devel
 BuildRequires:	libsepol-static
 BuildRequires:	newt-devel
 BuildRequires:	newt-static
-BuildRequires:	pango-devel
-BuildRequires:	pciutils-devel
-BuildRequires:	pirut
+BuildRequires:	popt-devel
 BuildRequires:	popt-static
-BuildRequires:	pump-devel >= 0.8.24-1
+BuildRequires:	pump-devel
 BuildRequires:	pump-static >= 0.8.24-1
-BuildRequires:	python-booty >= 0.71
 BuildRequires:	python-devel
-BuildRequires:	python-kickstart
-BuildRequires:	python-libxml2
 BuildRequires:	python-rhpl
-BuildRequires:	python-rpm >= 4.2-0.61
-BuildRequires:	python-urlgrabber
-BuildRequires:	rpm-devel
+BuildRequires:	python-rpm
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.234
 BuildRequires:	sed >= 4.0
 BuildRequires:	slang-static
-BuildRequires:	yum
 BuildRequires:	zlib-devel
 BuildRequires:	zlib-static
 Requires:	/etc/pld-release
@@ -216,10 +203,10 @@ if [ "$(locale -a | grep -c en_US.utf8)" = 0 ]; then
 	exit 1
 fi
 
-%{__make} depend \
+%{__make} depend -j1 \
 	CC="%{__cc}"
 
-%{__make} \
+%{__make} -j1 \
 	CC="%{__cc}" \
 	REALCC="%{__cc}" \
 	OPTFLAGS="%{rpmcflags}"
