@@ -17,7 +17,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.84
+Release:	0.87
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -113,6 +113,7 @@ Requires:	X11-fonts
 Requires:	pirut
 Requires:	python-gnome-canvas
 Requires:	system-config-keyboard
+Requires:	system-config-date
 #Requires:	system-logos
 Requires:	vnc-utils
 %ifnarch s390 s390x ppc64
