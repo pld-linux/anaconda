@@ -1,4 +1,4 @@
-lazu to update llh, just disable xen for now
+lazy to update llh, just disable xen for now
 
 --- anaconda-11.0.5/loader2/hardware.c~	2006-02-06 23:32:13.000000000 +0200
 +++ anaconda-11.0.5/loader2/hardware.c	2006-05-17 00:22:14.317066126 +0300
