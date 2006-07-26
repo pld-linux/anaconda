@@ -112,8 +112,8 @@ Requires:	X11-Xserver
 Requires:	X11-fonts
 Requires:	pirut
 Requires:	python-gnome-canvas
-Requires:	system-config-keyboard
 Requires:	system-config-date
+Requires:	system-config-keyboard
 #Requires:	system-logos
 Requires:	vnc-utils
 %ifnarch s390 s390x ppc64
@@ -279,7 +279,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/anaconda/*-stub
 %dir %{_libdir}/anaconda-runtime
-%dir %attr(755,root,root) %{_libdir}/anaconda-runtime/boot
+%dir %{_libdir}/anaconda-runtime/boot
 %attr(755,root,root) %{_libdir}/anaconda-runtime/boot/syslinux.cfg
 %{_libdir}/anaconda-runtime/boot/boot.msg
 %{_libdir}/anaconda-runtime/boot/general.msg
@@ -294,7 +294,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/anaconda-runtime/implantisomd5
 %{_libdir}/anaconda-runtime/keymaps-override-*
 %attr(755,root,root) %{_libdir}/anaconda-runtime/libunicode-lite.so.1
-%dir %attr(755,root,root) %{_libdir}/anaconda-runtime/loader
+%dir %{_libdir}/anaconda-runtime/loader
 %attr(755,root,root) %{_libdir}/anaconda-runtime/loader/init
 %attr(755,root,root) %{_libdir}/anaconda-runtime/loader/loader
 %{_libdir}/anaconda-runtime/loader/loader.tr
