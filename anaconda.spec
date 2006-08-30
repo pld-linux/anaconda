@@ -17,7 +17,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.87
+Release:	0.89
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -229,6 +229,17 @@ cp %{SOURCE3} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images.i386
 cp %{SOURCE4} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/scrubtree
 cp %{SOURCE6} $RPM_BUILD_ROOT%{_datadir}/anaconda/splash.png
 
+# for ./isys/lang.c:isysLoadKeymap()
+%ifarch %{ix86}
+cp -a loader2/keymaps-i386 $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
+%endif
+%ifarch ppc
+cp -a loader2/keymaps-ppc $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
+%endif
+%ifarch %{x8664}
+cp -a loader2/keymaps-x86_64 $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
+%endif
+
 %find_lang %{name}
 
 # hack so py_postclean would preserve it
@@ -242,6 +253,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc docs/*
+%{_sysconfdir}/keymaps.gz
 %attr(755,root,root) %{_sbindir}/anaconda
 %dir %{_libdir}/anaconda
 %{_libdir}/anaconda/*.py[co]
