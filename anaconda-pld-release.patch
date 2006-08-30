@@ -52,9 +52,9 @@
  cachedir=%s
  gpgcheck=0
  
---- anaconda-11.0.5/yuminstall.py	2006-03-13 18:50:57.000000000 +0200
-+++ anaconda-11.0.5-pldize/yuminstall.py	2006-05-24 01:28:45.453269005 +0300
-@@ -213,7 +213,7 @@
+--- anaconda-11.0.5-pldize/yuminstall.py	2006-05-24 01:28:45.453269005 +0300
++++ anaconda-11.0.5.new/yuminstall.py	2006-08-30 22:56:30.869698805 +0300
+@@ -213,21 +213,21 @@
  debuglevel=2
  logfile=/tmp/yum.log
  pkgpolicy=newest
@@ -63,7 +63,14 @@
  tolerant=1
  exactarch=1
  retries=5
-@@ -227,7 +227,7 @@
+ obsoletes=1
+ gpgcheck=0
+ installroot=%s
+-exclude=*debuginfo*
++exclude=vserver-packages *debuginfo*
+ 
+ [anaconda]
+ name=Anaconda
  baseurl=%s
  enabled=1
  gpgcheck=0
