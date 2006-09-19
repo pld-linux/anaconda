@@ -1,5 +1,15 @@
 # TODO
 # - kill /mnt/runtime symlink hacks (leave the host alone!)
+# - 01:20:59 ERROR   : lokkit run failed: /usr/sbin/lokkit can not be run
+# - lrwxrwxrwx  1 root root     11 Aug 31 04:21 menu.lst -> ./grub.conf (DEAD LINK)
+#   -rw-r--r--  1 root root    551 Aug 31 04:21 menu.lst.rpmsave
+# - can't find font latcyrheb
+#  LANG="en_US.UTF-8"
+#  SYSFONT="latarcyrheb-sun16"
+# - sysconfig/timezone
+# - yuminstaller downloads all packages twice
+#  1156976072.958    317 192.168.2.3 TCP_MISS/200 209182 GET http://distrib/pld/dists/ac/PLD/i686/PLD/RPMS/sed-4.1.5-2.i686.rpm - DIRECT/x.x.x.x application/x-rpm
+#  1156976073.808    701 192.168.2.3 TCP_HIT/200 209188 GET http://distrib/pld/dists/ac/PLD/i686/PLD/RPMS/sed-4.1.5-2.i686.rpm - NONE/- application/x-rpm
 #
 %if 0
 # FC to PLD deps replace rules, extracted from cvs logs
@@ -17,7 +27,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.89
+Release:	0.90
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
