@@ -36,3 +36,39 @@
                  #In case the /etc/sysconfig/clock is messed up, use New York as default
                  self.fallbackEntry = entry
  
+--- anaconda-11.0.5/timezone.py~	2005-08-12 20:02:54.000000000 +0300
++++ anaconda-11.0.5/timezone.py	2006-09-26 20:37:15.448072953 +0300
+@@ -42,11 +42,31 @@
+ 	    log.error("Error copying timezone (from %s): %s" % (fromFile, msg))
+ 
+ 	f = open(instPath + "/etc/sysconfig/clock", "w")
+-
+-	f.write('ZONE="%s"\n' % self.tz)
++	f.write('# Should the hardware clock be kept in Coordinated Universal Time (instead of local time).')
+ 	f.write("UTC=%s\n" % bool(self.utc))
++	f.write('# true means  your  machine  uses epoch 1980 in its hardware clock')
+ 	f.write("ARC=%s\n" % bool(self.arc))
++	f.write('# true means your machine uses  epoch  1900 in its hardware clock')
++	f.write("SRM=false\n")
++	f.close()
++
++	# FIXME: solution for timezones like EET
++	(area, zone) = string.split(self.tz, "/")
+ 
++	f = open(instPath + "/etc/sysconfig/timezone", "w")
++	f.write('# Time zone information.')
++	f.write('# Directory containing zone information files.')
++	f.write('ZONE_INFO_DIR="/usr/share/zoneinfo"')
++	f.write("\n");
++	f.write('# Scheme you would like to use in your system.')
++	f.write('ZONE_INFO_SCHEME="posix"')
++	f.write("\n")
++	f.write('# Area (sometimes may be empty)')
++	f.write('ZONE_INFO_AREA="%s"\n' % area)
++	f.write("\n")
++	f.write('# Name of the time zone for your system.')
++	f.write('TIME_ZONE="%s"\n' % zone)
++	f.write("\n");
+ 	f.close()
+ 
+     def getTimezoneInfo(self):
