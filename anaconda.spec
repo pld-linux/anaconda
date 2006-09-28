@@ -10,6 +10,18 @@
 # - yuminstaller downloads all packages twice
 #  1156976072.958    317 192.168.2.3 TCP_MISS/200 209182 GET http://distrib/pld/dists/ac/PLD/i686/PLD/RPMS/sed-4.1.5-2.i686.rpm - DIRECT/x.x.x.x application/x-rpm
 #  1156976073.808    701 192.168.2.3 TCP_HIT/200 209188 GET http://distrib/pld/dists/ac/PLD/i686/PLD/RPMS/sed-4.1.5-2.i686.rpm - NONE/- application/x-rpm
+# - network config files are not pld-style
+# - lvm2-initrd should be installed
+# - /etc/fstab
+# - /etc/modprobe.conf for geninitrd
+# - gui installer packages selector:
+#Traceback (most recent call last):
+#  File "/home/glen/tmp/anaconda-11.0.5-root-glen//usr/lib/anaconda/gui.py", line 954, in nextClicked
+#  File "/home/glen/tmp/anaconda-11.0.5-root-glen//usr/lib/anaconda/gui.py", line 1313, in setScreen
+#  File "/home/glen/tmp/anaconda-11.0.5-root-glen//usr/lib/anaconda/iw/package_gui.py", line 29, in getScreen
+#  File "/usr/share/python2.4/site-packages/pirut/GroupSelector.py", line 410, in doRefresh
+#  File "/usr/share/python2.4/site-packages/pirut/GroupSelector.py", line 407, in populateCategories
+#TypeError: iter should be a GtkTreeIter
 #
 %if 0
 # FC to PLD deps replace rules, extracted from cvs logs
@@ -27,7 +39,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.90
+Release:	0.94
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
