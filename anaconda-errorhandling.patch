@@ -60,3 +60,16 @@
  	xsetup_failed = True
  
      if xsetup_failed:
+--- anaconda-11.0.5/iutil.py~	2006-09-28 14:47:23.119103876 +0300
++++ anaconda-11.0.5/iutil.py	2006-09-28 18:12:24.254179111 +0300
+@@ -405,6 +405,10 @@
+ 
+ # make the device-mapper control node
+ def makeDMNode(root="/"):
++    # skip the mknod if path already exists -- created by udev
++    if os.path.exists(root + "/dev/mapper/control"):
++        return
++
+     major = minor = None
+ 
+     for (fn, devname, val) in ( ("/proc/devices", "misc", "major"),
