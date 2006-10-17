@@ -22,6 +22,7 @@
 #  File "/usr/share/python2.4/site-packages/pirut/GroupSelector.py", line 410, in doRefresh
 #  File "/usr/share/python2.4/site-packages/pirut/GroupSelector.py", line 407, in populateCategories
 #TypeError: iter should be a GtkTreeIter
+# - definition of anaconda pixmaps: http://www.raimokoski.com/lineox/Distro-definition-dir.txt
 #
 %if 0
 # FC to PLD deps replace rules, extracted from cvs logs
@@ -39,7 +40,7 @@ Summary:	Graphical system installer
 Summary(pl):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
-Release:	0.94
+Release:	0.95
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
@@ -136,7 +137,7 @@ Requires:	pirut
 Requires:	python-gnome-canvas
 Requires:	system-config-date
 Requires:	system-config-keyboard
-#Requires:	system-logos
+Requires:	system-logos
 Requires:	vnc-utils
 %ifnarch s390 s390x ppc64
 Requires:	python-rhpxl >= 0.18-0.9
@@ -222,8 +223,8 @@ sed -i -e 's/$(PYTHON) scripts/python scripts/' Makefile
 %build
 # locale check
 if [ "$(locale -a | grep -c en_US.utf8)" = 0 ]; then
-	echo >&2 "en_US.utf8 locale not available. build will fail!"
-	echo >&2 "Install glibc-localedb-all or compile it!"
+	: "en_US.utf8 locale not available. build will fail!"
+	: "Install glibc-localedb-all or compile it!"
 	exit 1
 fi
 
