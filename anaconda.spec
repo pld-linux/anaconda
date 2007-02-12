@@ -37,7 +37,7 @@
 :%s#squashfs-tools#squashfs#
 %endif
 Summary:	Graphical system installer
-Summary(pl.UTF-8):   Graficzny instalator systemu
+Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
 Release:	0.95
@@ -148,7 +148,7 @@ Anaconda GUI portion.
 
 %package runtime
 Summary:	Graphical system installer portions needed only for fresh installs
-Summary(pl.UTF-8):   Elementy graficznego instalatora systemu potrzebne tylko przy nowych instalacjach
+Summary(pl.UTF-8):	Elementy graficznego instalatora systemu potrzebne tylko przy nowych instalacjach
 Group:		Applications/System
 AutoReqProv:	false
 Requires:	%{name} = %{version}-%{release}
@@ -179,7 +179,7 @@ systemach.
 
 %package debug
 Summary:	Sourcecode for Anaconda
-Summary(pl.UTF-8):   Kod źródłowy Anacondy
+Summary(pl.UTF-8):	Kod źródłowy Anacondy
 Group:		Applications/System
 AutoReqProv:	false
 Requires:	%{name} = %{version}-%{release}
