@@ -37,7 +37,7 @@
 :%s#squashfs-tools#squashfs#
 %endif
 Summary:	Graphical system installer
-Summary(pl):	Graficzny instalator systemu
+Summary(pl.UTF-8):   Graficzny instalator systemu
 Name:		anaconda
 Version:	11.0.5
 Release:	0.95
@@ -121,9 +121,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 The anaconda package contains the program which can be used to install
 system. These files are of little use on an already installed system.
 
-%description -l pl
-Pakiet anaconda zawiera program, ktÛrego moøna uøyÊ do zainstalowania
-systemu. Pliki te maj± niewiele zastosowaÒ na juø zainstalowanym
+%description -l pl.UTF-8
+Pakiet anaconda zawiera program, kt√≥rego mo≈ºna u≈ºyƒá do zainstalowania
+systemu. Pliki te majƒÖ niewiele zastosowa≈Ñ na ju≈º zainstalowanym
 systemie.
 
 %package gui
@@ -148,7 +148,7 @@ Anaconda GUI portion.
 
 %package runtime
 Summary:	Graphical system installer portions needed only for fresh installs
-Summary(pl):	Elementy graficznego instalatora systemu potrzebne tylko przy nowych instalacjach
+Summary(pl.UTF-8):   Elementy graficznego instalatora systemu potrzebne tylko przy nowych instalacjach
 Group:		Applications/System
 AutoReqProv:	false
 Requires:	%{name} = %{version}-%{release}
@@ -171,15 +171,15 @@ which are needed for installing new systems. These files are used to
 build media sets, but are not meant for use on already installed
 systems.
 
-%description runtime -l pl
+%description runtime -l pl.UTF-8
 Pakiet anaconda-runtime zawiera elementy instalatora potrzebne tylko
-do instalowania nowych systemÛw. Pliki te s≥uø± do tworzenia zestawu
-no∂nikÛw, nie s± przewidziane do uøywania na juø zainstalowanych
+do instalowania nowych system√≥w. Pliki te s≈Çu≈ºƒÖ do tworzenia zestawu
+no≈õnik√≥w, nie sƒÖ przewidziane do u≈ºywania na ju≈º zainstalowanych
 systemach.
 
 %package debug
 Summary:	Sourcecode for Anaconda
-Summary(pl):	Kod ºrÛd≥owy Anacondy
+Summary(pl.UTF-8):   Kod ≈∫r√≥d≈Çowy Anacondy
 Group:		Applications/System
 AutoReqProv:	false
 Requires:	%{name} = %{version}-%{release}
@@ -187,8 +187,8 @@ Requires:	%{name} = %{version}-%{release}
 %description debug
 Anaconda sourcecode for debugging purposes.
 
-%description debug -l pl
-Kod ºrÛd≥owy Anacondy do celÛw diagnostycznych.
+%description debug -l pl.UTF-8
+Kod ≈∫r√≥d≈Çowy Anacondy do cel√≥w diagnostycznych.
 
 %prep
 %setup -q
