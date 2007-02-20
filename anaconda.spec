@@ -39,12 +39,12 @@
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
-Version:	11.0.5
-Release:	0.95
+Version:	11.2.0.24
+Release:	0.1
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
-# Source0-md5:	f814e7d0011dd44c3c3cf12b6ddb5b40
+# Source0-md5:	2e6fb1206a209af5f13181670c882819
 Source1:	%{name}-mk-images
 Source2:	%{name}-upd-instroot
 Source3:	%{name}-mk-images.i386
@@ -73,6 +73,7 @@ BuildRequires:	bzip2-devel
 BuildRequires:	device-mapper-static >= 1.01.05
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	gettext-devel >= 0.11
+BuildRequires:	glib2-static
 BuildRequires:	glibc-static
 BuildRequires:	gtk+2-devel
 BuildRequires:	kudzu-devel >= 1.2.0
@@ -80,7 +81,10 @@ BuildRequires:	libselinux-static >= 1.6
 BuildRequires:	libsepol-static
 BuildRequires:	newt-static
 BuildRequires:	popt-static
-BuildRequires:	pump-static >= 0.8.24-1
+BuildRequires:	libnl-static
+BuildRequires:  libdhcp4client-devel
+BuildRequires:	libdhcp6client-static
+BuildRequires:	libdhcp-static
 BuildRequires:	python-devel
 BuildRequires:	python-rhpl
 BuildRequires:	python-rpm
@@ -192,22 +196,29 @@ Kod źródłowy Anacondy do celów diagnostycznych.
 
 %prep
 %setup -q
-%patch0 -p1
+# looks obsolete
+#%patch0 -p1
 %patch1 -p1
-%patch2 -p1
+#%patch2 -p1
 %patch3 -p1
-%patch4 -p1
+# obsolete, all parts merged
+#%patch4 -p1
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
-%patch9 -p1
-%patch10 -p1
+# fixme
+#%patch9 -p1
+# obsolete, already merged
+# %patch10 -p1
 %patch11 -p1
 %patch12 -p1
-%patch13 -p1
-%patch14 -p1
-%patch15 -p1
+#?
+#%patch13 -p1
+#?
+#%patch14 -p1
+# does it make any harm?
+#%patch15 -p1
 
 rm -f po/no.po
 mv -f po/{eu_ES,eu}.po
@@ -270,7 +281,7 @@ cp -a loader2/keymaps-x86_64 $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
 %find_lang %{name}
 
 # hack so py_postclean would preserve it
-install $RPM_BUILD_ROOT%{_libdir}/anaconda/iw/release_notes_viewer_gui{.py,}
+install $RPM_BUILD_ROOT%{_libdir}/anaconda/iw/release_notes{.py,}
 
 %{!?debug:%py_postclean %{_libdir}/anaconda}
 
@@ -297,8 +308,7 @@ rm -rf $RPM_BUILD_ROOT
 %files gui
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/mini-wm
-%attr(755,root,root) %{_libdir}/anaconda/iw/release_notes_viewer_gui
-%attr(755,root,root) %{_libdir}/anaconda/xmouse.so
+%attr(755,root,root) %{_libdir}/anaconda/iw/release_notes
 %attr(755,root,root) %{_libdir}/anaconda/xutils.so
 %{_libdir}/anaconda/xsetup.py[co]
 %dir %{_libdir}/anaconda/iw
@@ -346,7 +356,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.ia64
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.ppc
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.s390
-%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.x86_64
+%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.x86
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.i386
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.ppc
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.x86_64
@@ -355,7 +365,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/anaconda-runtime/pkgorder
 %attr(755,root,root) %{_libdir}/anaconda-runtime/pyisomd5sum.so
 %attr(755,root,root) %{_libdir}/anaconda-runtime/pyrc.py
-%attr(755,root,root) %{_libdir}/anaconda-runtime/pythondeps
 %attr(755,root,root) %{_libdir}/anaconda-runtime/readmap
 %attr(755,root,root) %{_libdir}/anaconda-runtime/scrubtree
 %{_libdir}/anaconda-runtime/screenfont-*.gz
