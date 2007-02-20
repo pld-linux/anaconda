@@ -229,9 +229,13 @@ if [ "$(locale -a | grep -c en_US.utf8)" = 0 ]; then
 fi
 
 %{__make} depend -j1 \
+	PYTHON="%{__python}" \
+	PYTHONINCLUDE="%{py_incdir}" \
 	CC="%{__cc}"
 
 %{__make} -j1 \
+	PYTHON="%{__python}" \
+	PYTHONINCLUDE="%{py_incdir}" \
 	CC="%{__cc}" \
 	REALCC="%{__cc}" \
 	OPTFLAGS="%{rpmcflags}"
