@@ -1,16 +1,18 @@
---- anaconda-11.0.5/docs/command-line.txt	2005-10-21 20:49:44.000000000 +0300
-+++ anaconda-11.0.5-pldize/docs/command-line.txt	2006-05-24 01:30:47.245988579 +0300
-@@ -124,7 +124,7 @@
- dhcpclass=<class> Sends a custom DHCP vendor class identifier. ISC's dhcpcd can
-                 inspect this value using "option vendor-class-identifier". 
+diff -ur anaconda-11.2.0.24.org/docs/command-line.txt anaconda-11.2.0.24/docs/command-line.txt
+--- anaconda-11.2.0.24.org/docs/command-line.txt	2006-12-04 23:05:25.000000000 +0100
++++ anaconda-11.2.0.24/docs/command-line.txt	2007-02-20 18:24:43.130623000 +0100
+@@ -144,7 +144,7 @@
+ 
+ updates=http://<path> Image containing updates over HTTP.
  
 -upgradeany	Don't require an /etc/redhat-release that matches the 
 +upgradeany	Don't require an /etc/pld-release that matches the 
  		expected syntax to upgrade.
  
- lang=<lang>	Language to use for the installation.  This should be a
---- anaconda-11.0.5/partedUtils.py	2006-02-06 23:06:46.000000000 +0200
-+++ anaconda-11.0.5-pldize/partedUtils.py	2006-05-24 01:30:32.535660096 +0300
+ vnc             Enable vnc-based installation. You will need to connect
+diff -ur anaconda-11.2.0.24.org/partedUtils.py anaconda-11.2.0.24/partedUtils.py
+--- anaconda-11.2.0.24.org/partedUtils.py	2007-01-16 20:58:13.000000000 +0100
++++ anaconda-11.2.0.24/partedUtils.py	2007-02-20 18:33:58.522623000 +0100
 @@ -472,8 +472,8 @@
      return None
  
@@ -22,17 +24,39 @@
          try:
              lines = f.readlines()
          except IOError:
-@@ -491,6 +491,7 @@
+@@ -490,22 +490,12 @@
+ 
          # get the release name and version
          # assumes that form is something
-         # like "Red Hat Linux release 6.2 (Zoot)"
-+		# XXX FIXME parse /etc/pld-release !!!! XXX
-         if relstr.find("release") != -1:
-             try:
-                 idx = relstr.find("release")
---- anaconda-11.0.5/scripts/pkgorder	2006-05-24 01:31:27.106878694 +0300
-+++ anaconda-11.0.5-pldize/scripts/pkgorder	2006-05-24 01:27:40.261813387 +0300
-@@ -100,7 +100,7 @@
+-        # like "Red Hat Linux release 6.2 (Zoot)"
+-        if relstr.find("release") != -1:
+-            try:
+-                idx = relstr.find("release")
+-                prod = relstr[:idx - 1]
+-
+-                ver = ""
+-                for a in relstr[idx + 8:]:
+-                    if a in string.digits + ".":
+-                        ver = ver + a
+-                    else:
+-                        break
+-
+-                    relstr = prod + " " + ver
+-            except:
+-                pass # don't worry, just use the relstr as we have it
++	# like 2.99 PLD Linux (Th)
++	try:
++	    relstr = relstr.split(' ')
++	    relstr = relstr[0]
++	except:
++	    pass # don't worry, just use the relstr as we have it
+         return relstr
+     return ""
+ 
+diff -ur anaconda-11.2.0.24.org/scripts/pkgorder anaconda-11.2.0.24/scripts/pkgorder
+--- anaconda-11.2.0.24.org/scripts/pkgorder	2007-02-20 18:23:45.538623000 +0100
++++ anaconda-11.2.0.24/scripts/pkgorder	2007-02-20 18:28:05.766623000 +0100
+@@ -107,10 +107,10 @@
  def createConfig(toppath):
      yumconfstr = """
  [main]
@@ -40,10 +64,27 @@
 +distroverpkg=issue
  gpgcheck=0
  reposdir=/dev/null
- exclude=*debuginfo*
---- anaconda-11.0.5/scripts/yumcache	2005-10-18 18:54:00.000000000 +0300
-+++ anaconda-11.0.5-pldize/scripts/yumcache	2006-05-24 01:27:33.711667136 +0300
-@@ -19,7 +19,7 @@
+-exclude=*debuginfo*
++exclude=vserver-packages *debuginfo*
+ 
+ [anaconda]
+ name=Anaconda
+diff -ur anaconda-11.2.0.24.org/scripts/splittree.py anaconda-11.2.0.24/scripts/splittree.py
+--- anaconda-11.2.0.24.org/scripts/splittree.py	2006-12-13 16:55:23.000000000 +0100
++++ anaconda-11.2.0.24/scripts/splittree.py	2007-02-20 18:27:17.982623000 +0100
+@@ -99,7 +99,7 @@
+         self.src_list = []
+         self.shared_list = []
+         self.reverse_sort_srpms=None
+-        self.common_files = ['beta_eula.txt', 'EULA', 'README', 'GPL', 'RPM-GPG-KEY', 'RPM-GPG-KEY-beta', 'RPM-GPG-KEY-fedora']
++        self.common_files = ['beta_eula.txt', 'EULA', 'README', 'GPL', 'RPM-GPG-KEY', 'RPM-GPG-KEY-beta', 'RPM-GPG-KEY-PLD']
+         self.logfile = []
+ 
+ 
+diff -ur anaconda-11.2.0.24.org/scripts/yumcache anaconda-11.2.0.24/scripts/yumcache
+--- anaconda-11.2.0.24.org/scripts/yumcache	2007-01-30 22:55:56.000000000 +0100
++++ anaconda-11.2.0.24/scripts/yumcache	2007-02-20 18:24:43.130623000 +0100
+@@ -24,7 +24,7 @@
  
          self.yumconfstr = """
  [main]
@@ -52,34 +93,19 @@
  cachedir=%s
  gpgcheck=0
  
---- anaconda-11.0.5-pldize/yuminstall.py	2006-05-24 01:28:45.453269005 +0300
-+++ anaconda-11.0.5.new/yuminstall.py	2006-08-30 22:56:30.869698805 +0300
-@@ -213,21 +213,21 @@
- debuglevel=2
- logfile=/tmp/yum.log
- pkgpolicy=newest
--distroverpkg=redhat-release
-+distroverpkg=issue
- tolerant=1
- exactarch=1
- retries=5
- obsoletes=1
- gpgcheck=0
- installroot=%s
--exclude=*debuginfo*
-+exclude=vserver-packages *debuginfo*
- 
- [anaconda]
- name=Anaconda
- baseurl=%s
- enabled=1
- gpgcheck=0
--gpgkey=%s/RPM-GPG-KEY-fedora
-+gpgkey=%s/RPM-GPG-KEY-PLD
- """ % (self.root, self.methodstr, self.methodstr)
- 
-     def write(self):
-@@ -938,7 +938,7 @@
+diff -ur anaconda-11.2.0.24.org/yuminstall.py anaconda-11.2.0.24/yuminstall.py
+--- anaconda-11.2.0.24.org/yuminstall.py	2007-02-13 14:56:08.000000000 +0100
++++ anaconda-11.2.0.24/yuminstall.py	2007-02-20 18:26:50.814623000 +0100
+@@ -495,7 +495,7 @@
+         self.conf.reposdir="/tmp/repos.d"
+         self.conf.logfile="/tmp/yum.log"
+         self.conf.obsoletes=True
+-        self.conf.exclude=["*debuginfo*"]
++        self.conf.exclude=["*debuginfo*", "vserver-packages"]
+         self.conf.cache=0
+         self.conf.cachedir = '/tmp/cache/'
+         self.conf.metadata_expire = 0
+@@ -1269,7 +1269,7 @@
          # Figure out current version for upgrade nag and for determining weird
          # upgrade cases
          supportedUpgradeVersion = -1

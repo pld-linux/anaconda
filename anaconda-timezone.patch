@@ -1,69 +1,70 @@
---- anaconda-11.0.5/iw/timezone_gui.py~	2006-02-16 17:09:07.000000000 +0200
-+++ anaconda-11.0.5/iw/timezone_gui.py	2006-05-24 02:51:14.854100882 +0300
-@@ -41,7 +41,7 @@
+diff -ur anaconda-11.2.0.24.org/iw/timezone_gui.py anaconda-11.2.0.24/iw/timezone_gui.py
+--- anaconda-11.2.0.24.org/iw/timezone_gui.py	2007-01-30 19:54:05.000000000 +0100
++++ anaconda-11.2.0.24/iw/timezone_gui.py	2007-02-20 18:36:25.274623000 +0100
+@@ -43,7 +43,7 @@
          gtk.glade.set_custom_handler(self.custom_widget_handler)
  
          # Set the default now.  We'll fix it for real in getScreen.
 -        self.default = "America/New_York"
-+        self.default = "Europe/Tallinn"
++        self.default = "Europe/Warsaw"
  
          self.zonetab = zonetab.ZoneTab()
  
-@@ -98,7 +98,7 @@
+@@ -99,7 +99,7 @@
              asUTC = 0
  
          if (string.find(self.default, "UTC") != -1):
 -            self.default = "America/New_York"
-+            self.default = "Europe/Tallinn"
++            self.default = "Europe/Warsaw"
  
          # Now fix the default we set when we made the timezone map widget.
          self.tz.setCurrent(self.zonetab.findEntryByTZ(self.default))
-@@ -117,7 +117,7 @@
-     if curlat >= latmin and curlat <= latmax and curlong >= longmin and curlong <= longmax:
+@@ -126,7 +126,7 @@
+     if tz.lat >= latmin and tz.lat <= latmax and tz.long >= longmin and tz.long <= longmax:
          return True
      elif user_data.currentEntry == None:
 -        if model.get_value(iter, 1) == "America/New_York":
-+        if model.get_value(iter, 1) == "Europe/Tallinn":
++        if model.get_value(iter, 1) == "Europe/Warsaw":
              return True
          else:
              return False
-@@ -144,7 +144,7 @@
-                               weight=pango.WEIGHT_BOLD)
-             self.markers[entry.tz] = marker
+@@ -151,7 +151,7 @@
+                                   weight=pango.WEIGHT_BOLD)
+                 self.markers[entry.tz] = marker
  
--            if entry.tz == "America/New_York":
-+            if entry.tz == "Europe/Tallinn":
-                 #In case the /etc/sysconfig/clock is messed up, use New York as default
-                 self.fallbackEntry = entry
+-                if entry.tz == "America/New_York":
++                if entry.tz == "Europe/Warsaw":
+                     # In case the /etc/sysconfig/clock is messed up, use New
+                     # York as the default.
+                     self.fallbackEntry = entry
+diff -ur anaconda-11.2.0.24.org/timezone.py anaconda-11.2.0.24/timezone.py
+--- anaconda-11.2.0.24.org/timezone.py	2007-01-17 23:49:50.000000000 +0100
++++ anaconda-11.2.0.24/timezone.py	2007-02-20 19:07:07.498623000 +0100
+@@ -13,6 +13,7 @@
  
---- anaconda-11.0.5/timezone.py	2006-09-26 20:37:15.448072953 +0300
-+++ anaconda-11.0.5/timezone.py	2006-09-28 14:46:04.567338250 +0300
-@@ -17,6 +17,8 @@
- import logging
- log = logging.getLogger("anaconda")
- 
+ import shutil
+ import iutil
 +import string
-+
- def bool(val):
-     if val: return "true"
-     return "false"
-@@ -42,11 +44,31 @@
- 	    log.error("Error copying timezone (from %s): %s" % (fromFile, msg))
+ from flags import flags
+ 
+ import logging
+@@ -44,12 +45,32 @@
  
  	f = open(instPath + "/etc/sysconfig/clock", "w")
--
+ 
 -	f.write('ZONE="%s"\n' % self.tz)
 +	f.write('# Should the hardware clock be kept in Coordinated Universal Time (instead of local time).\n')
  	f.write("UTC=%s\n" % bool(self.utc))
 +	f.write('# true means your machine uses epoch 1980 in its hardware clock\n')
  	f.write("ARC=%s\n" % bool(self.arc))
+-
 +	f.write('# true means your machine uses epoch 1900 in its hardware clock\n')
 +	f.write("SRM=false\n")
-+	f.close()
-+
+ 	f.close()
+ 
 +	# FIXME: solution for timezones like EET
 +	(area, zone) = string.split(self.tz, "/")
- 
++
 +	f = open(instPath + "/etc/sysconfig/timezone", "w")
 +	f.write('# Time zone information.\n')
 +	f.write('# Directory containing zone information files.\n')
@@ -78,6 +79,7 @@
 +	f.write('# Name of the time zone for your system.\n')
 +	f.write('TIME_ZONE="%s"\n' % zone)
 +	f.write("\n");
- 	f.close()
- 
++
      def getTimezoneInfo(self):
+ 	return (self.tz, self.utc, self.arc)
+ 

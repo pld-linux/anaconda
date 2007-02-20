@@ -1,13 +1,12 @@
-we should rather use /mnt/runtime path, but maybe later
-
---- anaconda-11.0.5/anaconda~	2006-05-26 02:12:27.743192704 +0300
-+++ anaconda-11.0.5/anaconda	2006-05-26 02:25:58.301414220 +0300
-@@ -916,7 +916,7 @@
- # now determine if we're going to run in GUI or TUI mode
- #
- # if no X server, we have to use text mode
--if not (flags.test or flags.rootpath) and (iutil.getArch() != "s390" and not os.access("/mnt/runtime/usr/bin/Xorg", os.X_OK)):
-+if not (flags.test or flags.rootpath) and (iutil.getArch() != "s390" and not os.access("/usr/X11R6/bin/X", os.X_OK)):
-      stdoutLog.warning(_("Graphical installation not available...  "
- 			 "Starting text mode."))
-      time.sleep(2)
+; we should rather use /mnt/runtime path, but maybe later
+--- anaconda-11.2.0.24/anaconda~	2007-02-20 18:23:45.000000000 +0100
++++ anaconda-11.2.0.24/anaconda	2007-02-20 19:16:15.114623000 +0100
+@@ -779,7 +779,7 @@
+     # now determine if we're going to run in GUI or TUI mode
+     #
+     # if no X server, we have to use text mode
+-    if not (flags.test or flags.rootpath or x_already_set) and (rhpl.getArch() != "s390" and not os.access("/mnt/runtime/usr/bin/Xorg", os.X_OK)):
++    if not (flags.test or flags.rootpath or x_already_set) and (rhpl.getArch() != "s390" and not os.access("/usr/bin/X", os.X_OK)):
+          stdoutLog.warning(_("Graphical installation not available...  "
+                              "Starting text mode."))
+          time.sleep(2)

@@ -1,74 +1,11 @@
---- anaconda-11.0.5/yuminstall.py	2006-05-24 18:09:49.619010315 +0300
-+++ anaconda-11.0.5/yuminstall.py	2006-05-25 00:11:54.385696897 +0300
-@@ -697,11 +697,11 @@
-             return pkgs[0]
- 
-         foundkernel = False
--        kpkg = getBestKernelByArch("kernel", self.ayum)
-+        kpkg = getBestKernelByArch("kernel-grsecurity", self.ayum)
+--- anaconda-11.2.0.24.org/yuminstall.py	2007-02-13 14:56:08.000000000 +0100
++++ anaconda-11.2.0.24/yuminstall.py	2007-02-20 19:12:05.894623000 +0100
+@@ -1009,7 +1009,7 @@
  
          # FIXME: this is a bit of a hack.  we shouldn't hard-code and
          # instead check by provides.  but alas.
--        for k in ("kernel", "kernel-smp", "kernel-xen0"):
-+        for k in ("kernel-grsecurity", "kernel-grsecurity-smp", "kernel-xen0"):
+-        for k in ("kernel", "kernel-smp", "kernel-xen0", "kernel-xen"):
++        for k in ("kernel", "kernel-smp", "kernel-grsecurity", "kernel-grsecurity-smp", "kernel-xen0", "kernel-xen"):
              if len(self.ayum.tsInfo.matchNaevr(name=k)) > 0:            
                  foundkernel = True
  
-@@ -736,8 +736,8 @@
- 
-         if not foundkernel and (isys.smpAvailable() or isys.htavailable()):
-             try:
--                ksmp = getBestKernelByArch("kernel-smp", self.ayum)
--                log.info("selected kernel-smp package for kernel")
-+                ksmp = getBestKernelByArch("kernel-grsecurity-smp", self.ayum)
-+                log.info("selected kernel-grsecurity-smp package for kernel")
-                 foundkernel = True
-             except PackageSackError:
-                 ksmp = None
-@@ -750,7 +750,7 @@
-                     self.selectPackage("kernel-smp-devel")
-             
-         if not foundkernel:
--            log.info("selected kernel package for kernel")
-+            log.info("selected kernel-grsecurity package for kernel")
-             self.ayum.install(po=kpkg)
-             if len(self.ayum.tsInfo.matchNaevr(name="gcc")) > 0:
-                 log.debug("selecting kernel-devel")
-@@ -1028,7 +1028,7 @@
-         kernelVersions = []
- 
-         # nick is used to generate the lilo name
--        for (ktag, nick) in [ ('kernel-smp', 'smp'),
-+        for (ktag, nick) in [ ('kernel-grsecurity-smp', 'smp'),
-                               ('kernel-xen0', 'xen0'),
-                               ('kernel-xenU', 'xenU') ]:
-             tag = ktag.rsplit('-', 1)[1]
-@@ -1036,7 +1036,7 @@
-                 version = ( tsmbr.version + '-' + tsmbr.release + tag)
-                 kernelVersions.append((version, nick))
- 
--        for tsmbr in self.ayum.tsInfo.matchNaevr(name='kernel'):
-+        for tsmbr in self.ayum.tsInfo.matchNaevr(name='kernel-grsecurity'):
-             version = ( tsmbr.version + '-' + tsmbr.release)
-             kernelVersions.append((version, 'up'))
- 
---- anaconda-11.0.5/bootloader.py~	2006-01-31 18:34:46.000000000 +0200
-+++ anaconda-11.0.5/bootloader.py	2006-05-25 00:14:22.269017091 +0300
-@@ -145,7 +145,7 @@
-         return
- 
-     plainLabelUsed = 0
--    defkern = "kernel"
-+    defkern = "kernel-grsecurity"
-     for (version, nick) in backend.kernelVersionList():
- 	if plainLabelUsed:
-             kernelList.append(("%s-%s" %(kernelLabel, nick),
-@@ -156,7 +156,7 @@
-             if nick in ("hypervisor", "guest"): # XXX: *sigh* inconsistent
-                 defkern = "kernel-xen-%s" %(nick,)
-             elif nick != "up":
--                defkern = "kernel-%s" %(nick,)
-+                defkern = "kernel-grsecurity-%s" %(nick,)
- 	    plainLabelUsed = 1
- 
-     f = open(instRoot + "/etc/sysconfig/kernel", "w+")
