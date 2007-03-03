@@ -1,4 +1,6 @@
 # TODO
+# - repodata is searched from PLD and PLD/RPMS paths, so go figure
+# - code poldek backend (python-poldek pkg exists!)
 # - kill /mnt/runtime symlink hacks (leave the host alone!)
 # - 01:20:59 ERROR   : lokkit run failed: /usr/sbin/lokkit can not be run
 # - lrwxrwxrwx  1 root root     11 Aug 31 04:21 menu.lst -> ./grub.conf (DEAD LINK)
@@ -6,13 +8,13 @@
 # - can't find font latcyrheb
 #  LANG="en_US.UTF-8"
 #  SYSFONT="latarcyrheb-sun16"
-# - sysconfig/timezone
+# - pldize sysconfig/timezone
 # - yuminstaller downloads all packages twice
 #  1156976072.958    317 192.168.2.3 TCP_MISS/200 209182 GET http://distrib/pld/dists/ac/PLD/i686/PLD/RPMS/sed-4.1.5-2.i686.rpm - DIRECT/x.x.x.x application/x-rpm
 #  1156976073.808    701 192.168.2.3 TCP_HIT/200 209188 GET http://distrib/pld/dists/ac/PLD/i686/PLD/RPMS/sed-4.1.5-2.i686.rpm - NONE/- application/x-rpm
-# - network config files are not pld-style
+# - network config files are not pld-style nor even path
 # - lvm2-initrd should be installed
-# - /etc/fstab
+# - pldize /etc/fstab
 # - /etc/modprobe.conf for geninitrd
 # - gui installer packages selector:
 #Traceback (most recent call last):
