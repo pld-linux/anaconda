@@ -70,7 +70,7 @@ Patch12:	%{name}-x11.patch
 Patch13:	%{name}-installclasses.patch
 Patch14:	%{name}-release_notes_viewer_gui.patch
 Patch15:	%{name}-hosttree.patch
-URL:		http://fedora.redhat.com/projects/anaconda-installer/
+URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	bzip2-devel
 BuildRequires:	device-mapper-static >= 1.01.05
 BuildRequires:	e2fsprogs-devel
