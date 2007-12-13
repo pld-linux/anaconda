@@ -1,18 +1,18 @@
 --- anaconda-11.2.0.24.org/product.py	2006-05-08 22:22:44.000000000 +0200
 +++ anaconda-11.2.0.24/product.py	2007-02-20 19:14:33.134623000 +0100
-@@ -23,10 +23,11 @@
+@@ -23,11 +23,11 @@
      path = None
      
  productStamp = ""
 -productName = "anaconda"
 -productVersion = "bluesky"
 -productPath = "anaconda"
--bugUrl = "your distribution provided bug reporting tool."
 +productName = "PLD Linux Distribution"
 +productVersion = "3.0 (Th)"
 +productPath = "PLD"
+ productArch = None
+-bugUrl = "your distribution provided bug reporting tool."
 +bugUrl = "http://bugs.pld-linux.org/"
-+
  
  if path is not None:
      f = open(path, "r")

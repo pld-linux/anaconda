@@ -41,12 +41,12 @@
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
-Version:	11.2.0.24
+Version:	11.4.0.8
 Release:	0.1
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
-# Source0-md5:	2e6fb1206a209af5f13181670c882819
+# Source0-md5:	fc38608dae09406ba89c85ed83bd5f43
 Source1:	%{name}-mk-images
 Source2:	%{name}-upd-instroot
 Source3:	%{name}-mk-images.i386
@@ -55,7 +55,7 @@ Source5:	%{name}-installclass-pld.py
 Source6:	%{name}-splash.png
 # Source6-md5:	6b38a868585adfd3a96a4ad16973c1f8
 Patch0:		%{name}-pld.patch
-Patch1:		%{name}-BUS_XEN.patch
+#Patch1:		%{name}-BUS_XEN.patch
 Patch2:		%{name}-vserver-proc.patch
 Patch3:		%{name}-pkgorder.patch
 Patch4:		%{name}-errorhandling.patch
@@ -66,7 +66,7 @@ Patch8:		%{name}-kernel.patch
 Patch9:		%{name}-optflags.patch
 Patch10:	%{name}-network.patch
 Patch11:	%{name}-branding.patch
-Patch12:	%{name}-x11.patch
+#Patch12:	%{name}-x11.patch
 Patch13:	%{name}-installclasses.patch
 Patch14:	%{name}-release_notes_viewer_gui.patch
 Patch15:	%{name}-hosttree.patch
@@ -200,7 +200,7 @@ Kod źródłowy Anacondy do celów diagnostycznych.
 %setup -q
 # looks obsolete
 #%patch0 -p1
-%patch1 -p1
+#%patch1 -p1
 #%patch2 -p1
 %patch3 -p1
 # obsolete, all parts merged
@@ -214,7 +214,7 @@ Kod źródłowy Anacondy do celów diagnostycznych.
 # obsolete, already merged
 # %patch10 -p1
 %patch11 -p1
-%patch12 -p1
+#%patch12 -p1
 #?
 #%patch13 -p1
 #?

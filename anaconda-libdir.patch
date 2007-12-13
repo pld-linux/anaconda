@@ -110,18 +110,6 @@ diff -ur anaconda-11.2.0.24/command-stubs/mknod-stub anaconda-11.2.0.24/command-
  import isys
  import string
  import stat
-diff -ur anaconda-11.2.0.24/command-stubs/pump-stub anaconda-11.2.0.24/command-stubs/pump-stub
---- anaconda-11.2.0.24/command-stubs/pump-stub	2004-01-23 05:01:21.000000000 +0100
-+++ anaconda-11.2.0.24/command-stubs/pump-stub	2007-02-20 18:19:06.622623000 +0100
-@@ -7,7 +7,7 @@
- if (os.path.exists('isys')):
-     sys.path.append('isys')
- 
--sys.path.append('/usr/lib/anaconda')
-+sys.path.append('/usr/%s/anaconda' % sys.lib)
- 
- import isys
- from sys import argv
 diff -ur anaconda-11.2.0.24/command-stubs/raidstart-stub anaconda-11.2.0.24/command-stubs/raidstart-stub
 --- anaconda-11.2.0.24/command-stubs/raidstart-stub	2006-03-28 18:49:14.000000000 +0200
 +++ anaconda-11.2.0.24/command-stubs/raidstart-stub	2007-02-20 18:19:36.002623000 +0100
