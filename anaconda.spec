@@ -101,7 +101,6 @@ Requires:	device-mapper >= 1.01.05
 Requires:	dosfstools
 Requires:	e2fsprogs
 Requires:	glibc-localedb-all
-Requires:	grubby
 Requires:	hfsutils
 Requires:	jfsutils
 Requires:	kudzu >= 1.2.34.3-1.1
