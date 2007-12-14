@@ -55,7 +55,6 @@ Source5:	%{name}-installclass-pld.py
 Source6:	%{name}-splash.png
 # Source6-md5:	6b38a868585adfd3a96a4ad16973c1f8
 Patch0:		%{name}-pld.patch
-#Patch1:		%{name}-BUS_XEN.patch
 Patch2:		%{name}-vserver-proc.patch
 Patch3:		%{name}-pkgorder.patch
 Patch4:		%{name}-errorhandling.patch
@@ -66,10 +65,10 @@ Patch8:		%{name}-kernel.patch
 Patch9:		%{name}-optflags.patch
 Patch10:	%{name}-network.patch
 Patch11:	%{name}-branding.patch
-#Patch12:	%{name}-x11.patch
 Patch13:	%{name}-installclasses.patch
 Patch14:	%{name}-release_notes_viewer_gui.patch
 Patch15:	%{name}-hosttree.patch
+Patch16:	%{name}-popt.patch
 URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	bzip2-devel
 BuildRequires:	device-mapper-static >= 1.01.05
@@ -78,15 +77,17 @@ BuildRequires:	gettext-devel >= 0.11
 BuildRequires:	glib2-static
 BuildRequires:	glibc-static
 BuildRequires:	gtk+2-devel
-BuildRequires:	kudzu-devel >= 1.2.0
+BuildRequires:	isomd5sum-devel
+BuildRequires:	kudzu-devel >= 1.2.68
+BuildRequires:	libdhcp-static
 BuildRequires:	libselinux-static >= 1.6
 BuildRequires:	libsepol-static
 BuildRequires:	newt-static
 BuildRequires:	popt-static
 BuildRequires:	libnl-static
-BuildRequires:  libdhcp4client-devel
+BuildRequires:  libdhcp4client-static
 BuildRequires:	libdhcp6client-static
-BuildRequires:	libdhcp-static
+BuildRequires:	libdhcp-devel
 BuildRequires:	python-devel
 BuildRequires:	python-rhpl
 BuildRequires:	python-rpm
@@ -107,6 +108,7 @@ Requires:	kudzu >= 1.2.34.3-1.1
 Requires:	lvm2
 Requires:	mdadm
 Requires:	python-booty >= 0.71-0.6
+Requires:	python-dbus
 Requires:	python-devel-tools
 Requires:	python-kickstart
 Requires:	python-libxml2
@@ -200,7 +202,6 @@ Kod źródłowy Anacondy do celów diagnostycznych.
 %setup -q
 # looks obsolete
 #%patch0 -p1
-#%patch1 -p1
 #%patch2 -p1
 %patch3 -p1
 # obsolete, all parts merged
@@ -214,13 +215,13 @@ Kod źródłowy Anacondy do celów diagnostycznych.
 # obsolete, already merged
 # %patch10 -p1
 %patch11 -p1
-#%patch12 -p1
 #?
 #%patch13 -p1
 #?
 #%patch14 -p1
 # does it make any harm?
 #%patch15 -p1
+%patch16 -p1
 
 rm -f po/no.po
 mv -f po/{eu_ES,eu}.po
@@ -283,7 +284,7 @@ cp -a loader2/keymaps-x86_64 $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
 %find_lang %{name}
 
 # hack so py_postclean would preserve it
-install $RPM_BUILD_ROOT%{_libdir}/anaconda/iw/release_notes{.py,}
+#install $RPM_BUILD_ROOT%{_libdir}/anaconda/iw/release_notes{.py,}
 
 %{!?debug:%py_postclean %{_libdir}/anaconda}
 
@@ -294,7 +295,13 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc docs/*
 %{_sysconfdir}/keymaps.gz
+%{_sysconfdir}/security/console.apps/liveinst
+%config(noreplace) %verify(not md5 mtime size) /etc/pam.d/liveinst
+%attr(755,root,root) %{_bindir}/liveinst
 %attr(755,root,root) %{_sbindir}/anaconda
+%attr(755,root,root) %{_sbindir}/gptsync
+%attr(755,root,root) %{_sbindir}/liveinst
+%attr(755,root,root) %{_sbindir}/showpart
 %dir %{_libdir}/anaconda
 %{_libdir}/anaconda/*.py[co]
 %exclude %{_libdir}/anaconda/xsetup.py[co]
@@ -304,14 +311,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/anaconda/textw/*.py[co]
 %{_libdir}/anaconda/lang-names
 %{_libdir}/anaconda/lang-table
-%{_libdir}/anaconda/lang-table-kon
 %attr(755,root,root) %{_libdir}/anaconda/_isys.so
 
 %files gui
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/mini-wm
-%attr(755,root,root) %{_libdir}/anaconda/iw/release_notes
 %attr(755,root,root) %{_libdir}/anaconda/xutils.so
+%{_desktopdir}/liveinst.desktop
 %{_libdir}/anaconda/xsetup.py[co]
 %dir %{_libdir}/anaconda/iw
 %{_libdir}/anaconda/iw/*.py[co]
@@ -338,34 +344,34 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/anaconda-runtime/boot/param.msg
 %{_libdir}/anaconda-runtime/boot/rescue.msg
 %attr(755,root,root) %{_libdir}/anaconda-runtime/buildinstall
-%attr(755,root,root) %{_libdir}/anaconda-runtime/checkisomd5
 %attr(755,root,root) %{_libdir}/anaconda-runtime/filtermoddeps
 %attr(755,root,root) %{_libdir}/anaconda-runtime/fixmtime.py
+%attr(755,root,root) %{_libdir}/anaconda-runtime/genmodinfo
 %attr(755,root,root) %{_libdir}/anaconda-runtime/getkeymaps
-%attr(755,root,root) %{_libdir}/anaconda-runtime/implantisomd5
 %{_libdir}/anaconda-runtime/keymaps-override-*
 %attr(755,root,root) %{_libdir}/anaconda-runtime/libunicode-lite.so.1
 %dir %{_libdir}/anaconda-runtime/loader
 %attr(755,root,root) %{_libdir}/anaconda-runtime/loader/init
 %attr(755,root,root) %{_libdir}/anaconda-runtime/loader/loader
 %{_libdir}/anaconda-runtime/loader/loader.tr
-%{_libdir}/anaconda-runtime/loader/module-info
 %{_libdir}/anaconda-runtime/loader/unicode-linedraw-chars.txt
 %attr(755,root,root) %{_libdir}/anaconda-runtime/makestamp.py
+%attr(755,root,root) %{_libdir}/anaconda-runtime/maketreeinfo.py
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mapshdr
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images
+%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.alpha
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.i386
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.ia64
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.ppc
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.s390
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.x86
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.i386
+%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.ia64
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.ppc
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.x86_64
 %attr(755,root,root) %{_libdir}/anaconda-runtime/moddeps
 %attr(755,root,root) %{_libdir}/anaconda-runtime/modlist
 %attr(755,root,root) %{_libdir}/anaconda-runtime/pkgorder
-%attr(755,root,root) %{_libdir}/anaconda-runtime/pyisomd5sum.so
 %attr(755,root,root) %{_libdir}/anaconda-runtime/pyrc.py
 %attr(755,root,root) %{_libdir}/anaconda-runtime/readmap
 %attr(755,root,root) %{_libdir}/anaconda-runtime/scrubtree
@@ -374,4 +380,5 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/anaconda-runtime/trimmodalias
 %attr(755,root,root) %{_libdir}/anaconda-runtime/trimpciids
 %attr(755,root,root) %{_libdir}/anaconda-runtime/upd-instroot
+%attr(755,root,root) %{_libdir}/anaconda-runtime/upd-updates
 %attr(755,root,root) %{_libdir}/anaconda-runtime/yumcache
