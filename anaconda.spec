@@ -85,7 +85,7 @@ BuildRequires:	libsepol-static
 BuildRequires:	newt-static
 BuildRequires:	popt-static
 BuildRequires:	libnl-static
-BuildRequires:  libdhcp4client-static
+BuildRequires:	libdhcp4client-static
 BuildRequires:	libdhcp6client-static
 BuildRequires:	libdhcp-devel
 BuildRequires:	python-devel
