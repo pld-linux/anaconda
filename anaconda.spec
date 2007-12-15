@@ -79,15 +79,15 @@ BuildRequires:	glibc-static
 BuildRequires:	gtk+2-devel
 BuildRequires:	isomd5sum-devel
 BuildRequires:	kudzu-devel >= 1.2.68
+BuildRequires:	libdhcp-devel
 BuildRequires:	libdhcp-static
+BuildRequires:	libdhcp4client-static
+BuildRequires:	libdhcp6client-static
+BuildRequires:	libnl-static
 BuildRequires:	libselinux-static >= 1.6
 BuildRequires:	libsepol-static
 BuildRequires:	newt-static
 BuildRequires:	popt-static
-BuildRequires:	libnl-static
-BuildRequires:	libdhcp4client-static
-BuildRequires:	libdhcp6client-static
-BuildRequires:	libdhcp-devel
 BuildRequires:	python-devel
 BuildRequires:	python-rhpl
 BuildRequires:	python-rpm
@@ -101,6 +101,7 @@ Requires:	device-mapper >= 1.01.05
 Requires:	dosfstools
 Requires:	e2fsprogs
 Requires:	glibc-localedb-all
+Requires:	grubby
 Requires:	hfsutils
 Requires:	jfsutils
 Requires:	kudzu >= 1.2.34.3-1.1
@@ -294,7 +295,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc docs/*
 %{_sysconfdir}/keymaps.gz
-%{_sysconfdir}/security/console.apps/liveinst
+/etc/security/console.apps/liveinst
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/liveinst
 %attr(755,root,root) %{_bindir}/liveinst
 %attr(755,root,root) %{_sbindir}/anaconda
