@@ -112,6 +112,7 @@ Requires:	python-booty >= 0.71-0.6
 Requires:	python-dbus
 Requires:	python-devel-tools
 Requires:	python-kickstart >= 1.23
+Requires:	python-libuser
 Requires:	python-libxml2
 Requires:	python-parted
 Requires:	python-rhpl >= 0.176-1.2
