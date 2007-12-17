@@ -97,11 +97,13 @@ BuildRequires:	sed >= 4.0
 BuildRequires:	slang-static
 BuildRequires:	zlib-static
 Requires:	/etc/pld-release
+Requires:	bdevid
 Requires:	device-mapper >= 1.01.05
 Requires:	dosfstools
 Requires:	e2fsprogs
 Requires:	glibc-localedb-all
 Requires:	grubby
+Requires:	hal
 Requires:	hfsutils
 Requires:	jfsutils
 Requires:	kudzu >= 1.2.34.3-1.1
