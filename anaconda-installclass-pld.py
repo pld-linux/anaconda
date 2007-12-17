@@ -75,7 +75,7 @@ class InstallClass(BaseInstallClass):
         dispatch = anaconda.dispatch
 	BaseInstallClass.setSteps(self, anaconda);
 	dispatch.skipStep("partition")
-	dispatch.skipStep("regkey", skip = 0)        
+	dispatch.skipStep("regkey", skip = 1)
 
     # for rhel, we're putting the metadata under productpath
     def getPackagePaths(self, uri):
