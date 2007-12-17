@@ -107,6 +107,7 @@ Requires:	jfsutils
 Requires:	kudzu >= 1.2.34.3-1.1
 Requires:	lvm2
 Requires:	mdadm
+Requires:	python-bdevid
 Requires:	python-booty >= 0.71-0.6
 Requires:	python-dbus
 Requires:	python-devel-tools
