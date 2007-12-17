@@ -116,6 +116,7 @@ Requires:	python-libxml2
 Requires:	python-parted
 Requires:	python-rhpl >= 0.176-1.2
 Requires:	python-rpm >= 4.2-0.61
+Requires:	python-selinux
 Requires:	python-snack
 Requires:	python-urlgrabber >= 2.9.8
 Requires:	reiserfsprogs
