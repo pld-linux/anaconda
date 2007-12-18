@@ -41,12 +41,12 @@
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
-Version:	11.4.0.8
+Version:	11.4.0.10
 Release:	0.1
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
-# Source0-md5:	fc38608dae09406ba89c85ed83bd5f43
+# Source0-md5:	875574321cf9795f853db61fb05ed7ff
 Source1:	%{name}-mk-images
 Source2:	%{name}-upd-instroot
 Source3:	%{name}-mk-images.i386
@@ -123,6 +123,7 @@ Requires:	python-selinux
 Requires:	python-snack
 Requires:	python-urlgrabber >= 2.9.8
 Requires:	reiserfsprogs
+Requires:	system-config-date >= 1.9.17
 Requires:	xfsprogs
 Requires:	yum >= 2.5.1-3
 %ifnarch s390 s390x
