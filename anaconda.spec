@@ -81,7 +81,7 @@ BuildRequires:	isomd5sum-devel
 BuildRequires:	kudzu-devel >= 1.2.68
 BuildRequires:	libdhcp-devel
 BuildRequires:	libdhcp-static
-BuildRequires:	libdhcp4client-static
+BuildRequires:	libdhcp4client-devel
 BuildRequires:	libdhcp6client-static
 BuildRequires:	libnl-static
 BuildRequires:	libselinux-static >= 1.6
