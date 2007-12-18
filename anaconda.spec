@@ -109,15 +109,15 @@ Requires:	jfsutils
 Requires:	kudzu >= 1.2.34.3-1.1
 Requires:	lvm2
 Requires:	mdadm
-Requires:	python-bdevid
-Requires:	python-booty >= 0.71-0.6
+Requires:	python-bdevid >= 6.0.24
+Requires:	python-booty >= 0.93
 Requires:	python-dbus
 Requires:	python-devel-tools
 Requires:	python-kickstart >= 1.23
 Requires:	python-libuser
 Requires:	python-libxml2
-Requires:	python-parted
-Requires:	python-rhpl >= 0.176-1.2
+Requires:	python-parted >= 1.8.9
+Requires:	python-rhpl >= 0.212
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-selinux
 Requires:	python-snack
