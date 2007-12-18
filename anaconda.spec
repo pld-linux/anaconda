@@ -153,7 +153,7 @@ Requires:	system-config-keyboard
 Requires:	system-logos
 Requires:	vnc-utils
 %ifnarch s390 s390x ppc64
-Requires:	python-rhpxl >= 0.18-0.9
+Requires:	python-rhpxl >= 0.25
 %endif
 
 %description gui
