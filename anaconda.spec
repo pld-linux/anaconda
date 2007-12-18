@@ -152,6 +152,7 @@ Requires:	python-gnome-canvas
 Requires:	system-config-date
 Requires:	system-config-keyboard
 Requires:	system-logos
+Requires:	vnc-server
 Requires:	vnc-utils
 %ifnarch s390 s390x ppc64
 Requires:	python-rhpxl >= 0.25
@@ -294,6 +295,8 @@ cp -a loader2/keymaps-x86_64 $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
 
 %{!?debug:%py_postclean %{_libdir}/anaconda}
 
+cp %{SOURCE5} $RPM_BUILD_ROOT/%{_libdir}/anaconda/installclasses/pld.py
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -313,6 +316,7 @@ rm -rf $RPM_BUILD_ROOT
 %exclude %{_libdir}/anaconda/xsetup.py[co]
 %dir %{_libdir}/anaconda/installclasses
 %{_libdir}/anaconda/installclasses/*.py[co]
+%{_libdir}/anaconda/installclasses/*.py
 %dir %{_libdir}/anaconda/textw
 %{_libdir}/anaconda/textw/*.py[co]
 %{_libdir}/anaconda/lang-names
