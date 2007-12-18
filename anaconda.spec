@@ -149,6 +149,7 @@ Requires:	X11-Xserver
 Requires:	X11-fonts
 Requires:	pirut
 Requires:	python-gnome-canvas
+Requires:	python-pygtk-glade
 Requires:	system-config-date
 Requires:	system-config-keyboard
 Requires:	system-logos
