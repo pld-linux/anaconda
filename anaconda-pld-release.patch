@@ -93,14 +93,3 @@ diff -ur anaconda-11.2.0.24.org/yuminstall.py anaconda-11.2.0.24/yuminstall.py
              n, a, e, v, r = pkgtup
              if supportedUpgradeVersion <= 0:
                  val = rpmUtils.miscutils.compareEVR((None, '3', '1'),
---- anaconda-11.4.0.8/docs/command-line.txt~	2007-12-13 22:09:32.000000000 +0100
-+++ anaconda-11.4.0.8/docs/command-line.txt	2007-12-13 22:10:12.367665081 +0100
-@@ -319,7 +319,7 @@
- 
-    upgradeany
- 
--     o Don't require an /etc/redhat-release that matches the expected syntax
-+     o Don't require an /etc/pld-release that matches the expected syntax
-        to upgrade.
- 
-    usefbx

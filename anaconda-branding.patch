@@ -3,10 +3,11 @@
 @@ -23,11 +23,11 @@
      path = None
      
- productStamp = ""
+-productStamp = ""
 -productName = "anaconda"
 -productVersion = "bluesky"
 -productPath = "anaconda"
++productStamp = "pld"
 +productName = "PLD Linux Distribution"
 +productVersion = "3.0 (Th)"
 +productPath = "PLD"
