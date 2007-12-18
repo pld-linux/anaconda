@@ -28,6 +28,7 @@ class InstallClass(BaseInstallClass):
     sortPriority = 10000
     allowExtraRepos = True
 
+    repopaths = { "base": ["PLD/i686/RPMS", "PLD/noarch/RPMS"], }
     tasks = [
         (N_("GNOME Desktop"), [
             "gnome",
@@ -75,7 +76,7 @@ class InstallClass(BaseInstallClass):
         dispatch = anaconda.dispatch
 	BaseInstallClass.setSteps(self, anaconda);
 	dispatch.skipStep("partition")
-	dispatch.skipStep("regkey", skip = 1)
+	dispatch.skipStep("regkey")
 
     # for rhel, we're putting the metadata under productpath
     def getPackagePaths(self, uri):
