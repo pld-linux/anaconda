@@ -60,3 +60,14 @@
                                     {NULL, NULL, 0 }};
  
      devs = getDevices(DEVICE_NETWORK);
+--- anaconda-11.4.1.27/yuminstall.py~	2008-08-11 21:02:14.000000000 +0200
++++ anaconda-11.4.1.27/yuminstall.py	2008-08-27 01:50:47.849163064 +0200
+@@ -1673,8 +1673,6 @@
+                 anaconda.id.desktop.setDefaultRunLevel(5)
+                 break
+ 
+-        for repo in self.ayum.repos.listEnabled():
+-            repo.dirCleanup()
+ 
+         # expire yum caches on upgrade
+         if anaconda.id.getUpgrade() and os.path.exists("%s/var/cache/yum" %(anaconda.rootPath,)):

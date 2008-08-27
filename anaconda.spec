@@ -126,6 +126,8 @@ Requires:	python-snack
 Requires:	python-urlgrabber >= 2.9.8
 Requires:	reiserfsprogs
 Requires:	system-config-date >= 1.9.17
+Requires:	tzdata
+Requires:	util-linux-ng
 Requires:	xfsprogs
 Requires:	yum >= 2.5.1-3
 %ifnarch s390 s390x
