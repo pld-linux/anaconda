@@ -79,7 +79,6 @@ BuildRequires:	glib2-static
 BuildRequires:	glibc-static
 BuildRequires:	gtk+2-devel
 BuildRequires:	isomd5sum-devel
-BuildRequires:	kudzu-devel >= 1.2.68
 BuildRequires:	libdhcp-devel
 BuildRequires:	libdhcp-static
 BuildRequires:	libdhcp4client-devel
@@ -103,23 +102,24 @@ Requires:	bdevid
 Requires:	device-mapper >= 1.01.05
 Requires:	dosfstools
 Requires:	e2fsprogs
-Requires:	glibc-localedb-all
+#Requires:	glibc-localedb-all
 Requires:	grubby
 Requires:	hal
 Requires:	hfsutils
 Requires:	jfsutils
-Requires:	kudzu >= 1.2.34.3-1.1
 Requires:	lvm2
 Requires:	mdadm
 Requires:	python-bdevid >= 6.0.24
 Requires:	python-booty >= 0.93
+Requires:	python-cracklib
 Requires:	python-dbus
 Requires:	python-devel-tools
+Requires:	python-iniparse
 Requires:	python-kickstart >= 1.42
 Requires:	python-libuser
 Requires:	python-libxml2
 Requires:	python-parted >= 1.8.9
-Requires:	python-rhpl >= 0.212
+Requires:	python-rhpl >= 0.216
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-selinux
 Requires:	python-snack

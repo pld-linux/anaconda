@@ -1,7 +1,6 @@
 from installclass import BaseInstallClass
-import rhpl
-from rhpl.translate import N_
 from constants import *
+from filer import *
 from flags import flags
 import os
 import iutil
@@ -12,6 +11,9 @@ try:
 except ImportError:
     instnum = None
 
+import gettext
+_ = lambda x: gettext.ldgettext("anaconda", x)
+
 import logging
 log = logging.getLogger("anaconda")
 
@@ -21,15 +23,16 @@ class InstallClass(BaseInstallClass):
     id = "pld"
     name = N_("PLD Linux")
     pixmap = "custom.png"
-    _description = N_("Select this installation type to gain complete "
-		     "control over the installation process, including "
-		     "software package selection and partitioning.")
+    _description = N_("The default installation of %s includes a set of "
+                     "software applicable for general internet usage. "
+                     "What additional tasks would you like your system "
+                     "to include support for?")
     _descriptionFields = (productName,)
     sortPriority = 10000
     allowExtraRepos = True
 
     repopaths = { "base": ["PLD/i686/RPMS", "PLD/noarch/RPMS"], }
-    tasks = [
+    taskMap = {'client': [
         (N_("GNOME Desktop"), [
             "gnome",
             "gnome_complete",
@@ -59,7 +62,7 @@ class InstallClass(BaseInstallClass):
         (N_("Java Development Tools"), [
             "java"
         ]),
-    ]
+    ]}
 
     def setInstallData(self, anaconda):
 	BaseInstallClass.setInstallData(self, anaconda)
@@ -156,7 +159,7 @@ class InstallClass(BaseInstallClass):
 
         log.info("repopaths is %s" %(self.repopaths,))
 
-    def getBackend(self, methodstr):
+    def getBackend(self):
         return yuminstall.YumBackend
 
     def __init__(self, expert):
