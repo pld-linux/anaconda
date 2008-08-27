@@ -14,35 +14,23 @@
 diff -ur anaconda-11.2.0.24/anaconda anaconda-11.2.0.24/anaconda
 --- anaconda-11.2.0.24/anaconda	2007-02-01 23:55:38.000000000 +0100
 +++ anaconda-11.2.0.24/anaconda	2007-02-20 18:15:06.726623000 +0100
-@@ -147,17 +142,7 @@
- 			   "/tmp/updates/%s/%s" %(pypkg, f))
+@@ -358,19 +358,19 @@
+                 break
  
- 	# get the libdir.  *sigh*
--	if os.access("/usr/lib64/python%s/site-packages/%s" %(pyver, pypkg),
--		     os.X_OK):
--	    libdir = "lib64"
--        elif os.access("/usr/lib/python%s/site-packages/%s" %(pyver, pypkg),
--                       os.X_OK):
--	    libdir = "lib"
--	else:
--            # If the directory doesn't exist, there's nothing to link over.
--            # This happens if we forgot to include one of the above packages
--            # in the image, for instance.
--            continue
-+	libdir = sys.lib
- 
- 	if os.access("/tmp/updates/%s" %(pypkg,), os.X_OK):
- 	    for f in os.listdir("/usr/%s/python%s/site-packages/%s" %(libdir,
-@@ -303,15 +288,15 @@
-         sys.path.append('textw')
-         sys.path.append('iw')
-     else:
--        sys.path.append('/usr/lib/anaconda')
--        sys.path.append('/usr/lib/anaconda/textw')
--        sys.path.append('/usr/lib/anaconda/iw')
-+        sys.path.append('/usr/%s/anaconda' % sys.lib)
-+        sys.path.append('/usr/%s/anaconda/textw' % sys.lib)
-+        sys.path.append('/usr/%s/anaconda/iw' % sys.lib)
+         if haveUpdates:
+-            sys.path.insert(ndx+1, '/usr/lib/anaconda')
+-            sys.path.insert(ndx+2, '/usr/lib/anaconda/textw')
+-            sys.path.insert(ndx+3, '/usr/lib/anaconda/iw')
++            sys.path.insert(ndx+1, '/usr/%s/anaconda' % sys.lib)
++            sys.path.insert(ndx+2, '/usr/%s/anaconda/textw' % sys.lib)
++            sys.path.insert(ndx+3, '/usr/%s/anaconda/iw' % sys.lib)
+         else:
+-            sys.path.insert(0, '/usr/lib/anaconda')
+-            sys.path.insert(1, '/usr/lib/anaconda/textw')
+-            sys.path.insert(2, '/usr/lib/anaconda/iw')
++            sys.path.insert(0, '/usr/%s/anaconda' % sys.lib)
++            sys.path.insert(1, '/usr/%s/anaconda/textw' % sys.lib)
++            sys.path.insert(2, '/usr/%s/anaconda/iw' % sys.lib)
  
      if (os.path.exists('booty')):
          sys.path.append('booty')
@@ -53,10 +41,10 @@ diff -ur anaconda-11.2.0.24/anaconda anaconda-11.2.0.24/anaconda
  
      sys.path.append('/usr/share/system-config-date')
  
-@@ -390,7 +375,7 @@
+@@ -446,7 +446,7 @@
+     child = os.fork()
      if child == 0:
-         for p in ('/mnt/source/RHupdates/pyrc.py', \
-                 '/tmp/updates/pyrc.py', \
+         for p in ('/tmp/updates/pyrc.py', \
 -                '/usr/lib/anaconda-runtime/pyrc.py'):
 +                '/usr/%s/anaconda-runtime/pyrc.py' % sys.lib):
              if os.access(p, os.R_OK|os.X_OK):
@@ -179,9 +167,9 @@ diff -ur anaconda-11.2.0.24/language.py anaconda-11.2.0.24/language.py
              if os.access(path, os.R_OK):
                  f = open(path, 'r')
 @@ -72,7 +73,7 @@
+         
          # nick -> (name, short name, font, keyboard, timezone) mapping
-         search = ('lang-table', '/tmp/updates/lang-table',
-                   '/mnt/source/RHupdates/lang-table', '/etc/lang-table',
+         search = ('lang-table', '/tmp/updates/lang-table', '/etc/lang-table',
 -                  '/usr/lib/anaconda/lang-table')
 +                  '/usr/%s/anaconda/lang-table' % sys.lib)
          for path in search:
@@ -199,18 +187,3 @@ diff -ur anaconda-11.2.0.24/loader2/loader.c anaconda-11.2.0.24/loader2/loader.c
          setenv("LD_LIBRARY_PATH", LIBPATH, 1);
          setenv("LANG", "C", 1);
          
-diff -ur anaconda-11.2.0.24/scripts/pkgorder anaconda-11.2.0.24/scripts/pkgorder
---- anaconda-11.2.0.24/scripts/pkgorder	2007-01-30 23:26:15.000000000 +0100
-+++ anaconda-11.2.0.24/scripts/pkgorder	2007-02-20 18:17:08.462623000 +0100
-@@ -18,8 +18,8 @@
- import sys
- import yum
- 
--sys.path.append("/usr/lib/anaconda")
--sys.path.append("/usr/lib/booty")
-+sys.path.append("/usr/%s/anaconda" % sys.lib)
-+sys.path.append("/usr/%s/booty" % sys.lib)
- 
- import anaconda_log
- import logging
-

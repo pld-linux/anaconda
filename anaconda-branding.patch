@@ -1,12 +1,13 @@
 --- anaconda-11.2.0.24.org/product.py	2006-05-08 22:22:44.000000000 +0200
 +++ anaconda-11.2.0.24/product.py	2007-02-20 19:14:33.134623000 +0100
-@@ -23,11 +23,11 @@
+@@ -29,11 +29,11 @@
+ else:
      path = None
-     
+ 
 -productStamp = ""
 -productName = "anaconda"
 -productVersion = "bluesky"
--productPath = "anaconda"
+-productPath = "Packages"
 +productStamp = "pld"
 +productName = "PLD Linux Distribution"
 +productVersion = "3.0 (Th)"
@@ -17,14 +18,3 @@
  
  if path is not None:
      f = open(path, "r")
---- anaconda-11.2.0.24.org/iutil.py	2007-01-15 20:42:54.000000000 +0100
-+++ anaconda-11.2.0.24/iutil.py	2007-02-20 19:14:46.322623000 +0100
-@@ -421,7 +421,7 @@
-     rhpl.arch.canonArch = myarch            
-         
-     f = open("%s/etc/rpm/platform" %(root,), 'w+')
--    f.write("%s-redhat-linux\n" %(myarch,))
-+    f.write("%s-pld-linux\n" %(myarch,))
-     f.close()
- 
-     # FIXME: writing /etc/rpm/macros feels wrong somehow

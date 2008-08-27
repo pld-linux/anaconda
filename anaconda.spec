@@ -41,12 +41,12 @@
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
-Version:	11.4.0.10
+Version:	11.4.1.27
 Release:	0.1
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}-%{version}.tar.bz2
-# Source0-md5:	875574321cf9795f853db61fb05ed7ff
+# Source0-md5:	31614b29612f2a5c6ff87a1eb88224e3
 Source1:	%{name}-mk-images
 Source2:	%{name}-upd-instroot
 Source3:	%{name}-mk-images.i386
@@ -55,20 +55,21 @@ Source5:	%{name}-installclass-pld.py
 Source6:	%{name}-splash.png
 # Source6-md5:	6b38a868585adfd3a96a4ad16973c1f8
 Patch0:		%{name}-pld.patch
+Patch1:		%{name}-warnings.patch
 Patch2:		%{name}-vserver-proc.patch
-Patch3:		%{name}-pkgorder.patch
+#Patch3:		%{name}-pkgorder.patch
 Patch4:		%{name}-errorhandling.patch
 Patch5:		%{name}-libdir.patch
 Patch6:		%{name}-pld-release.patch
 Patch7:		%{name}-timezone.patch
-Patch8:		%{name}-kernel.patch
+#Patch8:		%{name}-kernel.patch
 Patch9:		%{name}-optflags.patch
 Patch10:	%{name}-network.patch
 Patch11:	%{name}-branding.patch
 Patch13:	%{name}-installclasses.patch
 Patch14:	%{name}-release_notes_viewer_gui.patch
 Patch15:	%{name}-hosttree.patch
-Patch16:	%{name}-popt.patch
+#Patch16:	%{name}-popt.patch
 URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	bzip2-devel
 BuildRequires:	device-mapper-static >= 1.01.05
@@ -82,13 +83,14 @@ BuildRequires:	kudzu-devel >= 1.2.68
 BuildRequires:	libdhcp-devel
 BuildRequires:	libdhcp-static
 BuildRequires:	libdhcp4client-devel
-BuildRequires:	libdhcp6client-static
-BuildRequires:	libnl-static
-BuildRequires:	libselinux-static >= 1.6
-BuildRequires:	libsepol-static
+BuildRequires:	libdhcp6client-devel
+BuildRequires:	libnl-devel
+BuildRequires:	libselinux-devel >= 1.6
+BuildRequires:	libsepol-devel
 BuildRequires:	newt-static
 BuildRequires:	popt-static
 BuildRequires:	python-devel
+BuildRequires:	python-kickstart >= 1.42
 BuildRequires:	python-rhpl
 BuildRequires:	python-rpm
 BuildRequires:	rpm-pythonprov
@@ -113,7 +115,7 @@ Requires:	python-bdevid >= 6.0.24
 Requires:	python-booty >= 0.93
 Requires:	python-dbus
 Requires:	python-devel-tools
-Requires:	python-kickstart >= 1.23
+Requires:	python-kickstart >= 1.42
 Requires:	python-libuser
 Requires:	python-libxml2
 Requires:	python-parted >= 1.8.9
@@ -210,14 +212,15 @@ Kod źródłowy Anacondy do celów diagnostycznych.
 %setup -q
 # looks obsolete
 #%patch0 -p1
+%patch1 -p1
 #%patch2 -p1
-%patch3 -p1
+#%patch3 -p1
 # obsolete, all parts merged
 #%patch4 -p1
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
-%patch8 -p1
+#%patch8 -p1
 # fixme
 #%patch9 -p1
 # obsolete, already merged
@@ -229,7 +232,7 @@ Kod źródłowy Anacondy do celów diagnostycznych.
 #%patch14 -p1
 # does it make any harm?
 #%patch15 -p1
-%patch16 -p1
+#%patch16 -p1
 
 rm -f po/no.po
 mv -f po/{eu_ES,eu}.po
@@ -314,7 +317,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/showpart
 %dir %{_libdir}/anaconda
 %{_libdir}/anaconda/*.py[co]
-%exclude %{_libdir}/anaconda/xsetup.py[co]
 %dir %{_libdir}/anaconda/installclasses
 %{_libdir}/anaconda/installclasses/*.py[co]
 %{_libdir}/anaconda/installclasses/*.py
@@ -329,7 +331,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/mini-wm
 %attr(755,root,root) %{_libdir}/anaconda/xutils.so
 %{_desktopdir}/liveinst.desktop
-%{_libdir}/anaconda/xsetup.py[co]
 %dir %{_libdir}/anaconda/iw
 %{_libdir}/anaconda/iw/*.py[co]
 %{_datadir}/anaconda
@@ -348,19 +349,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/anaconda/*-stub
 %dir %{_libdir}/anaconda-runtime
 %dir %{_libdir}/anaconda-runtime/boot
-%attr(755,root,root) %{_libdir}/anaconda-runtime/boot/syslinux.cfg
 %{_libdir}/anaconda-runtime/boot/boot.msg
 %{_libdir}/anaconda-runtime/boot/general.msg
+%{_libdir}/anaconda-runtime/boot/grub.conf
 %{_libdir}/anaconda-runtime/boot/options.msg
 %{_libdir}/anaconda-runtime/boot/param.msg
 %{_libdir}/anaconda-runtime/boot/rescue.msg
+%{_libdir}/anaconda-runtime/boot/syslinux.cfg
 %attr(755,root,root) %{_libdir}/anaconda-runtime/buildinstall
-%attr(755,root,root) %{_libdir}/anaconda-runtime/filtermoddeps
-%attr(755,root,root) %{_libdir}/anaconda-runtime/fixmtime.py
+%attr(755,root,root) %{_libdir}/anaconda-runtime/buildinstall.functions
 %attr(755,root,root) %{_libdir}/anaconda-runtime/genmodinfo
 %attr(755,root,root) %{_libdir}/anaconda-runtime/getkeymaps
 %{_libdir}/anaconda-runtime/keymaps-override-*
-%attr(755,root,root) %{_libdir}/anaconda-runtime/libunicode-lite.so.1
 %dir %{_libdir}/anaconda-runtime/loader
 %attr(755,root,root) %{_libdir}/anaconda-runtime/loader/init
 %attr(755,root,root) %{_libdir}/anaconda-runtime/loader/loader
@@ -373,23 +373,15 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.alpha
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.i386
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.ia64
+%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.efi
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.ppc
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.s390
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.x86
-%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.i386
-%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.ia64
-%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.ppc
-%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-rescueimage.x86_64
-%attr(755,root,root) %{_libdir}/anaconda-runtime/moddeps
 %attr(755,root,root) %{_libdir}/anaconda-runtime/modlist
-%attr(755,root,root) %{_libdir}/anaconda-runtime/pkgorder
 %attr(755,root,root) %{_libdir}/anaconda-runtime/pyrc.py
 %attr(755,root,root) %{_libdir}/anaconda-runtime/readmap
 %attr(755,root,root) %{_libdir}/anaconda-runtime/scrubtree
 %{_libdir}/anaconda-runtime/screenfont-*.gz
-%attr(755,root,root) %{_libdir}/anaconda-runtime/splittree.py
-%attr(755,root,root) %{_libdir}/anaconda-runtime/trimmodalias
 %attr(755,root,root) %{_libdir}/anaconda-runtime/trimpciids
 %attr(755,root,root) %{_libdir}/anaconda-runtime/upd-instroot
 %attr(755,root,root) %{_libdir}/anaconda-runtime/upd-updates
-%attr(755,root,root) %{_libdir}/anaconda-runtime/yumcache

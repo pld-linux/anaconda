@@ -31,28 +31,24 @@ diff -ur anaconda-11.2.0.24.org/iw/timezone_gui.py anaconda-11.2.0.24/iw/timezon
 diff -ur anaconda-11.2.0.24.org/timezone.py anaconda-11.2.0.24/timezone.py
 --- anaconda-11.2.0.24.org/timezone.py	2007-01-17 23:49:50.000000000 +0100
 +++ anaconda-11.2.0.24/timezone.py	2007-02-20 19:07:07.498623000 +0100
-@@ -13,6 +13,7 @@
+@@ -19,6 +19,7 @@
  
  import shutil
  import iutil
 +import string
+ import os
  from flags import flags
  
- import logging
-@@ -44,12 +45,32 @@
+@@ -44,8 +45,29 @@
  
  	f = open(instPath + "/etc/sysconfig/clock", "w")
  
 -	f.write('ZONE="%s"\n' % self.tz)
 +	f.write('# Should the hardware clock be kept in Coordinated Universal Time (instead of local time).\n')
- 	f.write("UTC=%s\n" % bool(self.utc))
 +	f.write('# true means your machine uses epoch 1980 in its hardware clock\n')
- 	f.write("ARC=%s\n" % bool(self.arc))
--
 +	f.write('# true means your machine uses epoch 1900 in its hardware clock\n')
 +	f.write("SRM=false\n")
  	f.close()
- 
 +	# FIXME: solution for timezones like EET
 +	(area, zone) = string.split(self.tz, "/")
 +
@@ -70,7 +66,8 @@ diff -ur anaconda-11.2.0.24.org/timezone.py anaconda-11.2.0.24/timezone.py
 +	f.write('# Name of the time zone for your system.\n')
 +	f.write('TIME_ZONE="%s"\n' % zone)
 +	f.write("\n");
-+
++	f.close()
+ 
      def getTimezoneInfo(self):
  	return (self.tz, self.utc, self.arc)
- 
+
