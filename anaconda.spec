@@ -8,13 +8,15 @@ Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.4.1.%{rel}
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/System
 # http://team.pld-linux.org/~patrys/anaconda.git - origin/pld-branch
 Source0:	%{name}-%{rel}.tar.bz2
 # Source0-md5:	1a3e6c15b9080fef45b53c2a471383ce
 URL:		http://fedoraproject.org/wiki/Anaconda
+# will kill it in the future
+BuildRequires:	curl
 BuildRequires:	device-mapper-static >= 1.01.05
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	gettext-devel >= 0.11
