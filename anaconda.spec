@@ -15,6 +15,7 @@ Group:		Applications/System
 Source0:	%{name}-%{rel}.tar.bz2
 # Source0-md5:	1a3e6c15b9080fef45b53c2a471383ce
 URL:		http://fedoraproject.org/wiki/Anaconda
+BuildRequires:	audit-libs-devel
 # will kill it in the future
 BuildRequires:	curl
 BuildRequires:	device-mapper-devel >= 1.01.05
