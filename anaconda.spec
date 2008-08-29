@@ -1,77 +1,20 @@
 # TODO
-# - repodata is searched from PLD and PLD/RPMS paths, so go figure
 # - code poldek backend (python-poldek pkg exists!)
-# - kill /mnt/runtime symlink hacks (leave the host alone!)
-# - 01:20:59 ERROR   : lokkit run failed: /usr/sbin/lokkit can not be run
-# - lrwxrwxrwx  1 root root     11 Aug 31 04:21 menu.lst -> ./grub.conf (DEAD LINK)
-#   -rw-r--r--  1 root root    551 Aug 31 04:21 menu.lst.rpmsave
-# - can't find font latcyrheb
-#  LANG="en_US.UTF-8"
-#  SYSFONT="latarcyrheb-sun16"
-# - pldize sysconfig/timezone
-# - yuminstaller downloads all packages twice
-#  1156976072.958    317 192.168.2.3 TCP_MISS/200 209182 GET http://distrib/pld/dists/ac/PLD/i686/PLD/RPMS/sed-4.1.5-2.i686.rpm - DIRECT/x.x.x.x application/x-rpm
-#  1156976073.808    701 192.168.2.3 TCP_HIT/200 209188 GET http://distrib/pld/dists/ac/PLD/i686/PLD/RPMS/sed-4.1.5-2.i686.rpm - NONE/- application/x-rpm
-# - network config files are not pld-style nor even path
-# - lvm2-initrd should be installed
 # - pldize /etc/fstab
 # - /etc/modprobe.conf for geninitrd
-# - gui installer packages selector:
-#Traceback (most recent call last):
-#  File "/home/glen/tmp/anaconda-11.0.5-root-glen//usr/lib/anaconda/gui.py", line 954, in nextClicked
-#  File "/home/glen/tmp/anaconda-11.0.5-root-glen//usr/lib/anaconda/gui.py", line 1313, in setScreen
-#  File "/home/glen/tmp/anaconda-11.0.5-root-glen//usr/lib/anaconda/iw/package_gui.py", line 29, in getScreen
-#  File "/usr/share/python2.4/site-packages/pirut/GroupSelector.py", line 410, in doRefresh
-#  File "/usr/share/python2.4/site-packages/pirut/GroupSelector.py", line 407, in populateCategories
-#TypeError: iter should be a GtkTreeIter
-# - definition of anaconda pixmaps: http://www.raimokoski.com/lineox/Distro-definition-dir.txt
 #
-%if 0
-# FC to PLD deps replace rules, extracted from cvs logs
-:%s#libxml2-python#python-libxml2#
-:%s#pyparted#python-parted#
-:%s#booty#python-booty#
-:%s#rhpl#python-rhpl#
-:%s#rhpxl#python-rhpxl#
-:%s#rpm-python#python-rpm#
-:%s#gtk2-devel#gtk+2-devel#
-:%s#pykickstart#python-kickstart#
-:%s#squashfs-tools#squashfs#
-%endif
+%define		rel	200808292136
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
-Version:	11.4.1.27
-Release:	0.1
+Version:	11.4.1.%{rel}
+Release:	1
 License:	GPL
 Group:		Applications/System
-Source0:	%{name}-%{version}.tar.bz2
-# Source0-md5:	31614b29612f2a5c6ff87a1eb88224e3
-Source1:	%{name}-mk-images
-Source2:	%{name}-upd-instroot
-Source3:	%{name}-mk-images.i386
-Source4:	%{name}-scrubtree
-Source5:	%{name}-installclass-pld.py
-Source6:	%{name}-splash.png
-# Source6-md5:	6b38a868585adfd3a96a4ad16973c1f8
-Patch0:		%{name}-pld.patch
-Patch1:		%{name}-warnings.patch
-Patch2:		%{name}-vserver-proc.patch
-#Patch3:		%{name}-pkgorder.patch
-Patch4:		%{name}-errorhandling.patch
-Patch5:		%{name}-libdir.patch
-Patch6:		%{name}-pld-release.patch
-Patch7:		%{name}-timezone.patch
-#Patch8:		%{name}-kernel.patch
-Patch9:		%{name}-optflags.patch
-Patch10:	%{name}-network.patch
-Patch11:	%{name}-branding.patch
-Patch13:	%{name}-installclasses.patch
-Patch14:	%{name}-release_notes_viewer_gui.patch
-Patch15:	%{name}-hosttree.patch
-#Patch16:	%{name}-popt.patch
+# http://team.pld-linux.org/~patrys/anaconda.git - origin/pld-branch
+Source0:	%{name}-%{rel}.tar.bz2
+# Source0-md5:	1a3e6c15b9080fef45b53c2a471383ce
 URL:		http://fedoraproject.org/wiki/Anaconda
-BuildRequires:	bzip2-devel
 BuildRequires:	device-mapper-static >= 1.01.05
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	gettext-devel >= 0.11
@@ -86,8 +29,8 @@ BuildRequires:	libdhcp6client-devel
 BuildRequires:	libnl-devel
 BuildRequires:	libselinux-devel >= 1.6
 BuildRequires:	libsepol-devel
-BuildRequires:	newt-static
-BuildRequires:	popt-static
+BuildRequires:	newt-devel
+BuildRequires:	popt-devel
 BuildRequires:	python-devel
 BuildRequires:	python-kickstart >= 1.42
 BuildRequires:	python-rhpl
@@ -102,7 +45,6 @@ Requires:	bdevid
 Requires:	device-mapper >= 1.01.05
 Requires:	dosfstools
 Requires:	e2fsprogs
-#Requires:	glibc-localedb-all
 Requires:	grubby
 Requires:	hal
 Requires:	hfsutils
@@ -151,17 +93,10 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	X11-OpenGL-core
 Requires:	X11-Xserver
 Requires:	X11-fonts
-Requires:	pirut
 Requires:	python-gnome-canvas
 Requires:	python-pygtk-glade
 Requires:	system-config-date
 Requires:	system-config-keyboard
-Requires:	system-logos
-Requires:	vnc-server
-Requires:	vnc-utils
-%ifnarch s390 s390x ppc64
-Requires:	python-rhpxl >= 0.25
-%endif
 
 %description gui
 Anaconda GUI portion.
@@ -211,41 +146,7 @@ Anaconda sourcecode for debugging purposes.
 Kod źródłowy Anacondy do celów diagnostycznych.
 
 %prep
-%setup -q
-# looks obsolete
-#%patch0 -p1
-%patch1 -p1
-#%patch2 -p1
-#%patch3 -p1
-# obsolete, all parts merged
-#%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-#%patch8 -p1
-# fixme
-#%patch9 -p1
-# obsolete, already merged
-# %patch10 -p1
-%patch11 -p1
-#?
-#%patch13 -p1
-#?
-#%patch14 -p1
-# does it make any harm?
-#%patch15 -p1
-#%patch16 -p1
-
-rm -f po/no.po
-mv -f po/{eu_ES,eu}.po
-
-# we don't want this being visible, neither want we to kill it (the
-# other's aren't valid anyway (outdated probably).
-mv installclasses/fedora.py{,.orig}
-# we want this install class ;)
-cp %{SOURCE5} installclasses/pld.py
-
-sed -i -e 's/$(PYTHON) scripts/python scripts/' Makefile
+%setup -q -n %{name}-%{rel}
 
 %build
 # locale check
@@ -277,12 +178,6 @@ rm -rf $RPM_BUILD_ROOT
 
 install isys/isys.py[co] $RPM_BUILD_ROOT%{_libdir}/anaconda
 
-cp %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images
-cp %{SOURCE2} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/upd-instroot
-cp %{SOURCE3} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/mk-images.i386
-cp %{SOURCE4} $RPM_BUILD_ROOT%{_libdir}/anaconda-runtime/scrubtree
-cp %{SOURCE6} $RPM_BUILD_ROOT%{_datadir}/anaconda/splash.png
-
 # for ./isys/lang.c:isysLoadKeymap()
 %ifarch %{ix86}
 cp -a loader2/keymaps-i386 $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
@@ -296,12 +191,7 @@ cp -a loader2/keymaps-x86_64 $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
 
 %find_lang %{name}
 
-# hack so py_postclean would preserve it
-#install $RPM_BUILD_ROOT%{_libdir}/anaconda/iw/release_notes{.py,}
-
 %{!?debug:%py_postclean %{_libdir}/anaconda}
-
-cp %{SOURCE5} $RPM_BUILD_ROOT/%{_libdir}/anaconda/installclasses/pld.py
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -321,7 +211,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/anaconda/*.py[co]
 %dir %{_libdir}/anaconda/installclasses
 %{_libdir}/anaconda/installclasses/*.py[co]
-%{_libdir}/anaconda/installclasses/*.py
 %dir %{_libdir}/anaconda/textw
 %{_libdir}/anaconda/textw/*.py[co]
 %{_libdir}/anaconda/lang-names
@@ -373,7 +262,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mapshdr
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.alpha
-%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.i386
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.ia64
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.efi
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.ppc
