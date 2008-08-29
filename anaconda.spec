@@ -8,7 +8,7 @@ Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.4.1.%{rel}
-Release:	4
+Release:	5
 License:	GPL
 Group:		Applications/System
 # http://team.pld-linux.org/~patrys/anaconda.git - origin/pld-branch
@@ -17,15 +17,13 @@ Source0:	%{name}-%{rel}.tar.bz2
 URL:		http://fedoraproject.org/wiki/Anaconda
 # will kill it in the future
 BuildRequires:	curl
-BuildRequires:	device-mapper-static >= 1.01.05
+BuildRequires:	device-mapper-devel >= 1.01.05
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	gettext-devel >= 0.11
-BuildRequires:	glib2-static
-BuildRequires:	glibc-static
+BuildRequires:	glib2-devel
 BuildRequires:	gtk+2-devel
 BuildRequires:	isomd5sum-devel
 BuildRequires:	libdhcp-devel
-BuildRequires:	libdhcp-static
 BuildRequires:	libdhcp4client-devel
 BuildRequires:	libdhcp6client-devel
 BuildRequires:	libnl-devel
@@ -40,8 +38,8 @@ BuildRequires:	python-rpm
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.234
 BuildRequires:	sed >= 4.0
-BuildRequires:	slang-static
-BuildRequires:	zlib-static
+BuildRequires:	slang-devel
+BuildRequires:	zlib-devel
 Requires:	/etc/pld-release
 Requires:	bdevid
 Requires:	device-mapper >= 1.01.05
@@ -245,6 +243,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/anaconda-runtime/boot/param.msg
 %{_libdir}/anaconda-runtime/boot/rescue.msg
 %{_libdir}/anaconda-runtime/boot/syslinux.cfg
+%else
+%{_libdir}/anaconda-runtime/boot/bootinfo.txt
+%{_libdir}/anaconda-runtime/boot/magic
+%{_libdir}/anaconda-runtime/boot/mapping
+%{_libdir}/anaconda-runtime/boot/ofboot.b
+%{_libdir}/anaconda-runtime/boot/yaboot.conf.3264
+%{_libdir}/anaconda-runtime/boot/yaboot.conf.in
 %endif
 %attr(755,root,root) %{_libdir}/anaconda-runtime/buildinstall
 %attr(755,root,root) %{_libdir}/anaconda-runtime/buildinstall.functions
