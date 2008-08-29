@@ -8,7 +8,7 @@ Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.4.1.%{rel}
-Release:	3
+Release:	4
 License:	GPL
 Group:		Applications/System
 # http://team.pld-linux.org/~patrys/anaconda.git - origin/pld-branch
@@ -199,9 +199,11 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/liveinst
 %attr(755,root,root) %{_bindir}/liveinst
 %attr(755,root,root) %{_sbindir}/anaconda
-%attr(755,root,root) %{_sbindir}/gptsync
 %attr(755,root,root) %{_sbindir}/liveinst
+%ifnarch ppc
+%attr(755,root,root) %{_sbindir}/gptsync
 %attr(755,root,root) %{_sbindir}/showpart
+%endif
 %dir %{_libdir}/anaconda
 %{_libdir}/anaconda/*.py[co]
 %dir %{_libdir}/anaconda/installclasses
@@ -235,6 +237,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/anaconda/*-stub
 %dir %{_libdir}/anaconda-runtime
 %dir %{_libdir}/anaconda-runtime/boot
+%ifnarch ppc
 %{_libdir}/anaconda-runtime/boot/boot.msg
 %{_libdir}/anaconda-runtime/boot/general.msg
 %{_libdir}/anaconda-runtime/boot/grub.conf
@@ -242,6 +245,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/anaconda-runtime/boot/param.msg
 %{_libdir}/anaconda-runtime/boot/rescue.msg
 %{_libdir}/anaconda-runtime/boot/syslinux.cfg
+%endif
 %attr(755,root,root) %{_libdir}/anaconda-runtime/buildinstall
 %attr(755,root,root) %{_libdir}/anaconda-runtime/buildinstall.functions
 %attr(755,root,root) %{_libdir}/anaconda-runtime/genmodinfo
