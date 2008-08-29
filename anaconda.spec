@@ -8,7 +8,7 @@ Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.4.1.%{rel}
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/System
 # http://team.pld-linux.org/~patrys/anaconda.git - origin/pld-branch
@@ -149,13 +149,6 @@ Kod źródłowy Anacondy do celów diagnostycznych.
 %setup -q -n %{name}-%{rel}
 
 %build
-# locale check
-if [ "$(locale -a | grep -c en_US.utf8)" = 0 ]; then
-	: "en_US.utf8 locale not available. build will fail!"
-	: "Install glibc-localedb-all or compile it!"
-	exit 1
-fi
-
 %{__make} depend -j1 \
 	PYTHON="%{__python}" \
 	PYTHONINCLUDE="%{py_incdir}" \
