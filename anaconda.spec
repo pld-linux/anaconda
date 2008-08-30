@@ -6,7 +6,7 @@ Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.4.1.%{rel}
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/System
 # http://team.pld-linux.org/~patrys/anaconda.git - origin/pld-branch
@@ -52,7 +52,7 @@ Requires:	lvm2
 Requires:	mdadm
 Requires:	pci-database
 Requires:	python-bdevid >= 6.0.24
-Requires:	python-booty >= 0.93-2
+Requires:	python-booty >= 0.93-3
 Requires:	python-cracklib
 Requires:	python-dbus
 Requires:	python-devel-tools
