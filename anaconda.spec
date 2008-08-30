@@ -3,17 +3,17 @@
 # - pldize /etc/fstab
 # - /etc/modprobe.conf for geninitrd
 #
-%define		rel	200808292136
+%define		rel	200808301625
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.4.1.%{rel}
-Release:	5
+Release:	1
 License:	GPL
 Group:		Applications/System
 # http://team.pld-linux.org/~patrys/anaconda.git - origin/pld-branch
 Source0:	%{name}-%{rel}.tar.bz2
-# Source0-md5:	1a3e6c15b9080fef45b53c2a471383ce
+# Source0-md5:	895a8a16a56f83f37605978e1eebc874
 URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	audit-libs-devel
 # will kill it in the future
