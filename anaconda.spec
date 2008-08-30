@@ -3,7 +3,7 @@
 # - pldize /etc/fstab
 # - /etc/modprobe.conf for geninitrd
 #
-%define		rel	200808301625
+%define		rel	200808302106
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
@@ -13,7 +13,7 @@ License:	GPL
 Group:		Applications/System
 # http://team.pld-linux.org/~patrys/anaconda.git - origin/pld-branch
 Source0:	%{name}-%{rel}.tar.bz2
-# Source0-md5:	895a8a16a56f83f37605978e1eebc874
+# Source0-md5:	fb7e79ba95ea2f05866808a521a0f674
 URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	audit-libs-devel
 # will kill it in the future
@@ -196,7 +196,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/keymaps.gz
 /etc/security/console.apps/liveinst
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/liveinst
-%attr(755,root,root) %{_bindir}/liveinst
 %attr(755,root,root) %{_sbindir}/anaconda
 %attr(755,root,root) %{_sbindir}/liveinst
 %ifnarch ppc
