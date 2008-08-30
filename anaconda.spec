@@ -1,9 +1,7 @@
 # TODO
 # - code poldek backend (python-poldek pkg exists!)
-# - pldize /etc/fstab
-# - /etc/modprobe.conf for geninitrd
 #
-%define		rel	200808302106
+%define		rel	200808302314
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
@@ -13,7 +11,7 @@ License:	GPL
 Group:		Applications/System
 # http://team.pld-linux.org/~patrys/anaconda.git - origin/pld-branch
 Source0:	%{name}-%{rel}.tar.bz2
-# Source0-md5:	fb7e79ba95ea2f05866808a521a0f674
+# Source0-md5:	87042d6ce1e48757a7da8b8c06695c29
 URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	audit-libs-devel
 # will kill it in the future
@@ -52,6 +50,7 @@ Requires:	hfsutils
 Requires:	jfsutils
 Requires:	lvm2
 Requires:	mdadm
+Requires:	pci-database
 Requires:	python-bdevid >= 6.0.24
 Requires:	python-booty >= 0.93
 Requires:	python-cracklib
