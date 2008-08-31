@@ -52,7 +52,7 @@ Requires:	lvm2
 Requires:	mdadm
 Requires:	pci-database
 Requires:	python-bdevid >= 6.0.24
-Requires:	python-booty >= 0.93-3
+Requires:	python-booty >= 0.93-4
 Requires:	python-cracklib
 Requires:	python-dbus
 Requires:	python-devel-tools
