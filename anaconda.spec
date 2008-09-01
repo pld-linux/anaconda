@@ -1,18 +1,19 @@
 # TODO
 # - code poldek backend (python-poldek pkg exists!)
 #
-%define		rel	200808310052
+%define		rel	200809012031
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.4.1.%{rel}
-Release:	2
+Release:	1
 License:	GPL
 Group:		Applications/System
 # http://team.pld-linux.org/~patrys/anaconda.git - origin/pld-branch
 Source0:	%{name}-%{rel}.tar.bz2
-# Source0-md5:	41317807e5ed60ec19a875edaf64c6a9
+# Source0-md5:	aec1a3f5356c41aeffcd83d7a0f89066
 URL:		http://fedoraproject.org/wiki/Anaconda
+BuildRequires:	NetworkManager-devel
 BuildRequires:	audit-libs-devel
 # will kill it in the future
 BuildRequires:	curl
@@ -40,6 +41,7 @@ BuildRequires:	sed >= 4.0
 BuildRequires:	slang-devel
 BuildRequires:	zlib-devel
 Requires:	/etc/pld-release
+Requires:	NetworkManager
 Requires:	bdevid
 Requires:	device-mapper >= 1.01.05
 Requires:	dosfstools
@@ -71,7 +73,7 @@ Requires:	system-config-date >= 1.9.17
 Requires:	tzdata
 Requires:	util-linux
 Requires:	xfsprogs
-Requires:	yum >= 2.5.1-3
+Requires:	yum >= 3.2.19
 %ifnarch s390 s390x
 Requires:	python-pyblock >= 0.7-1
 %endif
@@ -118,7 +120,7 @@ Requires:	python
 Requires:	python-libxml2
 Requires:	python-rpm >= 4.2-0.61
 Requires:	squashfs
-Requires:	yum >= 2.4.0
+Requires:	yum >= 3.2.19
 
 %description runtime
 The anaconda-runtime package contains parts of the installation system
@@ -173,13 +175,13 @@ install isys/isys.py[co] $RPM_BUILD_ROOT%{_libdir}/anaconda
 
 # for ./isys/lang.c:isysLoadKeymap()
 %ifarch %{ix86}
-cp -a loader2/keymaps-i386 $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
+cp -a loader/keymaps-i386 $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
 %endif
 %ifarch ppc
-cp -a loader2/keymaps-ppc $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
+cp -a loader/keymaps-ppc $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
 %endif
 %ifarch %{x8664}
-cp -a loader2/keymaps-x86_64 $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
+cp -a loader/keymaps-x86_64 $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
 %endif
 
 %find_lang %{name}
