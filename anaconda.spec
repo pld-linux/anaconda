@@ -1,22 +1,23 @@
 # TODO
 # - code poldek backend (python-poldek pkg exists!)
 #
-%define		rel	200809160017
+%define		rel	200810111759
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.4.1.%{rel}
-Release:	2
+Release:	1
 License:	GPL
 Group:		Applications/System
 # http://team.pld-linux.org/~patrys/anaconda.git - origin/pld-branch
 Source0:	%{name}-%{rel}.tar.bz2
-# Source0-md5:	86408067e5df37edf1e26e1eef73dd56
+# Source0-md5:	f0f2c7fdff6bec2a7cc532401d7802dd
 URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	NetworkManager-devel
 BuildRequires:	audit-libs-devel
 # will kill it in the future
 BuildRequires:	curl
+BuildRequires:	dbus-devel
 BuildRequires:	device-mapper-devel >= 1.01.05
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	gettext-devel >= 0.11
@@ -32,7 +33,7 @@ BuildRequires:	libsepol-devel
 BuildRequires:	newt-devel
 BuildRequires:	popt-devel
 BuildRequires:	python-devel
-BuildRequires:	python-kickstart >= 1.42
+BuildRequires:	python-kickstart >= 1.44
 BuildRequires:	python-rhpl
 BuildRequires:	python-rpm
 BuildRequires:	rpm-pythonprov
@@ -59,10 +60,11 @@ Requires:	python-cracklib
 Requires:	python-dbus
 Requires:	python-devel-tools
 Requires:	python-iniparse
-Requires:	python-kickstart >= 1.42
+Requires:	python-kickstart >= 1.44
 Requires:	python-libuser
 Requires:	python-libxml2
 Requires:	python-parted >= 1.8.9
+Requires:	python-pyblock >= 0.32
 Requires:	python-rhpl >= 0.216
 Requires:	python-rpm >= 4.2-0.61
 Requires:	python-selinux
