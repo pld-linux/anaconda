@@ -12,6 +12,7 @@ Group:		Applications/System
 # http://team.pld-linux.org/~patrys/anaconda.git - origin/pld-branch
 Source0:	%{name}-%{rel}.tar.bz2
 # Source0-md5:	f0f2c7fdff6bec2a7cc532401d7802dd
+Patch0:		%{name}-loader.c.patch
 URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	NetworkManager-devel
 BuildRequires:	audit-libs-devel
@@ -151,6 +152,7 @@ Kod źródłowy Anacondy do celów diagnostycznych.
 
 %prep
 %setup -q -n %{name}-%{rel}
+%patch0 -p0
 
 %build
 %{__make} depend -j1 \
