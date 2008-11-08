@@ -45,6 +45,7 @@ BuildRequires:	zlib-devel
 Requires:	/etc/pld-release
 Requires:	NetworkManager
 Requires:	bdevid
+Requires:	cryptsetup-luks
 Requires:	device-mapper >= 1.01.05
 Requires:	dosfstools
 Requires:	e2fsprogs
