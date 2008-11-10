@@ -1,7 +1,7 @@
 # TODO
 # - code poldek backend (python-poldek pkg exists!)
 #
-%define		rel	200810111759
+%define		rel	200811102027
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
@@ -11,8 +11,7 @@ License:	GPL
 Group:		Applications/System
 # http://team.pld-linux.org/~patrys/anaconda.git - origin/pld-branch
 Source0:	%{name}-%{rel}.tar.bz2
-# Source0-md5:	f0f2c7fdff6bec2a7cc532401d7802dd
-Patch0:		%{name}-loader.c.patch
+# Source0-md5:	fa88202f2b9d1b387a51dfdf3ead6dc6
 URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	NetworkManager-devel
 BuildRequires:	audit-libs-devel
@@ -153,7 +152,6 @@ Kod źródłowy Anacondy do celów diagnostycznych.
 
 %prep
 %setup -q -n %{name}-%{rel}
-%patch0 -p0
 
 %build
 %{__make} depend -j1 \
