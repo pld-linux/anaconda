@@ -1,17 +1,17 @@
 # TODO
 # - code poldek backend (python-poldek pkg exists!)
 #
-%define		rel	200901172133
+%define		rel	200903212129
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
-Version:	11.5.0.6.%{rel}
+Version:	11.5.0.23.%{rel}
 Release:	1
 License:	GPL
 Group:		Applications/System
-# http://team.pld-linux.org/~patrys/anaconda.git - origin/pld-branch
+# http://team.pld-linux.org/~patrys/anaconda.git
 Source0:	%{name}-%{rel}.tar.bz2
-# Source0-md5:	1ada1ca81cd006ee985773ab2c2fd67c
+# Source0-md5:	fb56c92d2c83f5a356891b2b13c7fc7b
 URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	NetworkManager-devel
 BuildRequires:	audit-libs-devel
@@ -64,7 +64,7 @@ Requires:	python-iniparse
 Requires:	python-kickstart >= 1.44
 Requires:	python-libuser
 Requires:	python-libxml2
-Requires:	python-parted >= 1.8.9
+Requires:	python-parted >= 2.0.8
 Requires:	python-pyblock >= 0.32
 Requires:	python-rhpl >= 0.216
 Requires:	python-rpm >= 4.2-0.61
@@ -176,17 +176,6 @@ rm -rf $RPM_BUILD_ROOT
 
 install isys/isys.py[co] $RPM_BUILD_ROOT%{_libdir}/anaconda
 
-# for ./isys/lang.c:isysLoadKeymap()
-%ifarch %{ix86}
-cp -a loader/keymaps-i386 $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
-%endif
-%ifarch ppc
-cp -a loader/keymaps-ppc $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
-%endif
-%ifarch %{x8664}
-cp -a loader/keymaps-x86_64 $RPM_BUILD_ROOT%{_sysconfdir}/keymaps.gz
-%endif
-
 %find_lang %{name}
 
 %{!?debug:%py_postclean %{_libdir}/anaconda}
@@ -197,7 +186,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc docs/*
-%{_sysconfdir}/keymaps.gz
+#%{_sysconfdir}/keymaps.gz
 /etc/security/console.apps/liveinst
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/liveinst
 %attr(755,root,root) %{_sbindir}/anaconda
@@ -259,12 +248,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/anaconda-runtime/buildinstall.functions
 %attr(755,root,root) %{_libdir}/anaconda-runtime/genmodinfo
 %attr(755,root,root) %{_libdir}/anaconda-runtime/getkeymaps
-%{_libdir}/anaconda-runtime/keymaps-override-*
-%dir %{_libdir}/anaconda-runtime/loader
-%attr(755,root,root) %{_libdir}/anaconda-runtime/loader/init
-%attr(755,root,root) %{_libdir}/anaconda-runtime/loader/loader
-%{_libdir}/anaconda-runtime/loader/loader.tr
-%{_libdir}/anaconda-runtime/loader/unicode-linedraw-chars.txt
 %attr(755,root,root) %{_libdir}/anaconda-runtime/makestamp.py
 %attr(755,root,root) %{_libdir}/anaconda-runtime/maketreeinfo.py
 %attr(755,root,root) %{_libdir}/anaconda-runtime/mapshdr
