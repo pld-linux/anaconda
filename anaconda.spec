@@ -6,7 +6,7 @@ Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.5.0.23.%{rel}
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/System
 # http://team.pld-linux.org/~patrys/anaconda.git
