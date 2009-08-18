@@ -1,7 +1,7 @@
 # TODO
 # - code poldek backend (python-poldek pkg exists!)
 #
-%define		rel	200903212129
+%define		rel	200903212130
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
