@@ -1,12 +1,12 @@
 # TODO
 # - code poldek backend (python-poldek pkg exists!)
 #
-%define		rel	200903212130
+%define		rel	200903212129
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	11.5.0.23.%{rel}
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/System
 # http://team.pld-linux.org/~patrys/anaconda.git
