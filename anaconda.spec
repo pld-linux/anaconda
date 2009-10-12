@@ -95,6 +95,7 @@ systemie.
 Summary:	Anaconda GTK+2 GUI
 Group:		Applications/System
 Requires:	%{name} = %{version}-%{release}
+# XXX: updateme
 Requires:	X11-OpenGL-core
 Requires:	X11-Xserver
 Requires:	X11-fonts
@@ -113,7 +114,6 @@ Group:		Applications/System
 AutoReqProv:	false
 Requires:	%{name} = %{version}-%{release}
 Requires:	/usr/bin/strip
-Requires:	X11
 Requires:	createrepo >= 0.4.3
 Requires:	gawk
 Requires:	glibc >= 6:2.3.6-5.1
@@ -123,6 +123,7 @@ Requires:	python
 Requires:	python-libxml2
 Requires:	python-rpm >= 4.2-0.61
 Requires:	squashfs
+Requires:	xorg-app-mkfontdir
 Requires:	yum >= 3.2.19
 
 %description runtime
