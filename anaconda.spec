@@ -1,85 +1,119 @@
 # TODO
 # - code poldek backend (python-poldek pkg exists!)
-#
-%define		rel	200903212129
+
+# Versions of required components (done so we make sure the buildrequires
+# match the requires versions of things).
+%define gettextver 0.11
+%define gconfversion 2.28.1
+%define intltoolver 0.31.2-3
+%define libnlver 1.0
+%define pykickstartver 1.99.30
+%define yumver 3.4.3-7
+%define partedver 1.8.1
+%define pypartedver 2.5-2
+%define pythonpyblockver 0.45
+%define nmver 1:0.7.1-3.git20090414
+%define dbusver 1.2.3
+%define yumutilsver 1.1.11-3
+%define mehver 0.23-1
+%define sckeyboardver 1.3.1
+%define firewalldver 0.2.9-1
+%define pythonurlgrabberver 3.9.1-5
+%define utillinuxver 2.15.1
+%define dracutver 024-25
+%define isomd5sum 1.0.10
+%define fcoeutilsver 1.0.12-3.20100323git
+%define iscsiver 6.2.0.870-3
+%define rpmver 4.10.0
+%define libarchivever 3.0.4
+%define libselinuxver 2.1
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
-Version:	11.5.0.23.%{rel}
-Release:	3
+Version:	19.25
+Release:	0.1
 License:	GPL
 Group:		Applications/System
-# http://team.pld-linux.org/~patrys/anaconda.git
-Source0:	%{name}-%{rel}.tar.bz2
-# Source0-md5:	fb56c92d2c83f5a356891b2b13c7fc7b
+Source0:	http://pkgs.fedoraproject.org/repo/pkgs/anaconda/%{name}-%{version}.tar.bz2/b3f242b630aa1d4a458756b5816a0603/anaconda-%{version}.tar.bz2
+# Source0-md5:	b3f242b630aa1d4a458756b5816a0603
 URL:		http://fedoraproject.org/wiki/Anaconda
-BuildRequires:	NetworkManager-devel
+BuildRequires:	NetworkManager-devel >= %{nmver}
 BuildRequires:	audit-libs-devel
-# will kill it in the future
-BuildRequires:	curl
-BuildRequires:	dbus-devel
-BuildRequires:	device-mapper-devel >= 1.01.05
-BuildRequires:	e2fsprogs-devel
-BuildRequires:	gettext-devel >= 0.11
-BuildRequires:	glib2-devel
-BuildRequires:	gtk+2-devel
-BuildRequires:	isomd5sum-devel
-BuildRequires:	libdhcp-devel
-BuildRequires:	libdhcp4client-devel
-BuildRequires:	libdhcp6client-devel
-BuildRequires:	libnl-devel
-BuildRequires:	libselinux-devel >= 1.6
-BuildRequires:	libsepol-devel
-BuildRequires:	newt-devel
-BuildRequires:	popt-devel
+BuildRequires:	dbus-devel >= %{dbusver}
+BuildRequires:	desktop-file-utils
+BuildRequires:	gettext >= %{gettextver}
+BuildRequires:	glade-devel
+BuildRequires:	gobject-introspection-devel
+BuildRequires:	gtk+3-devel
+BuildRequires:	gtk-doc
+BuildRequires:	intltool >= %{intltoolver}
+BuildRequires:	libarchive-devel >= %{libarchivever}
+BuildRequires:	libgnomekbd-devel
+BuildRequires:	libnl-devel >= %{libnlver}
+BuildRequires:	libxklavier-devel
+BuildRequires:	pango-devel
+BuildRequires:	python-dbus
 BuildRequires:	python-devel
-BuildRequires:	python-kickstart >= 1.50
-BuildRequires:	python-rhpl
-BuildRequires:	python-rpm
-BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.234
-BuildRequires:	sed >= 4.0
-BuildRequires:	slang-devel
-BuildRequires:	zlib-devel
-Requires:	/etc/pld-release
-Requires:	NetworkManager
-Requires:	bdevid
-Requires:	cryptsetup-luks
-Requires:	device-mapper >= 1.01.05
-Requires:	dosfstools
-Requires:	e2fsprogs
-Requires:	grubby
-Requires:	hal
-Requires:	hfsutils
-Requires:	jfsutils
-Requires:	lvm2
-Requires:	mdadm
-Requires:	pci-database
-Requires:	python-bdevid >= 6.0.24
-Requires:	python-booty >= 0.93-4
-Requires:	python-cracklib
+BuildRequires:	python-nose
+BuildRequires:	python-pygobject3
+BuildRequires:	python-pykickstart >= %{pykickstartver}
+BuildRequires:	python-urlgrabber >= %{pythonurlgrabberver}
+BuildRequires:	rpm-devel >= %{rpmver}
+BuildRequires:	systemd-devel
+BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	xorg-lib-libXt-devel
+BuildRequires:	xorg-lib-libXxf86misc-devel
+BuildRequires:	yum >= %{yumver}
+Requires:	GConf2 >= %{gconfversion}
+Requires:	NetworkManager >= %{nmver}
+Requires:	anaconda-widgets = %{version}-%{release}
+Requires:	anaconda-yum-plugins
+Requires:	authconfig
+Requires:	chrony
+Requires:	dhclient
+Requires:	firewalld >= %{firewalldver}
+Requires:	gnome-icon-theme-symbolic
+Requires:	hostname
+Requires:	isomd5sum >= %{isomd5sum}
+Requires:	kbd
+Requires:	libgnomekbd
+Requires:	libreport-anaconda >= 2.0.21-1
+Requires:	libuser-python
+Requires:	libxklavier
+Requires:	nm-connection-editor
+Requires:	ntpdate
+Requires:	open-iscsi >= %{iscsiver}
+Requires:	parted >= %{partedver}
+Requires:	pyparted >= %{pypartedver}
+Requires:	python-IPy
+Requires:	python-babel
+Requires:	python-blivet >= 0.12
+Requires:	python-bugzilla
 Requires:	python-dbus
-Requires:	python-devel-tools
-Requires:	python-iniparse
-Requires:	python-kickstart >= 1.44
-Requires:	python-libuser
-Requires:	python-libxml2
-Requires:	python-parted >= 2.0.8
-Requires:	python-pyblock >= 0.32
-Requires:	python-rhpl >= 0.216
-Requires:	python-rpm >= 4.2-0.61
+Requires:	python-meh >= %{mehver}
+Requires:	python-nss
+Requires:	python-pwquality
+Requires:	python-pykickstart >= %{pykickstartver}
+Requires:	python-pytz
+Requires:	python-rpm >= %{rpmpythonver}
 Requires:	python-selinux
-Requires:	python-snack
-Requires:	python-urlgrabber >= 2.9.8
-Requires:	reiserfsprogs
-Requires:	system-config-date >= 1.9.17
-Requires:	tzdata
-Requires:	util-linux
-Requires:	xfsprogs
-Requires:	yum >= 3.2.19
-%ifnarch s390 s390x
-Requires:	python-pyblock >= 0.7-1
+Requires:	python-selinux >= %{libselinuxver}
+Requires:	python-urlgrabber >= %{pythonurlgrabberver}
+Requires:	rsync
+Requires:	system-logos
+Requires:	tigervnc-server-minimal
+Requires:	usermode
+Requires:	util-linux >= %{utillinuxver}
+Requires:	yum >= %{yumver}
+Requires:	yum-utils >= %{yumutilsver}
+Requires:	zenity
+%ifarch %{ix86} %{x8664} ia64
+Requires:	dmidecode
+Requires:	hfsplus-tools
 %endif
+Obsoletes:	anaconda-images <= 10
+Obsoletes:	anaconda-runtime < %{version}-%{release}
+Obsoletes:	booty <= 0.107-1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -91,91 +125,75 @@ Pakiet anaconda zawiera program, którego można użyć do zainstalowania
 systemu. Pliki te mają niewiele zastosowań na już zainstalowanym
 systemie.
 
-%package gui
-Summary:	Anaconda GTK+2 GUI
-Group:		Applications/System
-Requires:	%{name} = %{version}-%{release}
-# XXX: updateme
-Requires:	X11-OpenGL-core
-Requires:	X11-Xserver
-Requires:	X11-fonts
-Requires:	python-gnome-canvas
-Requires:	python-pygtk-glade
-Requires:	system-config-date
-Requires:	system-config-keyboard
-
-%description gui
-Anaconda GUI portion.
-
-%package runtime
-Summary:	Graphical system installer portions needed only for fresh installs
-Summary(pl.UTF-8):	Elementy graficznego instalatora systemu potrzebne tylko przy nowych instalacjach
-Group:		Applications/System
-AutoReqProv:	false
-Requires:	%{name} = %{version}-%{release}
-Requires:	/usr/bin/strip
-Requires:	createrepo >= 0.4.3
-Requires:	gawk
-Requires:	glibc >= 6:2.3.6-5.1
-Requires:	kbd
-Requires:	policycoreutils >= 1.30
+%package widgets
+Summary:	A set of custom GTK+ widgets for use with anaconda
+Group:		Libraries
 Requires:	python
-Requires:	python-libxml2
-Requires:	python-rpm >= 4.2-0.61
-Requires:	squashfs
-Requires:	xorg-app-mkfontdir
-Requires:	yum >= 3.2.19
+Requires:	python-pygobject3
 
-%description runtime
-The anaconda-runtime package contains parts of the installation system
-which are needed for installing new systems. These files are used to
-build media sets, but are not meant for use on already installed
-systems.
+%description widgets
+This package contains a set of custom GTK+ widgets used by the
+anaconda installer.
 
-%description runtime -l pl.UTF-8
-Pakiet anaconda-runtime zawiera elementy instalatora potrzebne tylko
-do instalowania nowych systemów. Pliki te służą do tworzenia zestawu
-nośników, nie są przewidziane do używania na już zainstalowanych
-systemach.
+%package widgets-devel
+Summary:	Development files for anaconda-widgets
+Group:		Development/Libraries
+Requires:	glade
 
-%package debug
-Summary:	Sourcecode for Anaconda
-Summary(pl.UTF-8):	Kod źródłowy Anacondy
+%description widgets-devel
+This package contains libraries and header files needed for writing
+the anaconda installer. It also contains Python and Glade support
+files, as well as documentation for working with this library.
+
+%package dracut
+Summary:	The anaconda dracut module
 Group:		Applications/System
-AutoReqProv:	false
-Requires:	%{name} = %{version}-%{release}
+Requires:	dracut >= %{dracutver}
+Requires:	dracut-network
+Requires:	python-pykickstart
+Requires:	xz
 
-%description debug
-Anaconda sourcecode for debugging purposes.
-
-%description debug -l pl.UTF-8
-Kod źródłowy Anacondy do celów diagnostycznych.
+%description dracut
+The 'anaconda' dracut module handles installer-specific boot tasks and
+options. This includes driver disks, kickstarts, and finding the
+anaconda runtime on NFS/HTTP/FTP servers or local disks.
 
 %prep
-%setup -q -n %{name}-%{rel}
+%setup -q
+
+# / on /usr kicks in
+%{__sed} -i -e '1 s,#!/usr/bin/bash,#!/bin/sh,' scripts/run-anaconda
+
+# TODO: rpm5 porting
+%{__sed} -i -e '/SUBDIRS/ s/dd//' utils/Makefile.am
 
 %build
-%{__make} depend -j1 \
-	PYTHON="%{__python}" \
-	PYTHONINCLUDE="%{py_incdir}" \
-	CC="%{__cc}"
-
-%{__make} -j1 \
-	PYTHON="%{__python}" \
-	PYTHONINCLUDE="%{py_incdir}" \
-	CC="%{__cc}" \
-	REALCC="%{__cc}" \
-	OPTFLAGS="%{rpmcflags}"
-
-./py-compile isys/isys.py
+%{__aclocal} -I m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
+%configure \
+	--disable-silent-rules \
+	--disable-static \
+	--enable-introspection \
+	--enable-gtk-doc
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 %{__make} install \
+	systemddir=%{systemdunitdir} \
+	generatordir=%{systemdunitdir}-generators \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install isys/isys.py[co] $RPM_BUILD_ROOT%{_libdir}/anaconda
+# unsupported locales
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/bal
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/eu_ES
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ilo
+
+find $RPM_BUILD_ROOT -type f -name "*.la" | xargs %{__rm} -v
+
+desktop-file-install ---dir=$RPM_BUILD_ROOT%{_desktopdir} $RPM_BUILD_ROOT%{_desktopdir}/liveinst.desktop
 
 %find_lang %{name}
 
@@ -184,86 +202,54 @@ install isys/isys.py[co] $RPM_BUILD_ROOT%{_libdir}/anaconda
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+update-desktop-database
+
+%postun
+update-desktop-database
+
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc docs/*
-#%{_sysconfdir}/keymaps.gz
-/etc/security/console.apps/liveinst
-%config(noreplace) %verify(not md5 mtime size) /etc/pam.d/liveinst
+%doc docs/{command-line,install-methods,mediacheck}.txt
+%{systemdunitdir}/*
+%{systemdunitdir}-generators/*
+%attr(755,root,root) %{_bindir}/anaconda-cleanup
+%attr(755,root,root) %{_bindir}/analog
+%attr(755,root,root) %{_bindir}/instperf
 %attr(755,root,root) %{_sbindir}/anaconda
-%attr(755,root,root) %{_sbindir}/liveinst
-%ifnarch ppc
-%attr(755,root,root) %{_sbindir}/gptsync
-%attr(755,root,root) %{_sbindir}/showpart
-%endif
-%dir %{_libdir}/anaconda
-%{_libdir}/anaconda/*.py[co]
-%dir %{_libdir}/anaconda/installclasses
-%{_libdir}/anaconda/installclasses/*.py[co]
-%dir %{_libdir}/anaconda/textw
-%{_libdir}/anaconda/textw/*.py[co]
-%{_libdir}/anaconda/lang-names
-%{_libdir}/anaconda/lang-table
-%attr(755,root,root) %{_libdir}/anaconda/_isys.so
-
-%files gui
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/mini-wm
-%attr(755,root,root) %{_libdir}/anaconda/xutils.so
-%{_desktopdir}/liveinst.desktop
-%dir %{_libdir}/anaconda/iw
-%{_libdir}/anaconda/iw/*.py[co]
+%attr(755,root,root) %{_sbindir}/handle-sshpw
+%attr(755,root,root) %{_sbindir}/logpicker
 %{_datadir}/anaconda
+%exclude %{_datadir}/anaconda/tzmapdata/*
+%{_libdir}/anaconda
+%{_libdir}/python*/site-packages/pyanaconda/*
+%{_libdir}/python*/site-packages/log_picker/*
 
-%if %{!?debug:0}%{?debug:1}
-%files debug
-%defattr(644,root,root,755)
-%{_libdir}/anaconda/*.py
-%{_libdir}/anaconda/installclasses/*.py
-%{_libdir}/anaconda/iw/*.py
-%{_libdir}/anaconda/textw/*.py
-%endif
+# live
+%attr(755,root,root) %{_bindir}/liveinst
+%attr(755,root,root) %{_sbindir}/liveinst
+%config(noreplace) /etc/pam.d/*
+%config(noreplace) /etc/security/console.apps/*
+%{_sysconfdir}/X11/xinit/xinitrc.d/*
+%{_desktopdir}/*.desktop
+%{_iconsdir}/hicolor/*
 
-%files runtime
+%files widgets
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/anaconda/*-stub
-%dir %{_libdir}/anaconda-runtime
-%dir %{_libdir}/anaconda-runtime/boot
-%ifnarch ppc
-%{_libdir}/anaconda-runtime/boot/boot.msg
-%{_libdir}/anaconda-runtime/boot/general.msg
-%{_libdir}/anaconda-runtime/boot/grub.conf
-%{_libdir}/anaconda-runtime/boot/options.msg
-%{_libdir}/anaconda-runtime/boot/param.msg
-%{_libdir}/anaconda-runtime/boot/rescue.msg
-%{_libdir}/anaconda-runtime/boot/syslinux.cfg
-%else
-%{_libdir}/anaconda-runtime/boot/bootinfo.txt
-%{_libdir}/anaconda-runtime/boot/magic
-%{_libdir}/anaconda-runtime/boot/mapping
-%{_libdir}/anaconda-runtime/boot/ofboot.b
-%{_libdir}/anaconda-runtime/boot/yaboot.conf.3264
-%{_libdir}/anaconda-runtime/boot/yaboot.conf.in
-%endif
-%attr(755,root,root) %{_libdir}/anaconda-runtime/buildinstall
-%attr(755,root,root) %{_libdir}/anaconda-runtime/buildinstall.functions
-%attr(755,root,root) %{_libdir}/anaconda-runtime/genmodinfo
-%attr(755,root,root) %{_libdir}/anaconda-runtime/getkeymaps
-%attr(755,root,root) %{_libdir}/anaconda-runtime/makestamp.py
-%attr(755,root,root) %{_libdir}/anaconda-runtime/maketreeinfo.py
-%attr(755,root,root) %{_libdir}/anaconda-runtime/mapshdr
-%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images
-%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.alpha
-%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.ia64
-%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.efi
-%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.ppc
-%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.s390
-%attr(755,root,root) %{_libdir}/anaconda-runtime/mk-images.x86
-%attr(755,root,root) %{_libdir}/anaconda-runtime/modlist
-%attr(755,root,root) %{_libdir}/anaconda-runtime/pyrc.py
-%attr(755,root,root) %{_libdir}/anaconda-runtime/readmap
-%attr(755,root,root) %{_libdir}/anaconda-runtime/scrubtree
-%{_libdir}/anaconda-runtime/screenfont-*.gz
-%attr(755,root,root) %{_libdir}/anaconda-runtime/trimpciids
-%attr(755,root,root) %{_libdir}/anaconda-runtime/upd-instroot
-%attr(755,root,root) %{_libdir}/anaconda-runtime/upd-updates
+%{_libdir}/libAnacondaWidgets.so.*
+%{_libdir}/girepository*/AnacondaWidgets*typelib
+%{_libdir}/python*/site-packages/gi/overrides/*
+%{_datadir}/anaconda/tzmapdata/*
+
+%files widgets-devel
+%defattr(644,root,root,755)
+%{_libdir}/libAnacondaWidgets.so
+%{_includedir}/*
+%{_datadir}/glade/catalogs/AnacondaWidgets.xml
+%{_datadir}/gtk-doc
+
+%files dracut
+%defattr(644,root,root,755)
+%dir %{_prefix}/lib/dracut/modules.d/80%{name}
+%{_prefix}/lib/dracut/modules.d/80%{name}/*
+#%{_prefix}/libexec/anaconda/dd_*
