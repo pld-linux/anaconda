@@ -31,7 +31,7 @@ Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	19.25
-Release:	0.2
+Release:	0.5
 License:	GPL
 Group:		Applications/System
 Source0:	http://pkgs.fedoraproject.org/repo/pkgs/anaconda/%{name}-%{version}.tar.bz2/b3f242b630aa1d4a458756b5816a0603/anaconda-%{version}.tar.bz2
@@ -70,6 +70,7 @@ Requires:	anaconda-widgets = %{version}-%{release}
 Requires:	anaconda-yum-plugins
 Requires:	authconfig
 Requires:	chrony
+Requires:	desktop-file-utils
 Requires:	dhclient
 Requires:	firewalld >= %{firewalldver}
 Requires:	gnome-icon-theme-symbolic
@@ -222,8 +223,8 @@ update-desktop-database
 %{_datadir}/anaconda
 %exclude %{_datadir}/anaconda/tzmapdata/*
 %{_libdir}/anaconda
-%{_libdir}/python*/site-packages/pyanaconda/*
-%{_libdir}/python*/site-packages/log_picker/*
+%{py_sitedir}/pyanaconda
+%{py_sitedir}/log_picker
 
 # live
 %attr(755,root,root) %{_bindir}/liveinst
