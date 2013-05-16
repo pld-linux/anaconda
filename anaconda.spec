@@ -23,7 +23,7 @@
 %define dracutver 024-25
 %define isomd5sum 1.0.10
 %define fcoeutilsver 1.0.12-3.20100323git
-%define iscsiver 6.2.0.870-3
+%define iscsiver 2.0-0.870.3
 %define rpmver 4.10.0
 %define libarchivever 3.0.4
 %define libselinuxver 2.1
@@ -31,7 +31,7 @@ Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	19.25
-Release:	0.1
+Release:	0.2
 License:	GPL
 Group:		Applications/System
 Source0:	http://pkgs.fedoraproject.org/repo/pkgs/anaconda/%{name}-%{version}.tar.bz2/b3f242b630aa1d4a458756b5816a0603/anaconda-%{version}.tar.bz2
