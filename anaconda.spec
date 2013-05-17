@@ -79,26 +79,27 @@ Requires:	isomd5sum >= %{isomd5sum}
 Requires:	kbd
 Requires:	libgnomekbd
 Requires:	libreport-anaconda >= 2.0.21-1
-Requires:	libuser-python
 Requires:	libxklavier
 Requires:	nm-connection-editor
 Requires:	ntpdate
 Requires:	open-iscsi >= %{iscsiver}
 Requires:	parted >= %{partedver}
-Requires:	pyparted >= %{pypartedver}
 Requires:	python-IPy
 Requires:	python-babel
 Requires:	python-blivet >= 0.12
 Requires:	python-bugzilla
 Requires:	python-dbus
+Requires:	python-libuser
 Requires:	python-meh >= %{mehver}
 Requires:	python-nss
+Requires:	python-parted >= %{pypartedver}
 Requires:	python-pwquality
 Requires:	python-pykickstart >= %{pykickstartver}
 Requires:	python-pytz
 Requires:	python-rpm >= %{rpmpythonver}
 Requires:	python-selinux
 Requires:	python-selinux >= %{libselinuxver}
+Requires:	python-snack
 Requires:	python-urlgrabber >= %{pythonurlgrabberver}
 Requires:	rsync
 Requires:	system-logos
@@ -162,7 +163,7 @@ anaconda runtime on NFS/HTTP/FTP servers or local disks.
 %prep
 %setup -q
 
-# / on /usr kicks in
+# / on %{_prefix} kicks in
 %{__sed} -i -e '1 s,#!/usr/bin/bash,#!/bin/sh,' scripts/run-anaconda
 
 # TODO: rpm5 porting
