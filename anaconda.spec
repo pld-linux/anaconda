@@ -31,11 +31,12 @@ Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	19.25
-Release:	0.5
+Release:	0.12
 License:	GPL
 Group:		Applications/System
 Source0:	http://pkgs.fedoraproject.org/repo/pkgs/anaconda/%{name}-%{version}.tar.bz2/b3f242b630aa1d4a458756b5816a0603/anaconda-%{version}.tar.bz2
 # Source0-md5:	b3f242b630aa1d4a458756b5816a0603
+Patch0:		interfaces-dir.patch
 URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	NetworkManager-devel >= %{nmver}
 BuildRequires:	audit-libs-devel
@@ -162,6 +163,7 @@ anaconda runtime on NFS/HTTP/FTP servers or local disks.
 
 %prep
 %setup -q
+%patch0 -p1
 
 # / on %{_prefix} kicks in
 %{__sed} -i -e '1 s,#!/usr/bin/bash,#!/bin/sh,' scripts/run-anaconda

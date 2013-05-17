@@ -1,0 +1,34 @@
+--- anaconda-19.25/./pyanaconda/network.py~	2013-05-09 19:08:04.000000000 +0300
++++ anaconda-19.25/./pyanaconda/network.py	2013-05-17 22:18:14.386050536 +0300
+@@ -47,7 +47,7 @@
+ log = logging.getLogger("anaconda")
+ 
+ sysconfigDir = "/etc/sysconfig"
+-netscriptsDir = "%s/network-scripts" % (sysconfigDir)
++netscriptsDir = "%s/interfaces" % (sysconfigDir)
+ networkConfFile = "%s/network" % (sysconfigDir)
+ hostnameFile = "/etc/hostname"
+ ipv6ConfFile = "/etc/sysctl.d/anaconda.conf"
+@@ -593,9 +593,9 @@
+     shutil.copy(file, destfile)
+     return True
+ 
+-# /etc/sysconfig/network-scripts/ifcfg-*
+-# /etc/sysconfig/network-scripts/keys-*
+-# TODO: routing info from /etc/sysconfig/network-scripts?
++# /etc/sysconfig/interfaces/ifcfg-*
++# /etc/sysconfig/interfaces/keys-*
++# TODO: routing info from /etc/sysconfig/interfaces?
+ def copyIfcfgFiles(destPath):
+     files = os.listdir(netscriptsDir)
+     for cfgFile in files:
+--- anaconda-19.25/./data/post-scripts/80-setfilecons.ks~	2013-04-25 19:10:47.000000000 +0300
++++ anaconda-19.25/./data/post-scripts/80-setfilecons.ks	2013-05-17 22:19:18.165565949 +0300
+@@ -1,6 +1,6 @@
+ %post
+ 
+-restorecon -ir /etc/sysconfig/network-scripts /var/lib /etc/lvm \
++restorecon -ir /etc/sysconfig/interfaces /var/lib /etc/lvm \
+                /dev /etc/iscsi /var/lib/iscsi /root /var/lock /var/log \
+                /etc/modprobe.d /etc/sysconfig /var/cache/yum
+ 
