@@ -1,0 +1,11 @@
+--- site-packages/pyanaconda/packaging/yumpayload.py~	2013-05-18 00:48:37.000000000 +0300
++++ site-packages/pyanaconda/packaging/yumpayload.py	2013-05-18 00:58:31.635659944 +0300
+@@ -1550,7 +1550,7 @@
+         # Watch output for progress, debug and error information
+         install_errors = []
+         try:
+-            for line in execReadlines("/usr/libexec/anaconda/anaconda-yum", args):
++            for line in execReadlines("/usr/lib/anaconda/anaconda-yum", args):
+                 if line.startswith("PROGRESS_"):
+                     key, text = line.split(":", 2)
+                     msg = progress_map[key] + text
