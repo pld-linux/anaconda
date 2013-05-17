@@ -67,12 +67,12 @@ BuildRequires:	yum >= %{yumver}
 Requires:	GConf2 >= %{gconfversion}
 Requires:	NetworkManager >= %{nmver}
 Requires:	anaconda-widgets = %{version}-%{release}
-Requires:	anaconda-yum-plugins
-Requires:	authconfig
+#Requires:	anaconda-yum-plugins
+#Requires:	authconfig
 Requires:	chrony
 Requires:	desktop-file-utils
-Requires:	dhclient
-Requires:	firewalld >= %{firewalldver}
+#Requires:	dhclient
+#Requires:	firewalld >= %{firewalldver}
 Requires:	gnome-icon-theme-symbolic
 Requires:	hostname
 Requires:	isomd5sum >= %{isomd5sum}
@@ -80,14 +80,14 @@ Requires:	kbd
 Requires:	libgnomekbd
 Requires:	libreport-anaconda >= 2.0.21-1
 Requires:	libxklavier
-Requires:	nm-connection-editor
+#Requires:	nm-connection-editor
 Requires:	ntpdate
 Requires:	open-iscsi >= %{iscsiver}
 Requires:	parted >= %{partedver}
 Requires:	python-IPy
 Requires:	python-babel
 Requires:	python-blivet >= 0.12
-Requires:	python-bugzilla
+#Requires:	python-bugzilla
 Requires:	python-dbus
 Requires:	python-libuser
 Requires:	python-meh >= %{mehver}
@@ -102,8 +102,8 @@ Requires:	python-selinux >= %{libselinuxver}
 Requires:	python-snack
 Requires:	python-urlgrabber >= %{pythonurlgrabberver}
 Requires:	rsync
-Requires:	system-logos
-Requires:	tigervnc-server-minimal
+#Requires:	system-logos
+#Requires:	tigervnc-server-minimal
 Requires:	usermode
 Requires:	util-linux >= %{utillinuxver}
 Requires:	yum >= %{yumver}
