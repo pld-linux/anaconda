@@ -1,0 +1,11 @@
+--- site-packages/pyanaconda/packaging/yumpayload.py~	2013-05-17 14:48:12.000000000 +0300
++++ site-packages/pyanaconda/packaging/yumpayload.py	2013-05-18 00:48:37.922288918 +0300
+@@ -1296,7 +1296,7 @@
+ 
+             This follows the same ordering/pattern as kickstart.py.
+         """
+-        self._selectYumGroup("core")
++        self._selectYumGroup("base")
+ 
+         if self.data.packages.default and self.environments:
+             self.selectEnvironment(self.environments[0])

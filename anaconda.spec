@@ -38,6 +38,7 @@ Source0:	http://pkgs.fedoraproject.org/repo/pkgs/anaconda/%{name}-%{version}.tar
 # Source0-md5:	b3f242b630aa1d4a458756b5816a0603
 Patch0:		interfaces-dir.patch
 Patch1:		libexec.patch
+Patch2:		yum-comps.patch
 URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	NetworkManager-devel >= %{nmver}
 BuildRequires:	audit-libs-devel
@@ -166,6 +167,7 @@ anaconda runtime on NFS/HTTP/FTP servers or local disks.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 # / on %{_prefix} kicks in
 %{__sed} -i -e '1 s,#!/usr/bin/bash,#!/bin/sh,' scripts/run-anaconda
