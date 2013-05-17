@@ -10,7 +10,7 @@
 %define pykickstartver 1.99.30
 %define yumver 3.4.3-7
 %define partedver 1.8.1
-%define pypartedver 2.5-2
+%define pypartedver 3.9
 %define pythonpyblockver 0.45
 %define nmver 1:0.7.1-3.git20090414
 %define dbusver 1.2.3
