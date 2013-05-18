@@ -27,15 +27,16 @@
 %define rpmver 4.10.0
 %define libarchivever 3.0.4
 %define libselinuxver 2.1
+%define md5	682641c5ae518fdf3b119fed5e09bbd5
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
-Version:	19.25
+Version:	19.28
 Release:	0.15
 License:	GPL
 Group:		Applications/System
-Source0:	http://pkgs.fedoraproject.org/repo/pkgs/anaconda/%{name}-%{version}.tar.bz2/b3f242b630aa1d4a458756b5816a0603/anaconda-%{version}.tar.bz2
-# Source0-md5:	b3f242b630aa1d4a458756b5816a0603
+Source0:	http://pkgs.fedoraproject.org/repo/pkgs/anaconda/%{name}-%{version}.tar.bz2/%{md5}/anaconda-%{version}.tar.bz2
+# Source0-md5:	682641c5ae518fdf3b119fed5e09bbd5
 Patch0:		interfaces-dir.patch
 Patch1:		libexec.patch
 Patch2:		yum-comps.patch
@@ -105,6 +106,7 @@ Requires:	python-selinux
 Requires:	python-selinux >= %{libselinuxver}
 Requires:	python-snack
 Requires:	python-urlgrabber >= %{pythonurlgrabberver}
+#Requires:	realmd
 Requires:	rsync
 #Requires:	system-logos
 #Requires:	tigervnc-server-minimal
