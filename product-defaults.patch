@@ -1,0 +1,16 @@
+--- site-packages/pyanaconda/product.py~	2013-05-18 01:11:55.000000000 +0300
++++ site-packages/pyanaconda/product.py	2013-05-18 11:51:10.701442756 +0300
+@@ -27,11 +27,11 @@
+ config = ConfigParser.ConfigParser()
+ config.add_section("Main")
+ config.set("Main", "Arch", os.environ.get("ANACONDA_PRODUCTARCH", os.uname()[4]))
+-config.set("Main", "BugURL", os.environ.get("ANACONDA_BUGURL", "your distribution provided bug reporting tool"))
++config.set("Main", "BugURL", os.environ.get("ANACONDA_BUGURL", "http://bugs.pld-linux.org"))
+ config.set("Main", "IsFinal", os.environ.get("ANACONDA_ISFINAL", "false"))
+ config.set("Main", "Product", os.environ.get("ANACONDA_PRODUCTNAME", "anaconda"))
+ config.set("Main", "UUID", "")
+-config.set("Main", "Version", os.environ.get("ANACONDA_PRODUCTVERSION", "bluesky"))
++config.set("Main", "Version", os.environ.get("ANACONDA_PRODUCTVERSION", "th"))
+ 
+ # Now read in the .buildstamp file, wherever it may be.
+ config.read(["/tmp/product/.buildstamp", "/.buildstamp", os.environ.get("PRODBUILDPATH", "")])
