@@ -32,7 +32,7 @@ Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
 Version:	19.28
-Release:	0.15
+Release:	0.16
 License:	GPL
 Group:		Applications/System
 Source0:	http://pkgs.fedoraproject.org/repo/pkgs/anaconda/%{name}-%{version}.tar.bz2/%{md5}/anaconda-%{version}.tar.bz2
@@ -41,6 +41,7 @@ Patch0:		interfaces-dir.patch
 Patch1:		libexec.patch
 Patch2:		yum-comps.patch
 Patch3:		product-defaults.patch
+Patch4:		yum-packages.patch
 URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	NetworkManager-devel >= %{nmver}
 BuildRequires:	audit-libs-devel
@@ -172,11 +173,12 @@ anaconda runtime on NFS/HTTP/FTP servers or local disks.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 # / on %{_prefix} kicks in
 %{__sed} -i -e '1 s,#!/usr/bin/bash,#!/bin/sh,' scripts/run-anaconda
 
-# TODO: rpm5 porting
+# TODO: driver_disk not compiling (needs rpm5 porting) disable.
 %{__sed} -i -e '/SUBDIRS/ s/dd//' utils/Makefile.am
 
 %build
@@ -209,7 +211,7 @@ desktop-file-install ---dir=$RPM_BUILD_ROOT%{_desktopdir} $RPM_BUILD_ROOT%{_desk
 
 %find_lang %{name}
 
-%{!?debug:%py_postclean %{_libdir}/anaconda}
+%{!?debug:%py_postclean}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -238,7 +240,7 @@ update-desktop-database
 %attr(755,root,root) %{_libdir}/anaconda/auditd
 %attr(755,root,root) %{_libdir}/anaconda/run-anaconda
 %attr(755,root,root) %{_libdir}/anaconda/upd-updates
-%{_libdir}/anaconda/pyrc.py
+%{_libdir}/anaconda/pyrc.py*
 %{py_sitedir}/pyanaconda
 %{py_sitedir}/log_picker
 
