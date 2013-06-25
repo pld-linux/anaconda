@@ -251,7 +251,7 @@ update-desktop-database
 %config(noreplace) /etc/security/console.apps/*
 %{_sysconfdir}/X11/xinit/xinitrc.d/*
 %{_desktopdir}/*.desktop
-%{_iconsdir}/hicolor/*
+%{_iconsdir}/hicolor/*/apps/liveinst.png
 
 %files widgets
 %defattr(644,root,root,755)
