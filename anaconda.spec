@@ -1,5 +1,6 @@
 # TODO
 # - code poldek backend (python-poldek pkg exists!)
+# - anaconda can't install packages: http://lists.pld-linux.org/mailman/pipermail/pld-devel-en/2013-May/023527.html
 
 # Versions of required components (done so we make sure the buildrequires
 # match the requires versions of things).
