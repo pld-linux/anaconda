@@ -52,32 +52,31 @@ Patch0:		interfaces-dir.patch
 Patch1:		libexec.patch
 Patch2:		yum-comps.patch
 Patch3:		product-defaults.patch
-Patch4:		yum-packages.patch
 URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	NetworkManager-devel >= %{nmver}
 BuildRequires:	audit-libs-devel
 BuildRequires:	dbus-devel >= %{dbusver}
 BuildRequires:	gettext >= %{gettextver}
 BuildRequires:	glade-devel
-BuildRequires:	glib2-doc
+#BuildRequires:	glib2-doc
 BuildRequires:	gobject-introspection-devel
 BuildRequires:	gtk+3-devel
 BuildRequires:	gtk-doc
-BuildRequires:	gtk3-devel-docs
+#BuildRequires:	gtk3-devel-docs
 BuildRequires:	intltool >= %{intltoolver}
 BuildRequires:	libarchive-devel >= %{libarchivever}
-BuildRequires:	libgnomekbd-devel
-BuildRequires:	libtimezonemap-devel >= %{libtimezonemapver}
-BuildRequires:	libxklavier-devel >= %{libxklavierver}
+#BuildRequires:	libgnomekbd-devel
+#BuildRequires:	libtimezonemap-devel >= %{libtimezonemapver}
+#BuildRequires:	libxklavier-devel >= %{libxklavierver}
 BuildRequires:	pango-devel
 BuildRequires:	python-dbus
 BuildRequires:	python-devel
 BuildRequires:	python-nose
 BuildRequires:	python-pygobject3
-BuildRequires:	python-pykickstart >= %{pykickstartver}
+#BuildRequires:	python-pykickstart >= %{pykickstartver}
 BuildRequires:	python-urlgrabber >= %{pythonurlgrabberver}
 BuildRequires:	rpm-devel >= %{rpmver}
-BuildRequires:	systemd
+#BuildRequires:	systemd
 BuildRequires:	yum >= %{yumver}
 %if %{with live}
 BuildRequires:	desktop-file-utils
@@ -137,8 +136,8 @@ Requires:	yum-utils >= %{yumutilsver}
 # required because of the rescue mode and VNC question
 Requires:	anaconda-tui = %{version}-%{release}
 %if %{with live}
-Requires:	usermode
 Requires:	desktop-file-utils
+Requires:	usermode
 %endif
 %ifarch %{ix86} %{x8664}
 Requires:	fcoe-utils >= %{fcoeutilsver}
@@ -230,13 +229,12 @@ anaconda runtime on NFS/HTTP/FTP servers or local disks.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 # / on %{_prefix} kicks in
 %{__sed} -i -e '1 s,#!/usr/bin/bash,#!/bin/sh,' scripts/run-anaconda
 
 # TODO: driver_disk not compiling (needs rpm5 porting) disable.
-#%{__sed} -i -e '/SUBDIRS/ s/dd//' utils/Makefile.am
+%{__sed} -i -e '/SUBDIRS/ s/dd//' utils/Makefile.am
 
 %build
 %{__aclocal} -I m4
@@ -259,13 +257,14 @@ rm -rf $RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT -type f -name "*.la" | xargs %{__rm} -v
 
+%{__rm} -rf $RPM_BUILD_ROOT%{_datadir}/%{name}/tzmapdata
+
 %if %{with live}
 desktop-file-install ---dir=$RPM_BUILD_ROOT%{_desktopdir} $RPM_BUILD_ROOT%{_desktopdir}/liveinst.desktop
 %endif
 
 # unsupported locales
 %{__rm} -r $RPM_BUILD_ROOT%{_localedir}/bal
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/eu_ES
 %{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ilo
 
 %find_lang %{name}
@@ -294,50 +293,61 @@ update-desktop-database
 %defattr(644,root,root,755)
 %doc COPYING
 %{systemdunitdir}/*
-%{_prefix}%{systemdunitdir}-generators/*
+%{systemdunitdir}-generators/*
+%attr(755,root,root) %{_bindir}/anaconda-cleanup
+%attr(755,root,root) %{_bindir}/analog
 %attr(755,root,root) %{_bindir}/instperf
 %attr(755,root,root) %{_sbindir}/anaconda
 %attr(755,root,root) %{_sbindir}/handle-sshpw
-%{_datadir}/anaconda
-%exclude %{_datadir}/anaconda/tzmapdata
-%{_prefix}/libexec/anaconda
-%{_libdir}/python*/site-packages/pyanaconda/*
-%exclude %{_libdir}/python*/site-packages/pyanaconda/rescue.py*
-%exclude %{_libdir}/python*/site-packages/pyanaconda/text.py*
-%exclude %{_libdir}/python*/site-packages/pyanaconda/ui/gui/*
-%exclude %{_libdir}/python*/site-packages/pyanaconda/ui/tui/*
-%attr(755,root,root) %{_bindir}/analog
-%attr(755,root,root) %{_bindir}/anaconda-cleanup
+
+%{_datadir}/%{name}
+
+%dir %{_libdir}/%{name}
+%attr(755,root,root) %{_libdir}/%{name}/anaconda-yum
+%attr(755,root,root) %{_libdir}/%{name}/auditd
+%attr(755,root,root) %{_libdir}/%{name}/run-anaconda
+%attr(755,root,root) %{_libdir}/%{name}/upd-updates
+%attr(755,root,root) %{_libdir}/%{name}/zram-stats
+%attr(755,root,root) %{_libdir}/%{name}/zramswapoff
+%attr(755,root,root) %{_libdir}/%{name}/zramswapon
+
+%{py_sitedir}/pyanaconda
+%exclude %{py_sitedir}/pyanaconda/rescue.py*
+%exclude %{py_sitedir}/pyanaconda/text.py*
+%exclude %{py_sitedir}/pyanaconda/ui/gui
+%exclude %{py_sitedir}/pyanaconda/ui/tui
+
 %if %{with live}
+%config(noreplace) %verify(not md5 mtime size) /etc/pam.d/liveinst
+%config(noreplace) %verify(not md5 mtime size) /etc/security/console.apps/liveinst
 %attr(755,root,root) %{_bindir}/liveinst
 %attr(755,root,root) %{_sbindir}/liveinst
-%config(noreplace) /etc/pam.d/*
-%config(noreplace) /etc/security/console.apps/*
-%{_sysconfdir}/X11/xinit/xinitrc.d/*
-%{_desktopdir}/*.desktop
+%attr(755,root,root) /etc/X11/xinit/xinitrc.d/zz-liveinst.sh
+%{_desktopdir}/liveinst.desktop
 %{_iconsdir}/hicolor/*/apps/liveinst.png
 %endif
 
 %files gui
 %defattr(644,root,root,755)
-%{_libdir}/python*/site-packages/pyanaconda/ui/gui/*
+%{py_sitedir}/pyanaconda/ui/gui
 
 %files tui
 %defattr(644,root,root,755)
-%{_libdir}/python*/site-packages/pyanaconda/rescue.py
-%{_libdir}/python*/site-packages/pyanaconda/text.py
-%{_libdir}/python*/site-packages/pyanaconda/ui/tui/*
+%{py_sitedir}/pyanaconda/rescue.py[co]
+%{py_sitedir}/pyanaconda/text.py[co]
+%{py_sitedir}/pyanaconda/ui/tui
 
 %files widgets
 %defattr(644,root,root,755)
-%{_libdir}/libAnacondaWidgets.so.*
-%{_libdir}/girepository*/AnacondaWidgets*typelib
-%{_libdir}/python*/site-packages/gi/overrides/*
+%attr(755,root,root) %{_libdir}/libAnacondaWidgets.so.*.*.*
+%ghost %{_libdir}/libAnacondaWidgets.so.2
+%{_libdir}/girepository-1.0/AnacondaWidgets-3.0.typelib
+%{py_sitedir}/gi/overrides/AnacondaWidgets.py[co]
 
 %files widgets-devel
 %defattr(644,root,root,755)
 %{_libdir}/libAnacondaWidgets.so
-%{_includedir}/*
+%{_includedir}/AnacondaWidgets
 %{_datadir}/glade/catalogs/AnacondaWidgets.xml
 %{_datadir}/gtk-doc
 
@@ -345,4 +355,4 @@ update-desktop-database
 %defattr(644,root,root,755)
 %dir %{_prefix}/lib/dracut/modules.d/80%{name}
 %{_prefix}/lib/dracut/modules.d/80%{name}/*
-%{_prefix}/libexec/anaconda/dd_*
+#%{_prefix}/libexec/anaconda/dd_*

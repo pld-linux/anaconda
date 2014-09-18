@@ -1,11 +1,11 @@
---- site-packages/pyanaconda/packaging/yumpayload.py~	2013-05-17 14:48:12.000000000 +0300
-+++ site-packages/pyanaconda/packaging/yumpayload.py	2013-05-18 00:48:37.922288918 +0300
-@@ -1296,7 +1296,7 @@
+--- anaconda-22.4/pyanaconda/packaging/yumpayload.py~	2014-09-18 12:44:59.000000000 +0300
++++ anaconda-22.4/pyanaconda/packaging/yumpayload.py	2014-09-18 12:45:35.407822873 +0300
+@@ -1221,7 +1221,7 @@
+         if self.data.packages.nocore:
+             log.info("skipping core group due to %%packages --nocore; system may not be complete")
+         else:
+-            self._selectYumGroup("core")
++            self._selectYumGroup("base")
  
-             This follows the same ordering/pattern as kickstart.py.
-         """
--        self._selectYumGroup("core")
-+        self._selectYumGroup("base")
+         env = None
  
-         if self.data.packages.default and self.environments:
-             self.selectEnvironment(self.environments[0])
