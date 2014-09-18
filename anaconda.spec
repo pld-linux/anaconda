@@ -4,40 +4,44 @@
 
 # Versions of required components (done so we make sure the buildrequires
 # match the requires versions of things).
-%define gettextver 0.11
-%define gconfversion 2.28.1
+
+# Also update in AM_GNU_GETTEXT_VERSION in configure.ac
+%define gettextver 0.18.3
 %define intltoolver 0.31.2-3
-%define libnlver 1.0
-%define pykickstartver 1.99.30
-%define yumver 3.4.3-7
+%define pykickstartver 1.99.58
+%define yumver 3.4.3-91
+%define dnfver 0.4.18
 %define partedver 1.8.1
-%define pypartedver 3.9
+%define pypartedver 2.5-2
 %define pythonpyblockver 0.45
-%define nmver 1:0.7.1-3.git20090414
+%define nmver 0.9.9.0-10.git20130906
 %define dbusver 1.2.3
 %define yumutilsver 1.1.11-3
 %define mehver 0.23-1
 %define sckeyboardver 1.3.1
-%define firewalldver 0.2.9-1
+%define firewalldver 0.3.5-1
 %define pythonurlgrabberver 3.9.1-5
 %define utillinuxver 2.15.1
-%define dracutver 024-25
+%define dracutver 034-7
 %define isomd5sum 1.0.10
 %define fcoeutilsver 1.0.12-3.20100323git
-%define iscsiver 2.0-0.870.3
+%define iscsiver 6.2.0.870-3
 %define rpmver 4.10.0
 %define libarchivever 3.0.4
-%define libselinuxver 2.1
-%define md5	682641c5ae518fdf3b119fed5e09bbd5
+%define langtablever 0.0.18-1
+%define libxklavierver 5.4
+%define libtimezonemapver 0.4.1-2
+
+%define md5	6f0d544a9b08287aa6d981208adc5bfa
 Summary:	Graphical system installer
 Summary(pl.UTF-8):	Graficzny instalator systemu
 Name:		anaconda
-Version:	19.28
-Release:	0.16
-License:	GPL
+Version:	22.4
+Release:	0.1
+License:	GPL v2+
 Group:		Applications/System
 Source0:	http://pkgs.fedoraproject.org/repo/pkgs/anaconda/%{name}-%{version}.tar.bz2/%{md5}/anaconda-%{version}.tar.bz2
-# Source0-md5:	682641c5ae518fdf3b119fed5e09bbd5
+# Source0-md5:	6f0d544a9b08287aa6d981208adc5bfa
 Patch0:		interfaces-dir.patch
 Patch1:		libexec.patch
 Patch2:		yum-comps.patch
@@ -50,14 +54,16 @@ BuildRequires:	dbus-devel >= %{dbusver}
 BuildRequires:	desktop-file-utils
 BuildRequires:	gettext >= %{gettextver}
 BuildRequires:	glade-devel
+BuildRequires:	glib2-doc
 BuildRequires:	gobject-introspection-devel
 BuildRequires:	gtk+3-devel
 BuildRequires:	gtk-doc
+BuildRequires:	gtk3-devel-docs
 BuildRequires:	intltool >= %{intltoolver}
 BuildRequires:	libarchive-devel >= %{libarchivever}
 BuildRequires:	libgnomekbd-devel
-BuildRequires:	libnl-devel >= %{libnlver}
-BuildRequires:	libxklavier-devel
+BuildRequires:	libtimezonemap-devel >= %{libtimezonemapver}
+BuildRequires:	libxklavier-devel >= %{libxklavierver}
 BuildRequires:	pango-devel
 BuildRequires:	python-dbus
 BuildRequires:	python-devel
@@ -66,64 +72,11 @@ BuildRequires:	python-pygobject3
 BuildRequires:	python-pykickstart >= %{pykickstartver}
 BuildRequires:	python-urlgrabber >= %{pythonurlgrabberver}
 BuildRequires:	rpm-devel >= %{rpmver}
-BuildRequires:	systemd-devel
-BuildRequires:	xorg-lib-libX11-devel
-BuildRequires:	xorg-lib-libXt-devel
-BuildRequires:	xorg-lib-libXxf86misc-devel
+BuildRequires:	systemd
 BuildRequires:	yum >= %{yumver}
-Requires:	GConf2 >= %{gconfversion}
-Requires:	NetworkManager >= %{nmver}
-Requires:	anaconda-widgets = %{version}-%{release}
-#Requires:	anaconda-yum-plugins
-#Requires:	authconfig
-Requires:	chrony
-Requires:	desktop-file-utils
-#Requires:	dhclient
-#Requires:	firewalld >= %{firewalldver}
-Requires:	gnome-icon-theme-symbolic
-Requires:	hostname
-Requires:	isomd5sum >= %{isomd5sum}
-Requires:	kbd
-Requires:	libgnomekbd
-Requires:	libreport-anaconda >= 2.0.21-1
-Requires:	libxklavier
-#Requires:	nm-connection-editor
-Requires:	ntpdate
-Requires:	open-iscsi >= %{iscsiver}
-Requires:	parted >= %{partedver}
-Requires:	python-IPy
-Requires:	python-babel
-Requires:	python-blivet >= 0.12
-#Requires:	python-bugzilla
-Requires:	python-dbus
-Requires:	python-libuser
-Requires:	python-meh >= %{mehver}
-Requires:	python-nss
-Requires:	python-parted >= %{pypartedver}
-Requires:	python-pwquality
-Requires:	python-pykickstart >= %{pykickstartver}
-Requires:	python-pytz
-Requires:	python-rpm >= %{rpmpythonver}
-Requires:	python-selinux
-Requires:	python-selinux >= %{libselinuxver}
-Requires:	python-snack
-Requires:	python-urlgrabber >= %{pythonurlgrabberver}
-#Requires:	realmd
-Requires:	rsync
-#Requires:	system-logos
-#Requires:	tigervnc-server-minimal
-Requires:	usermode
-Requires:	util-linux >= %{utillinuxver}
-Requires:	yum >= %{yumver}
-Requires:	yum-utils >= %{yumutilsver}
-Requires:	zenity
-%ifarch %{ix86} %{x8664} ia64
-Requires:	dmidecode
-Requires:	hfsplus-tools
-%endif
-Obsoletes:	anaconda-images <= 10
-Obsoletes:	anaconda-runtime < %{version}-%{release}
-Obsoletes:	booty <= 0.107-1
+Requires:	%{name}-core = %{version}-%{release}
+Requires:	%{name}-gui = %{version}-%{release}
+Requires:	%{name}-tui = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -134,6 +87,94 @@ system. These files are of little use on an already installed system.
 Pakiet anaconda zawiera program, którego można użyć do zainstalowania
 systemu. Pliki te mają niewiele zastosowań na już zainstalowanym
 systemie.
+
+%package core
+Summary:	Core of the Anaconda installer
+Requires:	NetworkManager >= %{nmver}
+Requires:	authconfig
+Requires:	chrony
+Requires:	createrepo_c
+Requires:	dhclient
+Requires:	dnf >= %{dnfver}
+Requires:	firewalld >= %{firewalldver}
+Requires:	isomd5sum >= %{isomd5sum}
+Requires:	kbd
+Requires:	langtable-data >= %{langtablever}
+Requires:	langtable-python >= %{langtablever}
+Requires:	libreport-anaconda >= 2.0.21-1
+Requires:	parted >= %{partedver}
+Requires:	python-IPy
+Requires:	python-blivet >= 0.61
+Requires:	python-dbus
+Requires:	python-libuser
+Requires:	python-meh >= %{mehver}
+Requires:	python-nss
+Requires:	python-ntplib
+Requires:	python-parted >= %{pypartedver}
+Requires:	python-pwquality
+Requires:	python-pykickstart >= %{pykickstartver}
+Requires:	python-pytz
+Requires:	python-rpm >= %{rpmver}
+Requires:	python-selinux
+Requires:	python-selinux
+Requires:	python-urlgrabber >= %{pythonurlgrabberver}
+Requires:	realmd
+Requires:	rsync
+Requires:	systemd
+Requires:	teamd
+Requires:	usermode
+Requires:	util-linux >= %{utillinuxver}
+Requires:	yum >= %{yumver}
+Requires:	yum-utils >= %{yumutilsver}
+%ifarch %{ix86} x86_64
+Requires:	fcoe-utils >= %{fcoeutilsver}
+%endif
+Requires:	open-iscsi >= %{iscsiver}
+%ifarch %{ix86} x86_64 ia64
+Requires:	dmidecode
+Requires:	hfsplus-tools
+%endif
+Requires:	python-coverage
+# required because of the rescue mode and VNC question
+Requires:	anaconda-tui = %{version}-%{release}
+Provides:	anaconda-images = %{version}-%{release}
+Provides:	anaconda-runtime = %{version}-%{release}
+Obsoletes:	anaconda-images <= 10
+Obsoletes:	anaconda-runtime < %{version}-%{release}
+Obsoletes:	booty <= 0.107-1
+
+%description core
+The anaconda-core package contains the program which was used to
+install your system.
+
+%package gui
+Summary:	Graphical user interface for the Anaconda installer
+Requires:	NetworkManager-wifi
+Requires:	adwaita-icon-theme
+Requires:	anaconda-core = %{version}-%{release}
+Requires:	anaconda-widgets = %{version}-%{release}
+Requires:	keybinder3
+Requires:	libgnomekbd
+Requires:	libtimezonemap >= %{libtimezonemapver}
+Requires:	libxklavier >= %{libxklavierver}
+Requires:	nm-connection-editor
+Requires:	python-meh-gui >= %{mehver}
+Requires:	system-logos
+Requires:	tigervnc-server-minimal
+Requires:	zenity
+
+%description gui
+This package contains graphical user interface for the Anaconda
+installer.
+
+%package tui
+Summary:	Textual user interface for the Anaconda installer
+Group:		Applications/System
+Requires:	anaconda-core = %{version}-%{release}
+
+%description tui
+This package contains textual user interface for the Anaconda
+installer.
 
 %package widgets
 Summary:	A set of custom GTK+ widgets for use with anaconda
@@ -148,6 +189,7 @@ anaconda installer.
 %package widgets-devel
 Summary:	Development files for anaconda-widgets
 Group:		Development/Libraries
+Requires:	%{name}-widgets = %{version}-%{release}
 Requires:	glade
 
 %description widgets-devel
@@ -180,7 +222,7 @@ anaconda runtime on NFS/HTTP/FTP servers or local disks.
 %{__sed} -i -e '1 s,#!/usr/bin/bash,#!/bin/sh,' scripts/run-anaconda
 
 # TODO: driver_disk not compiling (needs rpm5 porting) disable.
-%{__sed} -i -e '/SUBDIRS/ s/dd//' utils/Makefile.am
+#%{__sed} -i -e '/SUBDIRS/ s/dd//' utils/Makefile.am
 
 %build
 %{__aclocal} -I m4
@@ -201,14 +243,14 @@ rm -rf $RPM_BUILD_ROOT
 	generatordir=%{systemdunitdir}-generators \
 	DESTDIR=$RPM_BUILD_ROOT
 
+find $RPM_BUILD_ROOT -type f -name "*.la" | xargs %{__rm} -v
+
+desktop-file-install ---dir=$RPM_BUILD_ROOT%{_desktopdir} $RPM_BUILD_ROOT%{_desktopdir}/liveinst.desktop
+
 # unsupported locales
 %{__rm} -r $RPM_BUILD_ROOT%{_localedir}/bal
 %{__rm} -r $RPM_BUILD_ROOT%{_localedir}/eu_ES
 %{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ilo
-
-find $RPM_BUILD_ROOT -type f -name "*.la" | xargs %{__rm} -v
-
-desktop-file-install ---dir=$RPM_BUILD_ROOT%{_desktopdir} $RPM_BUILD_ROOT%{_desktopdir}/liveinst.desktop
 
 %find_lang %{name}
 
@@ -223,43 +265,56 @@ update-desktop-database
 %postun
 update-desktop-database
 
-%files -f %{name}.lang
+%post	widgets -p /sbin/ldconfig
+%postun	widgets -p /sbin/ldconfig
+
+%files
 %defattr(644,root,root,755)
-%doc docs/{command-line,install-methods,mediacheck}.txt
+%doc COPYING
+
+%files core -f %{name}.lang
+%defattr(644,root,root,755)
+%doc COPYING
 %{systemdunitdir}/*
-%{systemdunitdir}-generators/*
-%attr(755,root,root) %{_bindir}/anaconda-cleanup
-%attr(755,root,root) %{_bindir}/analog
+%{_prefix}%{systemdunitdir}-generators/*
 %attr(755,root,root) %{_bindir}/instperf
 %attr(755,root,root) %{_sbindir}/anaconda
 %attr(755,root,root) %{_sbindir}/handle-sshpw
-%attr(755,root,root) %{_sbindir}/logpicker
 %{_datadir}/anaconda
-%exclude %{_datadir}/anaconda/tzmapdata/*
-%dir %{_libdir}/anaconda
-%attr(755,root,root) %{_libdir}/anaconda/anaconda-yum
-%attr(755,root,root) %{_libdir}/anaconda/auditd
-%attr(755,root,root) %{_libdir}/anaconda/run-anaconda
-%attr(755,root,root) %{_libdir}/anaconda/upd-updates
-%{_libdir}/anaconda/pyrc.py*
-%{py_sitedir}/pyanaconda
-%{py_sitedir}/log_picker
-
-# live
+%exclude %{_datadir}/anaconda/tzmapdata
+%{_prefix}/libexec/anaconda
+%{_libdir}/python*/site-packages/pyanaconda/*
+%exclude %{_libdir}/python*/site-packages/pyanaconda/rescue.py*
+%exclude %{_libdir}/python*/site-packages/pyanaconda/text.py*
+%exclude %{_libdir}/python*/site-packages/pyanaconda/ui/gui/*
+%exclude %{_libdir}/python*/site-packages/pyanaconda/ui/tui/*
+%attr(755,root,root) %{_bindir}/analog
+%attr(755,root,root) %{_bindir}/anaconda-cleanup
+%ifarch %livearches
 %attr(755,root,root) %{_bindir}/liveinst
 %attr(755,root,root) %{_sbindir}/liveinst
 %config(noreplace) /etc/pam.d/*
 %config(noreplace) /etc/security/console.apps/*
 %{_sysconfdir}/X11/xinit/xinitrc.d/*
 %{_desktopdir}/*.desktop
-%{_iconsdir}/hicolor/*/apps/liveinst.png
+%{_iconsdir}/hicolor/*
+%endif
+
+%files gui
+%defattr(644,root,root,755)
+%{_libdir}/python*/site-packages/pyanaconda/ui/gui/*
+
+%files tui
+%defattr(644,root,root,755)
+%{_libdir}/python*/site-packages/pyanaconda/rescue.py
+%{_libdir}/python*/site-packages/pyanaconda/text.py
+%{_libdir}/python*/site-packages/pyanaconda/ui/tui/*
 
 %files widgets
 %defattr(644,root,root,755)
 %{_libdir}/libAnacondaWidgets.so.*
 %{_libdir}/girepository*/AnacondaWidgets*typelib
 %{_libdir}/python*/site-packages/gi/overrides/*
-%{_datadir}/anaconda/tzmapdata/*
 
 %files widgets-devel
 %defattr(644,root,root,755)
@@ -272,4 +327,4 @@ update-desktop-database
 %defattr(644,root,root,755)
 %dir %{_prefix}/lib/dracut/modules.d/80%{name}
 %{_prefix}/lib/dracut/modules.d/80%{name}/*
-#%{_prefix}/libexec/anaconda/dd_*
+%{_prefix}/libexec/anaconda/dd_*
