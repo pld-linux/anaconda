@@ -1,6 +1,10 @@
 # TODO
 # - code poldek backend (python-poldek pkg exists!)
 # - anaconda can't install packages: http://lists.pld-linux.org/mailman/pipermail/pld-devel-en/2013-May/023527.html
+#
+# Conditional build:
+%bcond_with	tests		# build with tests
+%bcond_without	live		# build livecd components
 
 # Versions of required components (done so we make sure the buildrequires
 # match the requires versions of things).
@@ -9,10 +13,11 @@
 %define gettextver 0.18.3
 %define intltoolver 0.31.2-3
 %define pykickstartver 1.99.58
-%define yumver 3.4.3-91
+%define yumver 3.4.3-9
 %define dnfver 0.4.18
 %define partedver 1.8.1
-%define pypartedver 2.5-2
+# git show 292c314
+%define pypartedver 3.9
 %define pythonpyblockver 0.45
 %define nmver 0.9.9.0-10.git20130906
 %define dbusver 1.2.3
@@ -25,7 +30,8 @@
 %define dracutver 034-7
 %define isomd5sum 1.0.10
 %define fcoeutilsver 1.0.12-3.20100323git
-%define iscsiver 6.2.0.870-3
+# git show 2b2418e
+%define iscsiver 2.0.870-3
 %define rpmver 4.10.0
 %define libarchivever 3.0.4
 %define langtablever 0.0.18-1
@@ -51,7 +57,6 @@ URL:		http://fedoraproject.org/wiki/Anaconda
 BuildRequires:	NetworkManager-devel >= %{nmver}
 BuildRequires:	audit-libs-devel
 BuildRequires:	dbus-devel >= %{dbusver}
-BuildRequires:	desktop-file-utils
 BuildRequires:	gettext >= %{gettextver}
 BuildRequires:	glade-devel
 BuildRequires:	glib2-doc
@@ -74,6 +79,9 @@ BuildRequires:	python-urlgrabber >= %{pythonurlgrabberver}
 BuildRequires:	rpm-devel >= %{rpmver}
 BuildRequires:	systemd
 BuildRequires:	yum >= %{yumver}
+%if %{with live}
+BuildRequires:	desktop-file-utils
+%endif
 Requires:	%{name}-core = %{version}-%{release}
 Requires:	%{name}-gui = %{version}-%{release}
 Requires:	%{name}-tui = %{version}-%{release}
@@ -105,6 +113,7 @@ Requires:	libreport-anaconda >= 2.0.21-1
 Requires:	parted >= %{partedver}
 Requires:	python-IPy
 Requires:	python-blivet >= 0.61
+Requires:	python-coverage
 Requires:	python-dbus
 Requires:	python-libuser
 Requires:	python-meh >= %{mehver}
@@ -122,21 +131,23 @@ Requires:	realmd
 Requires:	rsync
 Requires:	systemd
 Requires:	teamd
-Requires:	usermode
 Requires:	util-linux >= %{utillinuxver}
 Requires:	yum >= %{yumver}
 Requires:	yum-utils >= %{yumutilsver}
-%ifarch %{ix86} x86_64
+# required because of the rescue mode and VNC question
+Requires:	anaconda-tui = %{version}-%{release}
+%if %{with live}
+Requires:	usermode
+Requires:	desktop-file-utils
+%endif
+%ifarch %{ix86} %{x8664}
 Requires:	fcoe-utils >= %{fcoeutilsver}
 %endif
 Requires:	open-iscsi >= %{iscsiver}
-%ifarch %{ix86} x86_64 ia64
+%ifarch %{ix86} %{x8664} ia64
 Requires:	dmidecode
 Requires:	hfsplus-tools
 %endif
-Requires:	python-coverage
-# required because of the rescue mode and VNC question
-Requires:	anaconda-tui = %{version}-%{release}
 Provides:	anaconda-images = %{version}-%{release}
 Provides:	anaconda-runtime = %{version}-%{release}
 Obsoletes:	anaconda-images <= 10
@@ -161,7 +172,10 @@ Requires:	nm-connection-editor
 Requires:	python-meh-gui >= %{mehver}
 Requires:	system-logos
 Requires:	tigervnc-server-minimal
+Requires:	usermode
+%if %{with live}
 Requires:	zenity
+%endif
 
 %description gui
 This package contains graphical user interface for the Anaconda
@@ -245,7 +259,9 @@ rm -rf $RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT -type f -name "*.la" | xargs %{__rm} -v
 
+%if %{with live}
 desktop-file-install ---dir=$RPM_BUILD_ROOT%{_desktopdir} $RPM_BUILD_ROOT%{_desktopdir}/liveinst.desktop
+%endif
 
 # unsupported locales
 %{__rm} -r $RPM_BUILD_ROOT%{_localedir}/bal
@@ -259,11 +275,13 @@ desktop-file-install ---dir=$RPM_BUILD_ROOT%{_desktopdir} $RPM_BUILD_ROOT%{_desk
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%if %{with live}
 %post
 update-desktop-database
 
 %postun
 update-desktop-database
+%endif
 
 %post	widgets -p /sbin/ldconfig
 %postun	widgets -p /sbin/ldconfig
@@ -290,14 +308,14 @@ update-desktop-database
 %exclude %{_libdir}/python*/site-packages/pyanaconda/ui/tui/*
 %attr(755,root,root) %{_bindir}/analog
 %attr(755,root,root) %{_bindir}/anaconda-cleanup
-%ifarch %livearches
+%if %{with live}
 %attr(755,root,root) %{_bindir}/liveinst
 %attr(755,root,root) %{_sbindir}/liveinst
 %config(noreplace) /etc/pam.d/*
 %config(noreplace) /etc/security/console.apps/*
 %{_sysconfdir}/X11/xinit/xinitrc.d/*
 %{_desktopdir}/*.desktop
-%{_iconsdir}/hicolor/*
+%{_iconsdir}/hicolor/*/apps/liveinst.png
 %endif
 
 %files gui
