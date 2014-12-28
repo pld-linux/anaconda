@@ -20,7 +20,7 @@ BuildRequires:	curl
 BuildRequires:	dbus-devel
 BuildRequires:	device-mapper-devel >= 1.01.05
 BuildRequires:	e2fsprogs-devel
-BuildRequires:	gettext-devel >= 0.11
+BuildRequires:	gettext-tools >= 0.11
 BuildRequires:	glib2-devel
 BuildRequires:	gtk+2-devel
 BuildRequires:	isomd5sum-devel
